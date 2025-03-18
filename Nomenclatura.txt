@@ -1,0 +1,10 @@
+PV 13/03/2025
+
+Vamos a utilizar git sin git flow
+
+Nomenclatura: 
+
+ramas: 
+main
+dev
+feature/nombreJira.claveJira
