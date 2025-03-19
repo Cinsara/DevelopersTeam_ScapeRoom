@@ -1,30 +1,12 @@
--- MySQL Workbench Forward Engineering
+CREATE DATABASE IF NOT EXISTS `escape_room`;
+USE `escape_room`;
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema EscapeRoom
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Table `room`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `room` ;
 
 CREATE TABLE IF NOT EXISTS `room` (
   `room_id` INT NOT NULL AUTO_INCREMENT,
   `room_theme` ENUM("Love Affair", "Fantastic", "Mystery", "Sci-Fi") NOT NULL,
   `room_difficulty` ENUM("Easy", "Medium", "Hard") NOT NULL,
-  PRIMARY KEY (`room_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `clue`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `clue` ;
+  PRIMARY KEY (`room_id`));
 
 CREATE TABLE IF NOT EXISTS `clue` (
   `clue_id` INT NOT NULL AUTO_INCREMENT,
@@ -36,14 +18,7 @@ CREATE TABLE IF NOT EXISTS `clue` (
     FOREIGN KEY (`room_room_id`)
     REFERENCES `room` (`room_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `prop`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `prop` ;
+    ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `prop` (
   `prop_id` INT NOT NULL AUTO_INCREMENT,
@@ -56,14 +31,7 @@ CREATE TABLE IF NOT EXISTS `prop` (
     FOREIGN KEY (`room_room_id`)
     REFERENCES `room` (`room_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `costumer`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `costumer` ;
+    ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `costumer` (
   `costumer_id` INT NOT NULL AUTO_INCREMENT,
@@ -74,14 +42,7 @@ CREATE TABLE IF NOT EXISTS `costumer` (
   `costumer_phone_number` VARCHAR(45) NULL,
   `costumer_notifications` TINYINT(1) NOT NULL,
   `costumer_signedUpNotifOn` DATE NULL,
-  PRIMARY KEY (`costumer_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `game`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `game` ;
+  PRIMARY KEY (`costumer_id`));
 
 CREATE TABLE IF NOT EXISTS `game` (
   `game_id` INT NOT NULL AUTO_INCREMENT,
@@ -102,14 +63,7 @@ CREATE TABLE IF NOT EXISTS `game` (
     FOREIGN KEY (`captain_costumer_id`)
     REFERENCES `costumer` (`costumer_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `game_has_costumer`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `game_has_costumer` ;
+    ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `game_has_costumer` (
   `game_game_id` INT NOT NULL,
@@ -126,14 +80,7 @@ CREATE TABLE IF NOT EXISTS `game_has_costumer` (
     FOREIGN KEY (`costumer_costumer_id`)
     REFERENCES `costumer` (`costumer_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `tiquet`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `tiquet` ;
+    ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `tiquet` (
   `tiquet_id` INT NOT NULL AUTO_INCREMENT,
@@ -153,14 +100,7 @@ CREATE TABLE IF NOT EXISTS `tiquet` (
     FOREIGN KEY (`game_game_id`)
     REFERENCES `game` (`game_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `certificate`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `certificate` ;
+    ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `certificate` (
   `certificate_id` INT NOT NULL AUTO_INCREMENT,
@@ -178,15 +118,8 @@ CREATE TABLE IF NOT EXISTS `certificate` (
     FOREIGN KEY (`costumer_costumer_id`)
     REFERENCES `costumer` (`costumer_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `reward`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `reward` ;
-
+    ON UPDATE CASCADE);
+    
 CREATE TABLE IF NOT EXISTS `reward` (
   `reward_id` INT NOT NULL AUTO_INCREMENT,
   `costumer_costumer_id` INT NOT NULL,
@@ -203,20 +136,13 @@ CREATE TABLE IF NOT EXISTS `reward` (
     FOREIGN KEY (`game_game_id`)
     REFERENCES `game` (`game_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+    ON UPDATE CASCADE);
 
-
--- -----------------------------------------------------
--- Table `notification`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `notification` ;
 
 CREATE TABLE IF NOT EXISTS `notification` (
   `notification_id` INT NOT NULL AUTO_INCREMENT,
   `notification_content` MEDIUMTEXT NOT NULL,
-  PRIMARY KEY (`notification_id`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`notification_id`));
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

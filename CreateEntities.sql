@@ -1,0 +1,66 @@
+USE `escape_room`;
+
+-- Insert into room
+INSERT INTO room (room_theme, room_difficulty) VALUES
+('Love Affair', 'Easy'),
+('Fantastic', 'Medium'),
+('Mystery', 'Hard'),
+('Sci-Fi', 'Medium');
+
+-- Insert into costumer (customers)
+INSERT INTO costumer (costumner_name, costumer_lastname, costumer_dob, costumer_mail, costumer_phone_number, costumer_notifications, costumer_signedUpNotifOn) VALUES
+('Alice', 'Johnson', '1990-05-14', 'alice.johnson@example.com', '123-456-7890', 1, '2024-03-10'),
+('Bob', 'Smith', '1985-09-23', 'bob.smith@example.com', '987-654-3210', 0, NULL),
+('Charlie', 'Brown', '1995-02-07', 'charlie.brown@example.com', '456-789-1234', 1, '2024-03-12'),
+('Diana', 'Prince', '1992-07-19', 'diana.prince@example.com', '321-654-9870', 1, '2024-03-15');
+
+-- Insert into game
+INSERT INTO game (game_date, game_sucess, game_lengthInSec, room_room_id, captain_costumer_id) VALUES
+('2024-03-16 14:00:00', 1, 3600, 1, 1),
+('2024-03-17 16:30:00', 0, 4200, 2, 2),
+('2024-03-18 12:45:00', 1, 3900, 3, 3),
+('2024-03-19 18:00:00', 0, 4000, 4, 4);
+
+-- Insert into game_has_costumer (Many-to-Many relationship)
+INSERT INTO game_has_costumer (game_game_id, costumer_costumer_id) VALUES
+(1, 1), (1, 2), (1, 3),
+(2, 2), (2, 3), 
+(3, 1), (3, 3), (3, 4),
+(4, 2), (4, 4);
+
+-- Insert into tiquet
+INSERT INTO tiquet (tiquet_price, tiquet_saleDate, captain_costumer_id, game_game_id) VALUES
+(25.00, '2024-03-15', 1, 1),
+(30.00, '2024-03-16', 2, 2),
+(22.50, '2024-03-17', 3, 3),
+(28.00, '2024-03-18', 4, 4);
+
+-- Insert into certificate
+INSERT INTO certificate (game_game_id, costumer_costumer_id) VALUES
+(1, 1), (1, 2), (1, 3),
+(3, 1), (3, 3), (3, 4);
+
+-- Insert into reward
+INSERT INTO reward (costumer_costumer_id, game_game_id) VALUES
+(1, 1), 
+(3, 3);
+
+-- Insert into notification
+INSERT INTO notification (notification_content) VALUES
+('Your escape room session is booked for tomorrow!'),
+('Congratulations! You successfully completed your escape room challenge.'),
+('New rooms added! Try our Mystery and Sci-Fi escape rooms.');
+
+-- Insert into clue
+INSERT INTO clue (clue_type, room_room_id) VALUES
+('Enigma', 1),
+('Indication', 2),
+('Enigma', 3),
+('Indication', 4);
+
+-- Insert into prop
+INSERT INTO prop (prop_type, prop_value, room_room_id) VALUES
+('Spade', 2, 1),
+('Closet', 1, 2),
+('Mountain', 3, 3),
+('Spade', 1, 4);
