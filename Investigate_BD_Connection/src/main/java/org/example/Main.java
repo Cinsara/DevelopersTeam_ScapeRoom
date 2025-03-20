@@ -17,11 +17,14 @@ public class Main {
 
         Connection connection = connectionTest.getConnection();
 
+//        connectionTest.executeQuerySelect(connection);
+//
+//        ResultSet resultSet = connectionTest.executeQueryDOB(1998);
+//        connectionTest.processResultSet(resultSet);
+
+        connectionTest.executeQueryInsert(25,"44012252G","Isaac","Diez","Peris","Barcelona","C/Briz","628759641","1977-04-11","H","Alumno");
+
         connectionTest.executeQuerySelect(connection);
-
-        ResultSet resultSet = connectionTest.executeQueryDOB(1998);
-        connectionTest.processResultSet(resultSet);
-
 
 
     }

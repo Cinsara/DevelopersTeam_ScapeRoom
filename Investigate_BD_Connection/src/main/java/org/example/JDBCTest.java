@@ -113,4 +113,32 @@ public class JDBCTest {
         }
     }
 
+    public void executeQueryInsert(int id, String dni, String name, String lastName1, String lastName2, String city, String address, String phone, String dob, String gender, String type) {
+
+        String query = "INSERT INTO persona (id, nif, nombre, apellido1, apellido2, ciudad, direccion, telefono, fecha_nacimiento, sexo, tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, dni);
+            preparedStatement.setString(3, name);
+            preparedStatement.setString(4, lastName1);
+            preparedStatement.setString(5, lastName2);
+            preparedStatement.setString(6, city);
+            preparedStatement.setString(7, address);
+            preparedStatement.setString(8, phone);
+            preparedStatement.setString(9, dob);
+            preparedStatement.setString(10, gender);
+            preparedStatement.setString(11, type);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
