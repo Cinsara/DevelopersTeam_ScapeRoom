@@ -11,7 +11,7 @@ public class ConnectionManager {
     final static String PASSWORD = "mySqlRoot1948";
     static Connection connection;
 
-    public Connection getConnection() throws SQLException {
+    static public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()){
             connection = DriverManager.getConnection(URL,USER,PASSWORD);
         }
