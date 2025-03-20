@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="63ff98af-ab0a-4e34-bc02-eb25a6a4b871" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/GetAllService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/PropService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/escapeRoom/service/PropServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/CrudeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EscapRoom.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/EscapRoom.mwb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/connectionManager/ConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/connectionManager/ConnectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/GetAllService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/GetAllService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +20,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -34,7 +38,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Cinsara/DevelopersTeam_ScapeRoom.git",
-    "accountId": "48c43c07-0596-45c5-b44a-58436be705da"
+    "accountId": "dc02b120-61b0-49f5-a188-2f3dd3a5f522"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -45,17 +49,72 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/ERGP-33/ServiceInterface&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.PropServiceTest.testGetAll.executor": "Run",
+    "JUnit.PropServiceTest.testGetAllWorks.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "feature/ERGP-33/ServiceInterface",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="escapeRoom.service" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="escapeRoom.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.PropServiceTest.testGetAll">
+    <configuration name="PropServiceTest.testGetAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeveloperTeamEscapeRoom" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="escapeRoom.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="escapeRoom.service" />
+      <option name="MAIN_CLASS_NAME" value="escapeRoom.service.PropServiceTest" />
+      <option name="METHOD_NAME" value="testGetAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PropServiceTest.testGetAllWorks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeveloperTeamEscapeRoom" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="escapeRoom.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="escapeRoom.service" />
+      <option name="MAIN_CLASS_NAME" value="escapeRoom.service.PropServiceTest" />
+      <option name="METHOD_NAME" value="testGetAllWorks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PropServiceTest.testGetAll" />
+        <item itemvalue="JUnit.PropServiceTest.testGetAllWorks" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

@@ -4,13 +4,14 @@ import escapeRoom.connectionManager.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface GetAllService extends CrudeService {
-    default void getAll() throws SQLException {
+    default ResultSet getAll() throws SQLException {
         Connection connection = ConnectionManager.getConnection();
-        String query = "SELECT * FROM ?";
+        String query = "SELECT * FROM " + getTableName();
         PreparedStatement prepStatement = connection.prepareStatement(query);
-        prepStatement.setString(1, getTableName());
+        return prepStatement.executeQuery();
     }
 }
