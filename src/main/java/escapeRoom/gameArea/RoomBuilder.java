@@ -5,10 +5,17 @@ import java.util.List;
 public class RoomBuilder implements Builder{
 
     private int _id;
+    private String name;
     private Theme theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
+
+
+    @Override
+    public void setRoomName(String name) {
+        this.name = name;
+    }
 
     @Override
     public void setRoomTheme(Theme theme) {
@@ -31,6 +38,6 @@ public class RoomBuilder implements Builder{
     }
 
     public Room getResult() {
-        return new Room(theme,difficulty,clues_id,props_id);
+        return new Room(this.name,theme,difficulty,clues_id,props_id);
     }
 }
