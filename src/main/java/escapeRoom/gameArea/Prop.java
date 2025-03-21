@@ -3,40 +3,36 @@ package escapeRoom.gameArea;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Prop {
+public class Prop implements GameElement {
 
-        private static int counter = 0;
-        private static final Map<Integer, Prop> propRegistry = new HashMap<>(); // Stores all props by ID. Will go after DB is implemented
+    private static int counter = 0;
+    private static final Map<Integer, Prop> propRegistry = new HashMap<>(); // Stores all props by ID. Will go after DB is implemented
 
-        private final int _id;
-        private String name;
-        private String type;
-        private double value;
+    private final int _id;
+    private String type;
+    private final double spadeValue = 20.5;
+    private final double closetValue = 120.5;
+    private final double mountainValue = 300.3;
 
+    public Prop(String type) {
+        this._id = ++counter;
+        this.type = type;
 
-        public Prop(String name, String type, double value) {
-            this._id = ++counter;
-            this.name= name;
-            this.type = type;
-            this.value = value;
+        propRegistry.put(this._id, this);
+    }
 
-            propRegistry.put(this._id, this);
-        }
-
-    public int get_id() {
+    @Override
+    public int getId() {
         return _id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public String printElement() {
+        return this._id +", " + this.type +", "+ getValue();
     }
 
     public void setType(String type) {
@@ -44,25 +40,27 @@ public class Prop {
     }
 
     public double getValue() {
+
+        double value = 0.0;
+
+        switch(type){
+            case "Spade":
+                value = spadeValue;
+                break;
+            case "Closet":
+                value = closetValue;
+                break;
+            case "Mountain":
+                value = mountainValue;
+                break;
+        }
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public static Double getValueById(int id) {
-            Prop propToGetValue = propRegistry.get(id);
+        Prop propToGetValue = propRegistry.get(id);
 
-            return (propToGetValue!=null) ? propToGetValue.getValue() : null; // Return value if found, otherwise null
+        return (propToGetValue != null) ? propToGetValue.getValue() : null; // Return value if found, otherwise null
     }
 
-    public String printProps() {
-
-            String props = this._id +", "+ this.name +", "+ this.type +", "+ this.value;
-
-            return props;
-
-    }
-    
 }
