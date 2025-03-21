@@ -1,29 +1,30 @@
 package escapeRoom.gameArea;
 
-public class Clue {
+public class Clue implements GameElement {
 
     private static int counter = 0; // Shared counter for all instances
     private final int _id;
-    private String name;
     private String type;
 
 
-    public Clue(String name, String type) {
+    public Clue(String type) {
         this._id= ++counter;
-        this.name= name;
         this.type = type;
     }
 
-    public int get_id() {
+    @Override
+    public int getId() {
         return _id;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String printElement() {
+        return this._id +", " + this.type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public double getValue() {
+        return 0;
     }
 
     public String getType() {
@@ -34,12 +35,5 @@ public class Clue {
         this.type = type;
     }
 
-    public String printClues() {
-
-        String clues = this._id +", "+ this.name +", "+ this.type;
-
-        return clues;
-
-    }
 
 }
