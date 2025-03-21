@@ -65,6 +65,18 @@ public class Room {
         this.props_id = props_id;
     }
 
+    public Double getRoomValue(){
+
+        Double value = 0.0;
+
+        for (Integer prop_id : this.props_id){
+            value =  value + Prop.getValueById(prop_id);
+        }
+
+        return value;
+
+    }
+
     @Override
     public String toString() {
         return "Room{" +
