@@ -18,9 +18,9 @@ public class Main {
         clues_id.add(clue2.get_id());
         clues_id.add(clue3.get_id());
 
-        Prop prop1 = new Prop("prop1", "Spade");
-        Prop prop2 = new Prop("prop2", "Closet");
-        Prop prop3 = new Prop("prop3", "Window");
+        Prop prop1 = new Prop("prop1", "Spade", 20.5);
+        Prop prop2 = new Prop("prop2", "Closet", 120.5);
+        Prop prop3 = new Prop("prop3", "Window", 300.0);
 
         List<Integer> props_id = new ArrayList<>();
 
@@ -34,7 +34,9 @@ public class Main {
         roomDirector.buildRoomLoveAffair(roomBuilder,"LoveEscape",clues_id,props_id);
         Room room1 = roomBuilder.getResult();
 
-        System.out.println(room1.toString());
+        System.out.println(room1);
+
+        System.out.println(room1.getRoomValue());
 
     }
 }
