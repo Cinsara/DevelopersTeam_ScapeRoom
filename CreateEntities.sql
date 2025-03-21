@@ -2,10 +2,10 @@ USE `escape_room`;
 
 -- Insert into room
 INSERT INTO room (room_theme, room_difficulty) VALUES
-('Love Affair', 'Easy'),
-('Fantastic', 'Medium'),
-('Mystery', 'Hard'),
-('Sci-Fi', 'Medium');
+('In the mood for love','Love Affair', 'Easy'),
+('Lord of the Rings','Fantastic', 'Medium'),
+('It','Mystery', 'Hard'),
+('Star Trek Adventure','Sci-Fi', 'Medium');
 
 -- Insert into costumer (customers)
 INSERT INTO customer (customer_name, customer_lastname, customer_dob, customer_mail, customer_phone_number, customer_notifications, customer_signedUpNotifOn) VALUES

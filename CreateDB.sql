@@ -3,6 +3,7 @@ USE `escape_room`;
 
 CREATE TABLE IF NOT EXISTS `room` (
   `room_id` INT NOT NULL AUTO_INCREMENT,
+  `room_name` VARCHAR(45) UNIQUE,
   `room_theme` ENUM("Love Affair", "Fantastic", "Mystery", "Sci-Fi") NOT NULL,
   `room_difficulty` ENUM("Easy", "Medium", "Hard") NOT NULL,
   PRIMARY KEY (`room_id`));
