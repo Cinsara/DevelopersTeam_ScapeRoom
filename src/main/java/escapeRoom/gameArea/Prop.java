@@ -1,17 +1,26 @@
 package escapeRoom.gameArea;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Prop {
 
-        private static int counter = 0; // Shared counter for all instances
+        private static int counter = 0;
+        private static final Map<Integer, Prop> propRegistry = new HashMap<>(); // Stores all props by ID. Will go after DB is implemented
+
         private final int _id;
         private String name;
         private String type;
+        private double value;
 
 
-        public Prop(String name, String type) {
+        public Prop(String name, String type, double value) {
             this._id = ++counter;
             this.name= name;
             this.type = type;
+            this.value = value;
+
+            propRegistry.put(this._id, this);
         }
 
     public int get_id() {
@@ -34,9 +43,23 @@ public class Prop {
         this.type = type;
     }
 
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public static Double getValueById(int id) {
+            Prop propToGetValue = propRegistry.get(id);
+
+            return (propToGetValue!=null) ? propToGetValue.getValue() : null; // Return value if found, otherwise null
+    }
+
     public String printProps() {
 
-            String props = this._id +", "+ this.name +", "+ this.type;
+            String props = this._id +", "+ this.name +", "+ this.type +", "+ this.value;
 
             return props;
 
