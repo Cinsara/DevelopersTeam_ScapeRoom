@@ -1,5 +1,7 @@
 package escapeRoom.gameArea;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 public class Room {
@@ -65,12 +67,18 @@ public class Room {
         this.props_id = props_id;
     }
 
+    @Nullable
     public Double getRoomValue(){
 
         Double value = 0.0;
 
         for (Integer prop_id : this.props_id){
-            value =  value + Prop.getValueById(prop_id);
+
+            try {
+                value = value + Prop.getValueById(prop_id);
+            } catch (NullPointerException e) {
+                System.out.println("No Prop with id: " + this.props_id);
+            }
         }
 
         return value;
