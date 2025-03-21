@@ -37,7 +37,7 @@ public class RoomBuilder implements Builder{
         this.props_id = props_id;
     }
 
-    public Room getResult() {
+    public Room create() {
         return new Room(this.name,theme,difficulty,clues_id,props_id);
     }
 }
