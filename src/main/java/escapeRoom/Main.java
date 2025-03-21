@@ -31,7 +31,7 @@ public class Main {
         RoomDirector roomDirector = new RoomDirector();
         RoomBuilder roomBuilder = new RoomBuilder();
 
-        roomDirector.buildRoomLoveAffair(roomBuilder,clues_id,props_id);
+        roomDirector.buildRoomLoveAffair(roomBuilder,"LoveEscape",clues_id,props_id);
         Room room1 = roomBuilder.getResult();
 
         System.out.println(room1.toString());

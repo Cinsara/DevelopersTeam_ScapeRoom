@@ -4,19 +4,29 @@ import java.util.List;
 
 public class Room {
 
-    private static int counter = 0; // Shared counter for all instances
+    private static int counter = 0;
+    private String name;
     private final int _id;
     private Theme theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
 
-    public Room(Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+    public Room(String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
         this._id = ++counter;
+        this.name = name;
         this.theme = theme;
         this.difficulty = difficulty;
         this.clues_id = clues_id;
         this.props_id = props_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int get_id() {
@@ -59,6 +69,7 @@ public class Room {
     public String toString() {
         return "Room{" +
                 "_id=" + _id +
+                ", name=" + name +
                 ", theme=" + theme +
                 ", difficulty=" + difficulty +
                 ", clues_id=" + clues_id +
