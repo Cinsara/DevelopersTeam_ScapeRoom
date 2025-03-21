@@ -1,7 +1,7 @@
 USE `escape_room`;
 
 -- Insert into room
-INSERT INTO room (room_theme, room_difficulty) VALUES
+INSERT INTO room (room_name, room_theme, room_difficulty) VALUES
 ('In the mood for love','Love Affair', 'Easy'),
 ('Lord of the Rings','Fantastic', 'Medium'),
 ('It','Mystery', 'Hard'),
