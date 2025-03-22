@@ -1,4 +1,4 @@
-package escapeRoom.gameArea;
+package escapeRoom.gameArea.CluePropFactory;
 
 public class Clue implements GameElement {
 

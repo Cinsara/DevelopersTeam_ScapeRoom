@@ -1,5 +1,6 @@
-package escapeRoom.gameArea;
+package escapeRoom.gameArea.RoomBuilder;
 
+import escapeRoom.gameArea.CluePropFactory.Prop;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package escapeRoom.gameArea;
+package escapeRoom.gameArea.CluePropFactory;
 
 import java.util.HashMap;
 import java.util.Map;

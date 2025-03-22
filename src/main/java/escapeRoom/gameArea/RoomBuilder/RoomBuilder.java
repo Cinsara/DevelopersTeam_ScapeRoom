@@ -1,4 +1,4 @@
-package escapeRoom.gameArea;
+package escapeRoom.gameArea.RoomBuilder;
 
 import java.util.List;
 
