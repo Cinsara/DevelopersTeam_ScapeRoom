@@ -58,8 +58,6 @@ public class menuRooms {
         Theme theme = null;
         Difficulty difficulty = null;
 
-        System.out.print("Your selection: ");
-
         int opc;
 
         do {
@@ -71,49 +69,34 @@ public class menuRooms {
                     "1. Love Affair\n" +
                     "2. Fantastic\n" +
                     "3. Mystery\n" +
-                    "4. Sci-Fi\n" +
-                    "0. Go Back");
+                    "4. Sci-Fi\n");
 
             System.out.print("Your selection: ");
 
             // Validate user input
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid option! Please enter a number between 0 and 4.");
-                sc.next(); // Clear invalid input
+                System.out.println("Invalid option! Please enter a number between 1 and 4.");
+                sc.next();
                 System.out.print("Your selection: ");
             }
 
             opc = sc.nextInt();
 
-            if (opc < 0 || opc > 4) {
-                System.out.println("Invalid option! Please enter a number between 0 and 4.");
-            } else if (opc > 0) {  // Exit the loop after a valid selection
+            if (opc < 1 || opc > 4) {
+                System.out.println("Invalid option! Please enter a number between 1 and 4.");
+            } else if (opc > 0) {
                 switch (opc) {
-                    case 1:
-                        theme = Theme.LOVEAFFAIR;
-                        break;
-                    case 2:
-                        theme = Theme.FANTASTIC;
-                        break;
-                    case 3:
-                        theme = Theme.MYSTERY;
-                        break;
-                    case 4:
-                        theme = Theme.SCIFI;
-                        break;
+                    case 1 -> theme = Theme.LOVEAFFAIR;
+                    case 2 -> theme = Theme.FANTASTIC;
+                    case 3 -> theme = Theme.MYSTERY;
+                    case 4 -> theme = Theme.SCIFI;
                 }
-                break; // Exit the loop after a valid selection
+                break;
             }
 
-        } while (opc != 0); // If "0" is selected, exit
+        } while (true);
 
-        if (opc > 0) {
             System.out.println("You have selected: " + theme +"\n");
-            // Continue the program...
-        } else {
-            System.out.println("Going back...");
-        }
-
 
         do {
 
@@ -134,83 +117,77 @@ public class menuRooms {
 
             if (opc < 0 || opc > 3) {
                 System.out.println("Invalid option! Please enter a number between 1 and 3");
-                sc.next();
-                System.out.println("Your selection: ");
-            } else {
-
+            } else if (opc>0){
                 switch (opc) {
-                    case 1:
-                        difficulty = Difficulty.EASY;
-                        break;
-                    case 2:
-                        difficulty = Difficulty.MEDIUM;
-                        break;
-                    case 3:
-                        difficulty = Difficulty.HARD;
-                        break;
+                    case 1 -> difficulty = Difficulty.EASY;
+                    case 2 -> difficulty = Difficulty.MEDIUM;
+                    case 3 -> difficulty = Difficulty.HARD;
                 }
                 break;
             }
 
-        } while (opc != 0);
+        } while (true);
 
-        if (opc > 0) {
-            System.out.println("You have selected: " + difficulty);
-        } else {
-            System.out.println("Going back...");
+        System.out.println("You have selected: " + difficulty + "\n");
+
+        //CLUE INPUT
+
+        System.out.print("How many Indications (clues)?\n");
+        opc = sc.nextInt();
+
+        List<GameElement> clues = new ArrayList<>();
+
+        for (int i = 0; i < opc; i++) {
+            clues.add(ClueFactory.createClue("Indication"));
         }
 
-            System.out.print("How many Indications (clues)?\n");
-            opc = sc.nextInt();
+        System.out.print("How many Enigmas (clues)?\n");
+        opc = sc.nextInt();
 
-            List<GameElement> clues = new ArrayList<>();
+        for (int i = 0; i < opc; i++) {
+            clues.add(ClueFactory.createClue("Enigma"));
+        }
 
-            for (int i = 0; i < opc; i++) {
-                clues.add(ClueFactory.createClue("Indication"));
-            }
+        List<Integer> clues_id = new ArrayList<>();
 
-            System.out.print("How many Enigmas (clues)?\n");
-            opc = sc.nextInt();
+        for (GameElement clue : clues) {
+            clues_id.add(clue.getId());
+        }
 
-            for (int i = 0; i < opc; i++) {
-                clues.add(ClueFactory.createClue("Enigma"));
-            }
+        //PROP INPUT
 
-            List<Integer> clues_id = new ArrayList<>();
+        System.out.print("How many Props \"Spade\"?\n");
+        opc = sc.nextInt();
 
-            for (GameElement clue : clues) {
-                clues_id.add(clue.getId());
-            }
+        List<GameElement> props = new ArrayList<>();
 
-            System.out.print("How many Props \"Spade\"?\n");
-            opc = sc.nextInt();
+        for (int i = 0; i < opc; i++) {
+            props.add(PropFactory.createProp("Spade"));
+        }
 
-            List<GameElement> props = new ArrayList<>();
+        System.out.print("How many Props \"Closet\"?\n");
+        opc = sc.nextInt();
 
-            for (int i = 0; i < opc; i++) {
-                props.add(PropFactory.createProp("Spade"));
-            }
+        for (int i = 0; i < opc; i++) {
+            props.add(PropFactory.createProp("Closet"));
+        }
 
-            System.out.print("How many Props \"Closet\"?\n");
-            opc = sc.nextInt();
+        System.out.print("How many Props \"Mountain\"?\n");
+        opc = sc.nextInt();
 
-            for (int i = 0; i < opc; i++) {
-                props.add(PropFactory.createProp("Closet"));
-            }
+        sc.nextLine();
 
-            System.out.print("How many Props \"Mountain\"?\n");
-            opc = sc.nextInt();
+        for (int i = 0; i < opc; i++) {
+            props.add(PropFactory.createProp("Mountain"));
+        }
 
-            for (int i = 0; i < opc; i++) {
-                props.add(PropFactory.createProp("Mountain"));
-            }
+        List<Integer> props_id = new ArrayList<>();
 
-            List<Integer> props_id = new ArrayList<>();
+        for (GameElement prop : props) {
+            props_id.add(prop.getId());
+        }
 
-            for (GameElement prop : props) {
-                props_id.add(prop.getId());
-            }
-
+        System.out.println();
 
 //        //Clues are created with Factory Pattern
 //        GameElement clue1 = ClueFactory.createClue("Enigma");
@@ -234,29 +211,29 @@ public class menuRooms {
 //        props_id.add(prop2.getId());
 //        props_id.add(prop3.getId());
 
-            sc.nextLine();
+        //ROOM NAME INPUT
+        System.out.print("Enter a name for your new Room: ");
 
-            System.out.print("What name should it have?");
+        roomName = sc.nextLine();
 
-            roomName = sc.nextLine();
+        //ROOM CREATION
 
-            System.out.println("Sweet. Here's your new room:");
+        RoomDirector roomDirector = new RoomDirector();
+        RoomBuilder roomBuilder = new RoomBuilder();
 
-            RoomDirector roomDirector = new RoomDirector();
-            RoomBuilder roomBuilder = new RoomBuilder();
+        roomDirector.buildRoom(roomBuilder, roomName, theme, difficulty, clues_id, props_id);
 
-            roomDirector.buildRoom(roomBuilder, roomName, theme, difficulty, clues_id, props_id);
+        List<Room> roomList = new ArrayList<>();
+        roomList.add(roomBuilder.create());
 
-            List<Room> roomList = new ArrayList<>();
+        System.out.println("Sweet. Here's your new room:");
 
-            roomList.add(roomBuilder.create());
-
-            System.out.println(roomList.get(roomList.size()-1));
+        System.out.println(roomList.get(roomList.size() - 1)+"\n");
 
 
-            for (int i = 0; i < opc; i++) {
-                props.add(PropFactory.createProp("Mountain"));
-            }
+//            for (int i = 0; i < opc; i++) {
+//                props.add(PropFactory.createProp("Mountain"));
+//            }
 
 
         }
