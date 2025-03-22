@@ -1,4 +1,4 @@
-package escapeRoom.gameArea;
+package escapeRoom.gameArea.CluePropFactory;
 
 public enum PropType {
     SPADE(20.0),
