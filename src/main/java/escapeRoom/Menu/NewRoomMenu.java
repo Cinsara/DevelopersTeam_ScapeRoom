@@ -1,8 +1,6 @@
 package escapeRoom.Menu;
 
-import escapeRoom.gameArea.CluePropFactory.ClueFactory;
-import escapeRoom.gameArea.CluePropFactory.GameElement;
-import escapeRoom.gameArea.CluePropFactory.PropFactory;
+import escapeRoom.gameArea.CluePropFactory.*;
 import escapeRoom.gameArea.RoomBuilder.*;
 
 import java.util.ArrayList;

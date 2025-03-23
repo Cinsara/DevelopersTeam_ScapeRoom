@@ -37,9 +37,9 @@ public class InventoryMenu {
             } else {
                 switch (opc) {
                     case 1 -> showElementMenu();
-                    case 2 -> deleteElementMenu();
-                    case 3 -> individualInventoryMenu();
-                    case 4 -> globalInventoryMenu();
+//                    case 2 -> deleteElementMenu();
+//                    case 3 -> individualInventoryMenu();
+//                    case 4 -> globalInventoryMenu();
                     case 0 -> System.out.println("Going back...");
                 }
             }

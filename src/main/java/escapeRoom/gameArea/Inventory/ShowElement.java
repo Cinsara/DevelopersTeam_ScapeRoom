@@ -1,6 +1,6 @@
 package escapeRoom.gameArea.Inventory;
 
-import escapeRoom.gameArea.RoomBuilder.Room;
+import escapeRoom.gameArea.RoomBuilder.*;
 
 import java.util.List;
 
