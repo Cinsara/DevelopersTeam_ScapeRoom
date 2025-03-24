@@ -12,7 +12,7 @@ public class Game {
     private List<Integer> players_id;
     private int captain_id;
     private boolean success;
-    private List<String> used_cues_id;
+    private List<Integer> used_cues_id;
     private int ellapsedTimeInSeconds;
     private List<String> rewards_id;
 
@@ -65,7 +65,7 @@ public class Game {
         return success;
     }
 
-    public List<String> getUsed_cues_id() {
+    public List<Integer> getUsed_cues_id() {
         return used_cues_id;
     }
 
