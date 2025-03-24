@@ -18,4 +18,10 @@ class GameBuilderTest {
         newGame.calculateResult();
         System.out.println(newGame.toString());
     }
+
+    @Test
+    void testGetCaptain(){
+        Game newGame = GameBuilder.createGame(2, LocalDate.of(2015,9,26));
+        System.out.println(newGame.getCaptain_id());
+    }
 }

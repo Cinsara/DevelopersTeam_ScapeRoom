@@ -12,7 +12,7 @@ public class Game {
     private final int room_id;
     private final LocalDate date;
     private List<Integer> players_id = new ArrayList<>();
-    private int captain_id;
+    private Integer captain_id;
     private boolean success;
     private List<Integer> used_clues_id = new ArrayList<>();;
     private int ellapsedTimeInSeconds;
@@ -70,7 +70,7 @@ public class Game {
         return players_id;
     }
 
-    public int getCaptain_id() {
+    public Integer getCaptain_id() {
         return captain_id;
     }
 
