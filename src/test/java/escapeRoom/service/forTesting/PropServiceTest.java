@@ -21,7 +21,7 @@ class PropServiceTest {
 
     @Test
     void testGetAllWorks() {
-        assertDoesNotThrow(()->service.getAll(service.getCONNECTION()));
+        assertDoesNotThrow(()->service.getAll(service.getConnection()));
     }
 
     @Test
@@ -29,7 +29,7 @@ class PropServiceTest {
         List<String> expectedProps= List.of("Spade","Closet","Mountain","Spade","Closet","Closet");
         List<Integer> expectedValue = List.of(2,1,3,1,10,10);
 
-        try (ResultSet rs = service.getAll(service.getCONNECTION())) {
+        try (ResultSet rs = service.getAll(service.getConnection())) {
             int index = 0;
             while(rs.next()){
                 assertEquals(rs.getString("prop_type"),expectedProps.get(index));
@@ -70,7 +70,7 @@ class PropServiceTest {
     @Test
     void delete() throws SQLException {
         assertTrue(service.delete(1));
-        ResultSet rs = service.getAll(service.getCONNECTION());
+        ResultSet rs = service.getAll(service.getConnection());
         if (rs.next()){
             Prop firstProp = new Prop (rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4));
             Prop testProp = new Prop (2,"Closet",1,2);
