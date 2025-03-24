@@ -1,20 +1,17 @@
 package escapeRoom.gameArea.CluePropFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Prop implements GameElement {
 
     private final PropType type;
     private int _id;
 
-    public Prop(PropType type) {
-        this.type = type;
-    }
-
     public Prop(PropType type, int _id) {
         this.type = type;
         this._id = _id;
+    }
+
+    public Prop(PropType type) {
+        this.type = type;
     }
 
     @Override
@@ -28,7 +25,7 @@ public class Prop implements GameElement {
 
     @Override
     public String printElement() {
-        return this._id +", " + this.type +", "+ getValue();
+        return this._id +", " + this.type +", Value: "+ getValue();
     }
 
     public double getValue(){

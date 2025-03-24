@@ -19,14 +19,15 @@ public class Clue implements GameElement {
         return _id;
     }
 
+    public ElementType getType() {
+        return type;
+    }
 
     @Override
     public String printElement() {
         return this._id +", " + this.type.name();
     }
 
-    public ElementType getType() {
-        return type;
-    }
+
 
 }
