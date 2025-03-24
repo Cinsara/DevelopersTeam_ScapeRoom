@@ -2,13 +2,15 @@ package escapeRoom.gameArea.CluePropFactory;
 
 public class Clue implements GameElement {
 
-    private static int counter = 0; // Shared counter for all instances
-    private final int _id;
-    private String type;
+    private final ClueType type;
+    private int _id;
 
+    public Clue(ClueType type, int _id) {
+        this.type = type;
+        this._id = _id;
+    }
 
-    public Clue(String type) {
-        this._id= ++counter;
+    public Clue(ClueType type) {
         this.type = type;
     }
 
@@ -17,23 +19,14 @@ public class Clue implements GameElement {
         return _id;
     }
 
+
     @Override
     public String printElement() {
-        return this._id +", " + this.type;
+        return this._id +", " + this.type.name();
     }
 
-    @Override
-    public double getValue() {
-        return 0;
-    }
-
-    public String getType() {
+    public ElementType getType() {
         return type;
     }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
 
 }

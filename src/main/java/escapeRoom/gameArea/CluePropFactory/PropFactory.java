@@ -1,8 +1,9 @@
 package escapeRoom.gameArea.CluePropFactory;
 
-public class PropFactory {
+public class PropFactory implements GameElementFactory {
 
-    public static GameElement createProp(String type) {
-        return new Prop(type);
+    @Override
+    public GameElement createGameElement(ElementType type) {
+        return new Prop((PropType) type);
     }
 }

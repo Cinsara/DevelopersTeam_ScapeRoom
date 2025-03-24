@@ -1,6 +1,6 @@
 package escapeRoom.gameArea.CluePropFactory;
 
-public enum PropType {
+public enum PropType implements ElementType {
     SPADE(20.0),
     CLOSET(140.0),
     MOUNTAIN(70.5);

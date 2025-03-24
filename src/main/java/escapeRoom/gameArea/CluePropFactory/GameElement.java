@@ -3,7 +3,6 @@ package escapeRoom.gameArea.CluePropFactory;
 public interface GameElement {
 
     int getId();
-    String getType();
+    ElementType getType();
     String printElement();
-    double getValue();
 }

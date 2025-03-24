@@ -1,7 +1,7 @@
 package escapeRoom.gameArea.CluePropFactory;
 
 public class ElementsFactoryProducer {
-    public static Object getFactory(String factoryType) {
+    public static GameElementFactory getFactory(String factoryType) {
         switch (factoryType) {
             case "Clue":
                 return new ClueFactory();

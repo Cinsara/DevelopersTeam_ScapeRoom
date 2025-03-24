@@ -3,24 +3,23 @@ package escapeRoom.gameArea.RoomBuilder;
 import escapeRoom.gameArea.CluePropFactory.Prop;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
 
-    private static int counter = 0;
     private String name;
-    private final int _id;
-    private Theme theme;
+    private int _id;
+    private final Theme theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
 
     public Room(String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
-        this._id = ++counter;
         this.name = name;
         this.theme = theme;
         this.difficulty = difficulty;
-        this.clues_id = clues_id;
+        this.clues_id = new ArrayList<>(clues_id);
         this.props_id = props_id;
     }
 
@@ -40,10 +39,6 @@ public class Room {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-
     public Difficulty getDifficulty() {
         return difficulty;
     }
@@ -60,6 +55,13 @@ public class Room {
         this.clues_id = clues_id;
     }
 
+    public void addClue(int clue_id){
+        this.clues_id.add(clue_id);
+    }
+    public void removeClue(int clue_id){
+        this.clues_id.remove((Object) clue_id);
+    }
+
     public List<Integer> getProps_id() {
         return props_id;
     }
@@ -68,22 +70,11 @@ public class Room {
         this.props_id = props_id;
     }
 
-    @Nullable
-    public Double getRoomValue(){
-
-        Double value = 0.0;
-
-        for (Integer prop_id : this.props_id){
-
-            try {
-                value = value + Prop.getValueById(prop_id);
-            } catch (NullPointerException e) {
-                System.out.println("No Prop with id: " + this.props_id);
-            }
-        }
-
-        return value;
-
+    public void addProp(int prop_id){
+        this.props_id.add(prop_id);
+    }
+    public void removeProp(int prop_id){
+        this.props_id.remove(prop_id);
     }
 
     @Override
