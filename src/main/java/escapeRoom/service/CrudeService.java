@@ -1,35 +1,26 @@
 package escapeRoom.service;
 
 
-public interface CrudeService {
-    static class UpdateOptions {
-       final private String key;
-       final private Class<?> keyClass;
-       final private Object value;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
-        public UpdateOptions(String key, Class<?> valueClass, Object value) {
-            this.key = key;
-            this.keyClass = valueClass;
-            this.value = value;
+public interface CrudeService<T> {
+
+    default int getGeneratedId(PreparedStatement preparedStatement) throws SQLException {
+        try( ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
+            if (generatedKeys.next()){
+                return generatedKeys.getInt(1);
+            }else {
+                throw new SQLException("No key was generated");
+            }
         }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Class<?> getKeyClass() {
-            return keyClass;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-    }
-
+    };
     String getTableName();
+    T create(T entity) throws SQLException;
+    Optional<T> read (int id) throws SQLException;
+    T update(T entity) throws SQLException;
+    boolean delete(int id) throws SQLException;
 
-    void create();
-    void modify(int id,UpdateOptions updateOptions);
-    void delete(int id);
-    void read (int id);
 }

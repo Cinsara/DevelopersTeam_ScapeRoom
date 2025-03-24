@@ -7,9 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface GetAllService extends CrudeService {
-    default ResultSet getAll() throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
+public interface GetAllService<T> extends CrudeService<T> {
+    default ResultSet getAll(Connection connection) throws SQLException {
         String query = "SELECT * FROM " + getTableName();
         PreparedStatement prepStatement = connection.prepareStatement(query);
         return prepStatement.executeQuery();
