@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="63ff98af-ab0a-4e34-bc02-eb25a6a4b871" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/forTesting/Prop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/escapeRoom/service/forTesting/PropServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CreateEntities.sql" beforeDir="false" afterPath="$PROJECT_DIR$/CreateEntities.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/CrudeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/CrudeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/GetAllService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/GetAllService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/PropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/forTesting/PropService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/escapeRoom/service/PropServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/escapeRoom/service/forTesting/PropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/escapeRoom/service/forTesting/PropService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +33,12 @@
     &quot;assignee&quot;: &quot;aurelien-darbellay&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Cinsara/DevelopersTeam_ScapeRoom.git&quot;,
-    &quot;accountId&quot;: &quot;48c43c07-0596-45c5-b44a-58436be705da&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Cinsara/DevelopersTeam_ScapeRoom.git",
+    "accountId": "dc02b120-61b0-49f5-a188-2f3dd3a5f522"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>

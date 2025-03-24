@@ -18,6 +18,7 @@ public interface CrudeService<T> {
         }
     };
     String getTableName();
+    T mapResultSetToEntity(ResultSet resultSet) throws SQLException;
     T create(T entity) throws SQLException;
     Optional<T> read (int id) throws SQLException;
     T update(T entity) throws SQLException;
