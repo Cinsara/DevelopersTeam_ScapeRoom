@@ -23,6 +23,19 @@ public class Game {
         this.room_id = room_id;
         this.date = date;
     }
+
+    public Game(int _id, int room_id, LocalDate date, List<Integer> players_id, Integer captain_id, boolean success, List<Integer> used_clues_id, int ellapsedTimeInSeconds, List<Integer> rewards_id) {
+        this._id = _id;
+        this.room_id = room_id;
+        this.date = date;
+        this.players_id = players_id;
+        this.captain_id = captain_id;
+        this.success = success;
+        this.used_clues_id = used_clues_id;
+        this.ellapsedTimeInSeconds = ellapsedTimeInSeconds;
+        this.rewards_id = rewards_id;
+    }
+
     public void addPlayer(int player_id){
         // Does the player exist?
         this.players_id.add(player_id);
@@ -97,6 +110,15 @@ public class Game {
     public List<Integer> getRewards_id() {
         return rewards_id;
     }
+
+    public void setEllapsedTimeInSeconds(int ellapsedTimeInSeconds) {
+        this.ellapsedTimeInSeconds = ellapsedTimeInSeconds;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
 
     @Override
     public boolean equals(Object o) {
