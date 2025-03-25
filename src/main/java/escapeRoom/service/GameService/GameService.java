@@ -3,15 +3,17 @@ package escapeRoom.service.GameService;
 import escapeRoom.connectionManager.ConnectionManager;
 import escapeRoom.gameArea.GameBuilder.Game;
 import escapeRoom.service.CrudeService;
+import escapeRoom.service.GetAllService;
+import escapeRoom.service.forTesting.Prop;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
-public class GameService implements CrudeService<Game> {
+public class GameService implements CrudeService<Game>, GetAllService<Game> {
+
+
 
     private final Connection connection = ConnectionManager.getConnection();
 
@@ -25,13 +27,24 @@ public class GameService implements CrudeService<Game> {
 
     @Override
     public Game mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-        return null;
+            int _id = resultSet.getInt("game_id");
+            LocalDate date =  resultSet.getObject("game_date", LocalDate.class);
+            int lengthInSec = resultSet.getInt("game_lengthInSec");
+            int room_id = resultSet.getInt("room_room_id");
+            int captain_id = resultSet.getInt("captain_customer_id");
+            boolean success = resultSet.getBoolean("game_success");
+            Game newGame = new Game(room_id,date);
+            newGame.setCaptain(captain_id);
+            newGame.setEllapsedTimeInSeconds(lengthInSec);
+            newGame.setSuccess(success);
+            newGame.set_id(_id);
+            return newGame ;
     }
 
     @Override
     public Game create(Game entity) throws SQLException {
         String query = "INSERT INTO " + getTableName() + " (game_date, game_success, game_lengthInSec,room_room_id,captain_customer_id) VALUES (?,?,?,?,?)";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setObject(1,entity.getDate());
             preparedStatement.setBoolean(2,entity.isSuccess());
             preparedStatement.setInt(3,entity.getEllapsedTimeInSeconds());
@@ -52,16 +65,47 @@ public class GameService implements CrudeService<Game> {
 
     @Override
     public Optional<Game> read(int id) throws SQLException {
-        return Optional.empty();
+        String query = "SELECT * FROM " + getTableName() + " WHERE game_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1, id);
+            try(ResultSet rs = preparedStatement.executeQuery()){
+                if (rs.next()){
+                    return Optional.of(mapResultSetToEntity(rs));
+                }else{
+                    return Optional.empty();
+                }
+            }
+        }
     }
 
     @Override
     public Game update(Game entity) throws SQLException {
-        return null;
+        String query = "UPDATE " + getTableName() + " SET game_date = ?, game_success = ?,game_lengthInSec = ?,room_room_id = ?,captain_customer_id = ? WHERE game_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setObject(1, entity.getDate());
+            preparedStatement.setBoolean(2, entity.isSuccess());
+            preparedStatement.setInt(3, entity.getEllapsedTimeInSeconds());
+            preparedStatement.setInt(4, entity.getRoom_id());
+            if (entity.getCaptain_id() == null) {
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                preparedStatement.setInt(5, entity.getCaptain_id());
+            }
+            preparedStatement.setInt(6,entity.get_id());
+            preparedStatement.executeUpdate();
+        }
+        return entity;
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
-        return false;
+        String query = "DELETE FROM " + getTableName() + " WHERE game_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1,id);
+            return preparedStatement.executeUpdate() == 1;
+        }
+    }
+    public Connection getConnection() {
+        return connection;
     }
 }
