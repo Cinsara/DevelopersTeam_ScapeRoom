@@ -8,5 +8,5 @@ import java.time.LocalDate;
 public interface Asset {
     int getUser_id();
     int getGame_id();
-    void expressPrize(User user, Game game, LocalDate date);
+    <T> void expressPrize(User user, T entity, LocalDate date);
 }
