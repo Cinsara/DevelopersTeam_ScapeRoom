@@ -39,10 +39,10 @@ public class Ticket implements Asset {
     @Override
     public <T> void expressAsset(User user, T entity, LocalDate date) {
         if (entity instanceof Game game) {
-            System.out.println("Ticket purchased by " + user + ", for the game " +
-                    game + ", with the date of " + date);
+            System.out.println("Ticket purchased by " + user.getName() +" "+user.getLastname()+ ", for the game " +
+                    game.get_id() + ", with the date " + game.getDate());
         } else {
-            throw new IllegalArgumentException("Entity must be of type Room.");
+            throw new IllegalArgumentException("Entity must be of type Game.");
         }
     }
 }

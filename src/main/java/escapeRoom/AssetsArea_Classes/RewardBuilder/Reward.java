@@ -30,10 +30,10 @@ public class Reward implements Asset {
     @Override
     public <T> void expressAsset(User user, T entity, LocalDate date) {
         if (entity instanceof Game game) {
-            System.out.println("Reward given to " + user + ", of the game " +
-                    game + ", with the date of " + date);
+            System.out.println("Reward given to " + user.getName() + ", for the game who took place on the " +
+                    game.getDate() + ", in the room number " + game.getRoom_id());
         } else {
-            throw new IllegalArgumentException("Entity must be of type Room.");
+            throw new IllegalArgumentException("Entity must be of type Game.");
         }
     }
 }
