@@ -35,7 +35,7 @@ class GameServiceTest {
         GameMaker.GameBuilder builder = gameMaker.createGameBuilder(1,LocalDate.now());
         Game newGame = builder.build();
         Game returnedGame = service.create(newGame);
-        assertEquals(5,returnedGame.get_id());
+        assertEquals(5,returnedGame.getId());
         assertEquals(newGame.getDate(),returnedGame.getDate());
     }
 
@@ -44,7 +44,7 @@ class GameServiceTest {
         Optional<Game> newGame = service.read(1);
         assertTrue(newGame.isPresent());
         Game game = newGame.get();
-        assertEquals(1,game.get_id());
+        assertEquals(1,game.getId());
         assertTrue(game.isSuccess());
         assertEquals(2024, game.getDate().getYear());
     }

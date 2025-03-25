@@ -1,14 +1,12 @@
 package escapeRoom.gameArea.GameBuilder;
 
-import escapeRoom.gameArea.RoomBuilder.Room;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Game {
-    private int _id;
+    private int id;
     private final int room_id;
     private final LocalDate date;
     private List<Integer> players_id = new ArrayList<>();
@@ -24,8 +22,8 @@ public class Game {
         this.date = date;
     }
 
-    public Game(int _id, int room_id, LocalDate date, List<Integer> players_id, Integer captain_id, boolean success, List<Integer> used_clues_id, int ellapsedTimeInSeconds, List<Integer> rewards_id) {
-        this._id = _id;
+    public Game(int id, int room_id, LocalDate date, List<Integer> players_id, Integer captain_id, boolean success, List<Integer> used_clues_id, int ellapsedTimeInSeconds, List<Integer> rewards_id) {
+        this.id = id;
         this.room_id = room_id;
         this.date = date;
         this.players_id = players_id;
@@ -60,8 +58,8 @@ public class Game {
         });
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setPlayers(List<Integer> players_id) {
@@ -75,8 +73,8 @@ public class Game {
         }
     }
 
-    public int get_id() {
-        return _id;
+    public int getId() {
+        return id;
     }
 
     public List<Integer> getPlayers_id() {
@@ -135,7 +133,7 @@ public class Game {
     @Override
     public String toString() {
         return "Game{" +
-                "_id=" + _id +
+                "_id=" + id +
                 ", room_id=" + room_id +
                 ", date=" + date +
                 ", players_id=" + players_id +
