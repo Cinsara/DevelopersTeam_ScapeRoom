@@ -4,10 +4,11 @@ public class Prop implements GameElement {
 
     private final PropType type;
     private int _id;
+    private int room_room_id;
 
-    public Prop(PropType type, int _id) {
+    public Prop(PropType type, int room_room_id) {
         this.type = type;
-        this._id = _id;
+        this._id = room_room_id;
     }
 
     public Prop(PropType type) {
@@ -26,6 +27,16 @@ public class Prop implements GameElement {
     @Override
     public String printElement() {
         return this._id +", " + this.type +", Value: "+ getValue();
+    }
+
+    @Override
+    public void setId(int generatedId) {
+        this._id = _id;
+    }
+
+    @Override
+    public int getRoomId() {
+        return this.room_room_id;
     }
 
     public double getValue(){

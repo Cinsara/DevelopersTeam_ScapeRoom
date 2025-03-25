@@ -8,7 +8,7 @@ public class CluePropFactoryTest {
     @Test
     void ClueFactoryTest() {
         GameElementFactory clueFactory = new ClueFactory();
-        GameElement clue = clueFactory.createGameElement(ClueType.ENIGMA);
+        GameElement clue = clueFactory.createGameElement(ClueType.ENIGMA, 1);
 
         Assertions.assertNotNull(clue, "Clue should not be null.");
         Assertions.assertTrue(clue instanceof Clue, "Object should be of Clue type");
@@ -22,7 +22,7 @@ public class CluePropFactoryTest {
     @Test
     void PropFactoryTest() {
         GameElementFactory propFactory = new PropFactory();
-        GameElement prop = propFactory.createGameElement(PropType.CLOSET);
+        GameElement prop = propFactory.createGameElement(PropType.CLOSET, 1);
 
         Assertions.assertNotNull(prop, "Clue should not be null.");
         Assertions.assertTrue(prop instanceof Prop, "Object should be of Prop type");

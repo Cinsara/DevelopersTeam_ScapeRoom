@@ -4,14 +4,10 @@ public class Clue implements GameElement {
 
     private final ClueType type;
     private int _id;
+    private int room_room_id;
 
-    public Clue(ClueType type, int _id) {
-        this.type = type;
-        this._id = _id;
-    }
-
-    public Clue(ClueType type) {
-        this.type = type;
+    public Clue(ClueType type, int room_room_id) {
+        this.type = type; this.room_room_id = room_room_id;
     }
 
     @Override
@@ -28,6 +24,14 @@ public class Clue implements GameElement {
         return this._id +", " + this.type.name();
     }
 
+    @Override
+    public void setId(int generatedId) {
+        this._id = generatedId;
+    }
 
+    @Override
+    public int getRoomId() {
+        return this.room_room_id;
+    }
 
 }
