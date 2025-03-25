@@ -18,6 +18,7 @@ import java.util.Optional;
 import static com.mysql.cj.conf.PropertyKey.PASSWORD;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ClueServiceTest {
 
@@ -74,10 +75,41 @@ class ClueServiceTest {
 
         // Eliminar el dato después de la prueba para no ensuciar la base de datos
         String deleteQuery = "DELETE FROM " + clueService.getTableName() + " WHERE clue_id = ?";
-        try (PreparedStatement deleteStmt = CONNECTION.prepareStatement(deleteQuery)) {
-            deleteStmt.setInt(1, createdClue.getId());
-            int rowsDeleted = deleteStmt.executeUpdate();
+        try (PreparedStatement deleteStatement = CONNECTION.prepareStatement(deleteQuery)) {
+            deleteStatement.setInt(1, createdClue.getId());
+            int rowsDeleted = deleteStatement.executeUpdate();
             Assertions.assertTrue(rowsDeleted > 0, "The inserted clue should be deleted");
+        }
+    }
+
+    @Test
+    void update() throws SQLException {
+
+        Clue newClue = new Clue(ClueType.INDICATION,1,5);
+        clueService.update(newClue);
+
+        try (CONNECTION) {
+            Optional<Clue> clueUpdated = clueService.read(5);
+
+            Assertions.assertTrue(clueUpdated.isPresent(), "Clue should be present");
+            Assertions.assertEquals(ClueType.INDICATION, clueUpdated.get().getType(), "Clue type should be ENIGMA");
+
+        } catch (SQLException e) {
+            fail("SQLException occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void delete() throws SQLException {
+
+        Clue newClue = new Clue(ClueType.ENIGMA, 1);
+        Clue createdClue = clueService.create(newClue);
+
+        String deleteQuery = "DELETE FROM " + clueService.getTableName() + " WHERE clue_id = ?";
+        try (PreparedStatement deleteStatement = CONNECTION.prepareStatement(deleteQuery)) {
+            deleteStatement.setInt(1, createdClue.getId());
+            int rowsDeleted = deleteStatement.executeUpdate();
+            Assertions.assertTrue(rowsDeleted == 1, "The inserted clue should be deleted");
         }
     }
 

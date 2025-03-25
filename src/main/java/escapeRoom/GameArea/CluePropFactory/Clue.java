@@ -10,6 +10,10 @@ public class Clue implements GameElement {
         this.type = type; this.room_room_id = room_room_id;
     }
 
+    public Clue(ClueType type, int room_room_id, int _id) {
+        this.type = type; this.room_room_id = room_room_id; this._id = _id;
+    }
+
     @Override
     public int getId() {
         return _id;

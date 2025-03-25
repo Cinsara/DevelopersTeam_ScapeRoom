@@ -95,12 +95,23 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue>{
 
     @Override
     public Clue update(Clue entity) throws SQLException {
-        return null;
+        String query = "UPDATE " + getTableName() + " SET clue_type = ?, room_room_id = ? WHERE clue_id = ?";
+        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)){
+            preparedStatement.setString(1,entity.getType().toString());
+            preparedStatement.setInt(2,entity.getRoomId());
+            preparedStatement.setInt(3,entity.getId());
+            preparedStatement.executeUpdate();
+            return entity;
+        }
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
-        return false;
+        String query = "DELETE FROM " + getTableName() + " WHERE clue_id = ?";
+        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate() == 1;
+        }
     }
 
     @Override
