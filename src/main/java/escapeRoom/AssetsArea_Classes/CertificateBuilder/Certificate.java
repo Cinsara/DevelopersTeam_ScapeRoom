@@ -3,6 +3,7 @@ package escapeRoom.AssetsArea_Classes.CertificateBuilder;
 import escapeRoom.AssetsArea_Classes.AssetBuilder.Asset;
 import escapeRoom.AssetsArea_Classes.Classes_testing.Game;
 import escapeRoom.AssetsArea_Classes.Classes_testing.PersonClasses.User;
+import escapeRoom.AssetsArea_Classes.Classes_testing.Room_Classes.Room;
 
 import java.time.LocalDate;
 
@@ -26,9 +27,9 @@ public class Certificate implements Asset {
     }
 
     @Override
-    public void expressPrize(User user, Game game, LocalDate date) {
-        System.out.println("Certificate issued for " + user + ", of the game " +
-                game + ", with the date of " + date);
+    public void expressPrize(User user, Room room, LocalDate date) {
+        System.out.println("Certificate issued to " + user.getName() + ", for the " +
+                room.getName() + ", with the date of " + date);
     }
 
 }
