@@ -8,9 +8,9 @@ INSERT INTO room (room_name,room_theme, room_difficulty) VALUES
 ('Star Trek Adventure','Sci-Fi', 'Medium');
 
 -- Insert into costumer (customers)
-INSERT INTO customer (customer_name, customer_lastname, customer_dob, customer_mail, customer_phone_number, customer_notifications, customer_signedUpNotifOn) VALUES
+INSERT INTO customer (customer_name, customer_lastname, customer_dob, customer_mail, customer_phone_number, customer_notifications, customer_dateRegistration) VALUES
 ('Alice', 'Johnson', '1990-05-14', 'alice.johnson@example.com', '123-456-7890', 1, '2024-03-10'),
-('Bob', 'Smith', '1985-09-23', 'bob.smith@example.com', '987-654-3210', 0, NULL),
+('Bob', 'Smith', '1985-09-23', 'bob.smith@example.com', '987-654-3210', 0, '2024-03-12'),
 ('Charlie', 'Brown', '1995-02-07', 'charlie.brown@example.com', '456-789-1234', 1, '2024-03-12'),
 ('Diana', 'Prince', '1992-07-19', 'diana.prince@example.com', '321-654-9870', 1, '2024-03-15');
 
