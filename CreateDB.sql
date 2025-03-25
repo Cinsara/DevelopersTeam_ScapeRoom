@@ -8,31 +8,6 @@ CREATE TABLE IF NOT EXISTS `room` (
   `room_difficulty` ENUM("Easy", "Medium", "Hard") NOT NULL,
   PRIMARY KEY (`room_id`));
 
-CREATE TABLE IF NOT EXISTS `clue` (
-  `clue_id` INT NOT NULL AUTO_INCREMENT,
-  `clue_type` ENUM("Enigma", "Indication") NOT NULL,
-  `room_room_id` INT NOT NULL,
-  PRIMARY KEY (`clue_id`),
-  INDEX `fk_clues_rooms1_idx` (`room_room_id` ASC) VISIBLE,
-  CONSTRAINT `fk_clues_rooms1`
-    FOREIGN KEY (`room_room_id`)
-    REFERENCES `room` (`room_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
-CREATE TABLE IF NOT EXISTS `prop` (
-  `prop_id` INT NOT NULL AUTO_INCREMENT,
-  `prop_type` ENUM("Spade", "Closet", "Mountain") NOT NULL,
-  `prop_value` INT NOT NULL,
-  `room_room_id` INT NOT NULL,
-  PRIMARY KEY (`prop_id`),
-  INDEX `fk_props_rooms_idx` (`room_room_id` ASC) VISIBLE,
-  CONSTRAINT `fk_props_rooms`
-    FOREIGN KEY (`room_room_id`)
-    REFERENCES `room` (`room_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` INT NOT NULL AUTO_INCREMENT,
   `customer_name` VARCHAR(45) NOT NULL,
@@ -79,6 +54,48 @@ CREATE TABLE IF NOT EXISTS `game_has_customer` (
   CONSTRAINT `fk_game_has_customer_customer1`
     FOREIGN KEY (`customer_customer_id`)
     REFERENCES `customer` (`customer_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+    
+CREATE TABLE IF NOT EXISTS `clue` (
+  `clue_id` INT NOT NULL AUTO_INCREMENT,
+  `clue_type` ENUM("Enigma", "Indication") NOT NULL,
+  `room_room_id` INT NOT NULL,
+  PRIMARY KEY (`clue_id`),
+  INDEX `fk_clues_rooms1_idx` (`room_room_id` ASC) VISIBLE,
+  CONSTRAINT `fk_clues_rooms1`
+    FOREIGN KEY (`room_room_id`)
+    REFERENCES `room` (`room_id`)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE);
+    
+CREATE TABLE IF NOT EXISTS `game_uses_clue` (
+  `game_game_id` INT NOT NULL,
+  `clue_clue_id` INT NOT NULL,
+  PRIMARY KEY (`game_game_id`, `clue_clue_id`),
+  INDEX `fk_game_uses_clue_clue1_idx` (`clue_clue_id` ASC) VISIBLE,
+  INDEX `fk_game_uses_clue_game1_idx` (`game_game_id` ASC) VISIBLE,
+  CONSTRAINT `fk_game_uses_clue_game1`
+    FOREIGN KEY (`game_game_id`)
+    REFERENCES `game` (`game_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_game_uses_clue_clue1`
+    FOREIGN KEY (`clue_clue_id`)
+    REFERENCES `clue` (`clue_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+
+CREATE TABLE IF NOT EXISTS `prop` (
+  `prop_id` INT NOT NULL AUTO_INCREMENT,
+  `prop_type` ENUM("Spade", "Closet", "Mountain") NOT NULL,
+  `prop_value` INT NOT NULL,
+  `room_room_id` INT NOT NULL,
+  PRIMARY KEY (`prop_id`),
+  INDEX `fk_props_rooms_idx` (`room_room_id` ASC) VISIBLE,
+  CONSTRAINT `fk_props_rooms`
+    FOREIGN KEY (`room_room_id`)
+    REFERENCES `room` (`room_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 

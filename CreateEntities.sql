@@ -16,10 +16,10 @@ INSERT INTO customer (customer_name, customer_lastname, customer_dob, customer_m
 
 -- Insert into game
 INSERT INTO game (game_date, game_success, game_lengthInSec, room_room_id, captain_customer_id) VALUES
-('2024-03-16 14:00:00', 1, 3600, 1, 1),
-('2024-03-17 16:30:00', 0, 4200, 2, 2),
-('2024-03-18 12:45:00', 1, 3900, 3, 3),
-('2024-03-19 18:00:00', 0, 4000, 4, 4);
+('2024-03-16', 1, 3600, 1, 1),
+('2024-03-17', 0, 4200, 2, 2),
+('2024-03-18', 1, 3900, 3, 3),
+('2024-03-19', 0, 4000, 4, 4);
 
 -- Insert into game_has_costumer (Many-to-Many relationship)
 INSERT INTO game_has_customer (game_game_id, customer_customer_id) VALUES
@@ -57,6 +57,11 @@ INSERT INTO clue (clue_type, room_room_id) VALUES
 ('Indication', 2),
 ('Enigma', 3),
 ('Indication', 4);
+
+INSERT INTO game_uses_clue (game_game_id,clue_clue_id) VALUES
+(1,3),
+(1,2),
+(2,4);
 
 -- Insert into prop
 INSERT INTO prop (prop_type, prop_value, room_room_id) VALUES
