@@ -4,11 +4,9 @@ import escapeRoom.connectionManager.ConnectionManager;
 import escapeRoom.gameArea.GameBuilder.Game;
 import escapeRoom.service.CrudeService;
 import escapeRoom.service.GetAllService;
-import escapeRoom.service.forTesting.Prop;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 public class GameService implements CrudeService<Game>, GetAllService<Game> {
@@ -37,7 +35,7 @@ public class GameService implements CrudeService<Game>, GetAllService<Game> {
             newGame.setCaptain(captain_id);
             newGame.setEllapsedTimeInSeconds(lengthInSec);
             newGame.setSuccess(success);
-            newGame.set_id(_id);
+            newGame.setId(_id);
             return newGame ;
     }
 
@@ -57,7 +55,7 @@ public class GameService implements CrudeService<Game>, GetAllService<Game> {
             preparedStatement.executeUpdate();
             try {
                 System.out.println(getGeneratedId(preparedStatement));
-                entity.set_id(getGeneratedId(preparedStatement));
+                entity.setId(getGeneratedId(preparedStatement));
             }catch(SQLException e){}
             return entity;
         }
@@ -91,7 +89,7 @@ public class GameService implements CrudeService<Game>, GetAllService<Game> {
             } else {
                 preparedStatement.setInt(5, entity.getCaptain_id());
             }
-            preparedStatement.setInt(6,entity.get_id());
+            preparedStatement.setInt(6,entity.getId());
             preparedStatement.executeUpdate();
         }
         return entity;
