@@ -37,8 +37,12 @@ public class Ticket implements Asset {
     }
 
     @Override
-    public void expressPrize(User user, Game game, LocalDate date) {
-        System.out.println("Ticket purchased by " + user + ", for the game " +
-                game + ", with the date of " + date);
+    public <T> void expressAsset(User user, T entity, LocalDate date) {
+        if (entity instanceof Game game) {
+            System.out.println("Ticket purchased by " + user + ", for the game " +
+                    game + ", with the date of " + date);
+        } else {
+            throw new IllegalArgumentException("Entity must be of type Room.");
+        }
     }
 }

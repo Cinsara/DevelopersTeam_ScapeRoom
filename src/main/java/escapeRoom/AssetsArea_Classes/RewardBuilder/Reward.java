@@ -3,6 +3,8 @@ package escapeRoom.AssetsArea_Classes.RewardBuilder;
 import escapeRoom.AssetsArea_Classes.AssetBuilder.Asset;
 import escapeRoom.AssetsArea_Classes.Classes_testing.Game;
 import escapeRoom.AssetsArea_Classes.Classes_testing.PersonClasses.User;
+import escapeRoom.AssetsArea_Classes.Classes_testing.Room_Classes.Room;
+
 import java.time.LocalDate;
 
 public class Reward implements Asset {
@@ -24,10 +26,14 @@ public class Reward implements Asset {
         return this.game_id;
     }
 
-    @Override
-    public void expressPrize(User user, Game game, LocalDate date) {
-        System.out.println("Reward given to " + user + ", of the game " +
-                game + ", with the date of " + date);
-    }
 
+    @Override
+    public <T> void expressAsset(User user, T entity, LocalDate date) {
+        if (entity instanceof Game game) {
+            System.out.println("Reward given to " + user + ", of the game " +
+                    game + ", with the date of " + date);
+        } else {
+            throw new IllegalArgumentException("Entity must be of type Room.");
+        }
+    }
 }

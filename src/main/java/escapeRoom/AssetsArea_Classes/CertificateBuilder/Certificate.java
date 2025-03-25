@@ -1,7 +1,6 @@
 package escapeRoom.AssetsArea_Classes.CertificateBuilder;
 
 import escapeRoom.AssetsArea_Classes.AssetBuilder.Asset;
-import escapeRoom.AssetsArea_Classes.Classes_testing.Game;
 import escapeRoom.AssetsArea_Classes.Classes_testing.PersonClasses.User;
 import escapeRoom.AssetsArea_Classes.Classes_testing.Room_Classes.Room;
 
@@ -27,9 +26,13 @@ public class Certificate implements Asset {
     }
 
     @Override
-    public void expressPrize(User user, Room room, LocalDate date) {
-        System.out.println("Certificate issued to " + user.getName() + ", for the " +
-                room.getName() + ", with the date of " + date);
+    public <T> void expressAsset(User user, T entity, LocalDate date) {
+        if (entity instanceof Room room) {
+            System.out.println("Certificate issued to " + user.getName() +
+                    ", for the " + room.getName() + ", with the date of " + date);
+        } else {
+            throw new IllegalArgumentException("Entity must be of type Room.");
+        }
     }
 
 }

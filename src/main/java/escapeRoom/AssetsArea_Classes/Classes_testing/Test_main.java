@@ -32,7 +32,7 @@ public class Test_main {
         AssetFactory factory = new AssetFactory();
         AssetManager assetManager = new AssetManager();
         Asset certificate = factory.createAsset("certificate", 1,2);
-        certificate.expressPrize(user1,game1, LocalDate.now());
+        certificate.expressAsset(user1,game1, LocalDate.now());
         String certResult = assetManager.generateTxt(certificate, LocalDate.now(),1,1);
         System.out.println(certResult);
 
