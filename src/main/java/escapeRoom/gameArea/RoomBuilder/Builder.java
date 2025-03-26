@@ -2,13 +2,13 @@ package escapeRoom.gameArea.RoomBuilder;
 
 import java.util.List;
 
-public interface Builder {
+public interface Builder<T> {
 
-    void setRoomName(String name);
-    void setRoomTheme(Theme theme);
-    void setRoomDifficulty (Difficulty difficulty);
-    void setRoomClues (List<Integer> clues_id);
-    void setRoomProps (List<Integer> props_id);
-
-
+    Builder<T> setId (int id);
+    Builder<T> setRoomName(String name);
+    Builder<T> setRoomTheme(Theme theme);
+    Builder<T> setRoomDifficulty (Difficulty difficulty);
+    Builder<T> setRoomClues (List<Integer> clues_id);
+    Builder<T> setRoomProps (List<Integer> props_id);
+    T build();
 }

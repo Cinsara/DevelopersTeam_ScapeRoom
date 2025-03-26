@@ -1,42 +1,42 @@
 package escapeRoom.gameArea.RoomBuilder;
 
-import escapeRoom.gameArea.CluePropFactory.Prop;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
 
+    private int id;
     private String name;
-    private int _id;
-    private final Theme theme;
+    private Theme theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
 
-    public Room(String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+    public Room(int id,String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+        this.id = id;
         this.name = name;
         this.theme = theme;
         this.difficulty = difficulty;
-        this.clues_id = new ArrayList<>(clues_id);
-        this.props_id = props_id;
+        this.clues_id = clues_id == null ? new ArrayList<>() : new ArrayList<>(clues_id);
+        this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
     }
-
-    public int get_id() {
-        return _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Theme getTheme() {
         return theme;
+    }
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 
     public Difficulty getDifficulty() {
@@ -80,7 +80,7 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "_id=" + _id +
+                "id=" + id +
                 ", name=" + name +
                 ", theme=" + theme +
                 ", difficulty=" + difficulty +
