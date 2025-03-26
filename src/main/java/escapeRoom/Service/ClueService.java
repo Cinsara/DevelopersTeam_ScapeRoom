@@ -1,8 +1,8 @@
-package escapeRoom.service;
+package escapeRoom.Service;
 
-import escapeRoom.connectionManager.ConnectionManager;
-import escapeRoom.gameArea.CluePropFactory.Clue;
-import escapeRoom.gameArea.CluePropFactory.ClueType;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.GameArea.CluePropFactory.Clue;
+import escapeRoom.GameArea.CluePropFactory.ClueType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

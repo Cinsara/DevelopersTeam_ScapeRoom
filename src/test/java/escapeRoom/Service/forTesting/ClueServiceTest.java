@@ -1,9 +1,9 @@
-package escapeRoom.service.forTesting;
+package escapeRoom.Service.forTesting;
 
-import escapeRoom.connectionManager.ConnectionManager;
-import escapeRoom.gameArea.CluePropFactory.Clue;
-import escapeRoom.gameArea.CluePropFactory.ClueType;
-import escapeRoom.service.ClueService;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.GameArea.CluePropFactory.Clue;
+import escapeRoom.GameArea.CluePropFactory.ClueType;
+import escapeRoom.Service.ClueService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
