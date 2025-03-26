@@ -1,14 +1,24 @@
 package escapeRoom.Notification;
 
-public class Notification {
-    private String id;
-    private String content;
+import java.time.LocalDate;
 
-    public Notification(String content){
+public class Notification {
+    private int id;
+    private String content;
+    private LocalDate dataSent;
+
+    public Notification(String content, LocalDate dataSent){
         this.content = content;
+        this.dataSent = dataSent;
     }
 
-    public String getId() {
+    public Notification(int id, String content, LocalDate dataSent) {
+        this.id = id;
+        this.content = content;
+        this.dataSent = dataSent;
+    }
+
+    public int getId() {
         return id;
     }
 
