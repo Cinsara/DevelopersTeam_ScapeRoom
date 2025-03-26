@@ -9,6 +9,11 @@ public class Ticket implements Asset {
     private final int captain_id;
     private final int game_id;
     private float price;
+
+    public LocalDate getSaleDate() {
+        return saleDate;
+    }
+
     private LocalDate saleDate;
     private int id;
 
