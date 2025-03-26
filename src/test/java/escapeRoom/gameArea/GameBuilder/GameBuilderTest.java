@@ -8,15 +8,10 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameBuilderTest {
-    static GameMaker gameMaker;
 
-    @BeforeAll
-    static void setUp(){
-        gameMaker = new GameMaker();
-    }
     @Test
     void createGame() {
-        GameMaker.GameBuilder newGameBuilder = gameMaker.createGameBuilder(2, LocalDate.of(2015,9,26));
+        GameBuilder newGameBuilder = new GameBuilder(2, LocalDate.of(2015,9,26));
         Game newGame = newGameBuilder.build();
         assertEquals(2,newGame.getRoom_id());
         assertEquals(2015,newGame.getDate().getYear());
@@ -28,8 +23,12 @@ class GameBuilderTest {
 
     @Test
     void testGetCaptain(){
-        GameMaker.GameBuilder newGameBuilder = gameMaker.createGameBuilder(2, LocalDate.of(2015,9,26));
+        GameBuilder newGameBuilder = new GameBuilder(2, LocalDate.of(2015,9,26));
         Game newGame = newGameBuilder.build();
+        newGame.addPlayer(10);
+        newGame.addPlayer(11);
+        newGame.addPlayer(12);
+        newGame.setCaptain(11);
         System.out.println(newGame.getCaptain_id());
     }
 }
