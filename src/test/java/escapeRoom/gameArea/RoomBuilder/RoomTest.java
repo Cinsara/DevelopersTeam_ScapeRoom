@@ -11,7 +11,7 @@ class RoomTest {
     static Room newRoom;
     @BeforeAll
     static void setUp(){
-        newRoom = new Room("Acid Fantasy", Theme.FANTASTIC,Difficulty.HARD, List.of(1,2,3),List.of(1,2,3));
+        newRoom = new Room(1,"Acid Fantasy", Theme.FANTASTIC,Difficulty.HARD, List.of(1,2,3),List.of(1,2,3));
     }
 
     @Test

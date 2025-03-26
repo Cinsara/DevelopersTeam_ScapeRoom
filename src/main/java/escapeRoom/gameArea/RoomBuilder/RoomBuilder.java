@@ -2,9 +2,9 @@ package escapeRoom.gameArea.RoomBuilder;
 
 import java.util.List;
 
-public class RoomBuilder implements Builder{
+public class RoomBuilder implements Builder<Room>{
 
-    private int _id;
+    private int id;
     private String name;
     private Theme theme;
     private Difficulty difficulty;
@@ -13,31 +13,42 @@ public class RoomBuilder implements Builder{
 
 
     @Override
-    public void setRoomName(String name) {
+    public Builder<Room> setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    @Override
+    public Builder<Room> setRoomName(String name) {
         this.name = name;
+        return this;
     }
 
     @Override
-    public void setRoomTheme(Theme theme) {
+    public Builder<Room> setRoomTheme(Theme theme) {
         this.theme = theme;
+        return this;
     }
 
     @Override
-    public void setRoomDifficulty(Difficulty difficulty) {
+    public Builder<Room> setRoomDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+        return this;
     }
 
     @Override
-    public void setRoomClues(List<Integer> clues_id) {
+    public Builder<Room>  setRoomClues(List<Integer> clues_id) {
         this.clues_id = clues_id;
+        return this;
     }
 
     @Override
-    public void setRoomProps(List<Integer> props_id) {
+    public Builder<Room>  setRoomProps(List<Integer> props_id) {
         this.props_id = props_id;
+        return this;
     }
-
-    public Room create() {
-        return new Room(this.name,theme,difficulty,clues_id,props_id);
+    @Override
+    public Room build() {
+        return new Room(this.id,this.name,this.theme,this.difficulty,this.clues_id,this.props_id);
     }
 }
