@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class Notification {
     private int id;
-    private String content;
-    private LocalDate dataSent;
+    private final String content;
+    private final LocalDate dataSent;
 
     public Notification(String content, LocalDate dataSent){
         this.content = content;
