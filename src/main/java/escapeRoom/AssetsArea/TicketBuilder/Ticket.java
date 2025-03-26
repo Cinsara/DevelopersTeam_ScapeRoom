@@ -10,6 +10,7 @@ public class Ticket implements Asset {
     private final int game_id;
     private float price;
     private LocalDate saleDate;
+    private int id;
 
     public Ticket(int captain_id, int game_id, float price, LocalDate saleDate){
         this.captain_id = captain_id;
@@ -26,6 +27,14 @@ public class Ticket implements Asset {
         this.price = price;
     }
 
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+    @Override
+    public int getId() {
+        return id;
+    }
     @Override
     public int getUser_id() {
         return this.captain_id;

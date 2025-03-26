@@ -9,10 +9,20 @@ import java.time.LocalDate;
 public class Certificate implements Asset {
     private final int user_id;
     private final int game_id;
+    private int id;
 
     public Certificate(int user_id, int game_id){
         this.user_id = user_id;
         this.game_id = game_id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

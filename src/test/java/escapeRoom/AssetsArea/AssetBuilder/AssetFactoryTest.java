@@ -29,6 +29,7 @@ class AssetFactoryTest {
         Game newGame = new Game(1,1,LocalDate.of(2021,10,27),List.of(1,2),3,true,List.of(5,6),100,List.of(3,4));
         newReward.expressAsset(newUser,newGame,newGame.getDate());
         Asset newTicket = factory.createAsset(AssetType.TICKET,1,1);
+        System.out.println(newTicket.getId());
         newTicket.expressAsset(newUser,newGame,newGame.getDate());
     }
 
