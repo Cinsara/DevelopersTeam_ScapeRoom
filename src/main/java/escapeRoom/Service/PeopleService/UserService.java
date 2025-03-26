@@ -1,8 +1,8 @@
-package escapeRoom.PeopleService;
+package escapeRoom.Service.PeopleService;
 
-import escapeRoom.PeopleService.PeopleClasses_Testing.User;
-import escapeRoom.connectionManager.ConnectionManager;
-import escapeRoom.service.GetAllService;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.PeopleArea.User;
+import escapeRoom.Service.GetAllService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -10,6 +10,10 @@ import java.util.Optional;
 
 public class UserService implements GetAllService<User> {
     private final Connection connection = ConnectionManager.getConnection();
+
+    public Connection getConnection() {
+        return connection;
+    }
 
     public UserService() throws SQLException {
     }
@@ -28,9 +32,9 @@ public class UserService implements GetAllService<User> {
         LocalDate dob = resultSet.getObject("customer_dob", LocalDate.class);
         String phoneNumber = resultSet.getString("customer_phone_number");
         boolean notificationStatus = resultSet.getBoolean("customer_notifications");
-        LocalDate dateRegistration = resultSet.getObject("customer_signedUpNotifOn", LocalDate.class);
+        LocalDate dateRegistration = resultSet.getObject("customer_dateRegistration", LocalDate.class);
 
-        User user = new User(name,lastname,dob,email,phoneNumber,notificationStatus);
+        User user = new User(name,lastname,email,phoneNumber,dob,notificationStatus);
         user.setId(id);
         user.setDateRegistration(dateRegistration);
         return user;
@@ -39,7 +43,7 @@ public class UserService implements GetAllService<User> {
     @Override
     public User create(User user) throws SQLException {
         String query = "INSERT INTO " + getTableName() + "(customer_name, customer_lastname, customer_dob, customer_mail," +
-                "customer_phone_number, customer_notifications, customer_signedUpNotifOn) " +
+                "customer_phone_number, customer_notifications, customer_dateRegistration) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getName());
@@ -78,7 +82,7 @@ public class UserService implements GetAllService<User> {
     @Override
     public User update(User user) throws SQLException {
         String query = "UPDATE " + getTableName() + " SET customer_name = ?, customer_lastname = ?, customer_dob = ?, customer_mail = ?, " +
-                " customer_phone_number = ?, customer_notifications = ?, customer_signedUpNotifOn = ? WHERE customer_id = ?";
+                " customer_phone_number = ?, customer_notifications = ?, customer_dateRegistration = ? WHERE customer_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLastname());

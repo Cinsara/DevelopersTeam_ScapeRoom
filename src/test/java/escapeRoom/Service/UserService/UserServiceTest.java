@@ -1,4 +1,4 @@
-package escapeRoom.Service.forTesting.UserService;
+package escapeRoom.Service.UserService;
 
 import escapeRoom.PeopleArea.User;
 import escapeRoom.Service.PeopleService.UserService;
@@ -15,10 +15,20 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class UserServiceTest {
     static UserService userService;
+    static User testUser;
 
     @BeforeAll
     static void setUp() throws SQLException {
         userService = new UserService();
+
+        testUser = new User(1,
+                "Test",
+                "User",
+                "test@example.com",
+                "123456789",
+                LocalDate.of(2000, 1, 1),
+                false
+        );
     }
 
     @Test
@@ -55,34 +65,41 @@ public class UserServiceTest {
 
     @Test
     void update() throws SQLException {
-        User newUser = new User(1, "Sani", "Lorec",
-                "sani@gmail.com","656890345",  LocalDate.of(1999, 2, 3), false);
-        userService.update(newUser);
+        User createdUser = userService.create(testUser);
 
-        Optional<User> optional = userService.read(1);
+        User updateData = new User(createdUser.getId(), "Sani", "Lorec",
+                "sani@gmail.com","656890345",  LocalDate.of(1999, 2, 3), false);
+        userService.update(updateData);
+
+        Optional<User> optional = userService.read(createdUser.getId());
         Assertions.assertTrue(optional.isPresent());
 
         User userFromDb = optional.get();
-        Assertions.assertEquals(newUser.getId(), userFromDb.getId());
-        Assertions.assertEquals(newUser.getName(), userFromDb.getName());
-        Assertions.assertEquals(newUser.getLastname(), userFromDb.getLastname());
-        Assertions.assertEquals(newUser.getEmail(), userFromDb.getEmail());
-        Assertions.assertEquals(newUser.getPhoneNumber(), userFromDb.getPhoneNumber());
-        Assertions.assertEquals(newUser.getDob(), userFromDb.getDob());
-        Assertions.assertEquals(newUser.isNotificationStatus(), userFromDb.isNotificationStatus());
+        Assertions.assertEquals(updateData.getId(), userFromDb.getId());
+        Assertions.assertEquals(updateData.getName(), userFromDb.getName());
+        Assertions.assertEquals(updateData.getLastname(), userFromDb.getLastname());
+        Assertions.assertEquals(updateData.getEmail(), userFromDb.getEmail());
+        Assertions.assertEquals(updateData.getPhoneNumber(), userFromDb.getPhoneNumber());
+        Assertions.assertEquals(updateData.getDob(), userFromDb.getDob());
+        Assertions.assertEquals(updateData.isNotificationStatus(), userFromDb.isNotificationStatus());
     }
 
     @Test
     void delete() throws SQLException {
-        User newUser = new User(1, "Sani", "Lorec",
+        User newUser = new User("Sani", "Lorec",
                 "sani@gmail.com","656890345",  LocalDate.of(1999, 2, 3), false);
-        userService.create(newUser);
-        Assertions.assertTrue(userService.delete(1));
+        User createdUser = userService.create(testUser);
+        int userId = createdUser.getId();
+
+        Assertions.assertTrue(userService.delete(userId));
+
+        Optional<User> deletedUser = userService.read(userId);
+        assertFalse(deletedUser.isPresent());
 
         try(ResultSet rs = userService.getAll(userService.getConnection())){
             boolean userExists = false;
             while(rs.next()){
-                if (rs.getInt("customer_id") == 1) {
+                if (rs.getInt("customer_id") == userId) {
                     userExists = true;
                     break;
             }
