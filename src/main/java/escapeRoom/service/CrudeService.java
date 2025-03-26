@@ -1,13 +1,15 @@
 package escapeRoom.service;
 
 
+import escapeRoom.connectionManager.ConnectionManager;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
 public interface CrudeService<T> {
-
     default int getGeneratedId(PreparedStatement preparedStatement) throws SQLException {
         try( ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
             if (generatedKeys.next()){

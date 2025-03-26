@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface GetAllService<T> extends CrudeService<T> {
+
     default ResultSet getAll(Connection connection) throws SQLException {
         String query = "SELECT * FROM " + getTableName();
         PreparedStatement prepStatement = connection.prepareStatement(query);
