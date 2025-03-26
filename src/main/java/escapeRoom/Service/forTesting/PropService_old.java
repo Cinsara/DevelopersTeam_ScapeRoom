@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
+public class PropService_old implements CrudeService<Prop>, GetAllService<Prop> {
 
     private final Connection connection = ConnectionManager.getConnection();
 
@@ -18,7 +18,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
         return connection;
     }
 
-    public PropService() throws SQLException {
+    public PropService_old() throws SQLException {
     }
 
     @Override

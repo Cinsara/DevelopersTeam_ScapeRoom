@@ -3,34 +3,34 @@ package escapeRoom.GameArea.CluePropFactory;
 public class Clue implements GameElement {
 
     private final ClueType type;
-    private int _id;
+    private int id;
     private int room_room_id;
 
     public Clue(ClueType type, int room_room_id) {
         this.type = type; this.room_room_id = room_room_id;
     }
 
-    public Clue(ClueType type, int room_room_id, int _id) {
-        this.type = type; this.room_room_id = room_room_id; this._id = _id;
+    public Clue(ClueType type, int _id, int room_room_id) {
+        this.type = type; this.room_room_id = room_room_id; this.id = _id;
     }
 
     @Override
     public int getId() {
-        return _id;
+        return this.id;
     }
 
     public ElementType getType() {
-        return type;
+        return this.type;
     }
 
     @Override
     public String printElement() {
-        return this._id +", " + this.type.name();
+        return this.id +", " + this.type.name();
     }
 
     @Override
     public void setId(int generatedId) {
-        this._id = generatedId;
+        this.id = generatedId;
     }
 
     @Override
@@ -38,4 +38,12 @@ public class Clue implements GameElement {
         return this.room_room_id;
     }
 
+    @Override
+    public String toString() {
+        return "Clue{" +
+                "type=" + type +
+                ", id=" + id +
+                ", room_room_id=" + room_room_id +
+                '}';
+    }
 }

@@ -1,8 +1,12 @@
-package escapeRoom.Service;
+package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.GameArea.CluePropFactory.Clue;
 import escapeRoom.GameArea.CluePropFactory.ClueType;
+import escapeRoom.GameArea.CluePropFactory.Prop;
+import escapeRoom.GameArea.CluePropFactory.PropType;
+import escapeRoom.Service.CrudeService;
+import escapeRoom.Service.GetAllService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ClueService implements CrudeService<Clue>, GetAllService<Clue>{
+public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
 
     private final Connection CONNECTION = ConnectionManager.getConnection();
 
@@ -29,7 +33,13 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue>{
 
     @Override
     public Clue mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-        return null;
+        String clueTypeString = resultSet.getString("clue_type");
+        ClueType type = ClueType.valueOf(clueTypeString.toUpperCase());
+
+        int id = resultSet.getInt("clue_id");
+        int room_room_id = resultSet.getInt(("room_room_id"));
+        Clue newClue = new Clue(type, id, room_room_id);
+        return newClue;
     }
 
     @Override
@@ -84,7 +94,7 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue>{
                     int roomId = rs.getInt("room_room_id");
 
                     // 4. Retornar el Clue correctamente
-                    return Optional.of(new Clue(type, id));
+                    return Optional.of(new Clue(type, id, roomId));
                 } else {
                     return Optional.empty();
 

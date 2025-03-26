@@ -13,13 +13,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameServiceTest {
-//    static GameMaker gameMaker;
+
     static GameService service;
 
     @BeforeAll
     static void setUp() throws SQLException {
         service = new GameService();
-//        gameMaker = new GameMaker();
+
     }
     @Test
     void getTableName() {

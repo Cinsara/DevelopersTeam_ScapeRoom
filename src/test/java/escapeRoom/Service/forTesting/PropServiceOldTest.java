@@ -10,13 +10,13 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PropServiceTest {
+class PropServiceOldTest {
 
-    static PropService service;
+    static PropService_old service;
 
     @BeforeAll
     static void setUp() throws SQLException {
-        service = new PropService();
+        service = new PropService_old();
     }
 
     @Test
@@ -43,7 +43,7 @@ class PropServiceTest {
 
     @Test
     void create() throws SQLException {
-        Prop newProp = new Prop("Closet",10,1);
+        Prop newProp = new Prop("Closet",1,3);
         Prop returnedProp = service.create(newProp);
         newProp.setId(returnedProp.getId());
         assertEquals(newProp,returnedProp);
