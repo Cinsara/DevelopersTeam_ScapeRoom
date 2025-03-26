@@ -77,17 +77,16 @@ public class UserService implements GetAllService<User> {
 
     @Override
     public User update(User user) throws SQLException {
-        String query = "UPDATE " + getTableName() + " SET customer_name = ?, customer_lastname = ?, customer_mail = ?, customer_dob = ?," +
+        String query = "UPDATE " + getTableName() + " SET customer_name = ?, customer_lastname = ?, customer_dob = ?, customer_mail = ?, " +
                 " customer_phone_number = ?, customer_notifications = ?, customer_signedUpNotifOn = ? WHERE customer_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getLastname());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPhoneNumber());
-            preparedStatement.setDate(5, Date.valueOf(user.getDob()));
-            preparedStatement.setDate(6, Date.valueOf(user.getDateRegistration()));
-            preparedStatement.setBoolean(7, user.isNotificationStatus());
-
+            preparedStatement.setDate(3, Date.valueOf(user.getDob()));
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPhoneNumber());
+            preparedStatement.setBoolean(6, user.isNotificationStatus());
+            preparedStatement.setDate(7, Date.valueOf(user.getDateRegistration()));
             preparedStatement.setInt(8,user.getId());
             preparedStatement.executeUpdate();
         }
