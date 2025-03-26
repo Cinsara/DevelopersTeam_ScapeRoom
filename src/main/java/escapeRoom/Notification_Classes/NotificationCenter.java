@@ -21,10 +21,4 @@ public class NotificationCenter {
             observerUser.update(notification);
         }
     }
-
-    public void setRoomStatus(String roomName){
-        Notifications notification = new Notifications("There is a new room available - %s".formatted(roomName));
-        notifyUsers(notification);
-        //Aquí debería coger directamente la room creada, el nombre.
-    }
 }
