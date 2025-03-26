@@ -1,7 +1,7 @@
 package escapeRoom.service.GameService;
 
 import escapeRoom.gameArea.GameBuilder.Game;
-import escapeRoom.gameArea.GameBuilder.GameMaker;
+import escapeRoom.gameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +13,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameServiceTest {
-    static GameMaker gameMaker;
+//    static GameMaker gameMaker;
     static GameService service;
 
     @BeforeAll
     static void setUp() throws SQLException {
         service = new GameService();
-        gameMaker = new GameMaker();
+//        gameMaker = new GameMaker();
     }
     @Test
     void getTableName() {
@@ -32,10 +32,10 @@ class GameServiceTest {
 
     @Test
     void create() throws SQLException {
-        GameMaker.GameBuilder builder = gameMaker.createGameBuilder(1,LocalDate.now());
+        GameBuilder builder = new GameBuilder(1,LocalDate.now());
         Game newGame = builder.build();
         Game returnedGame = service.create(newGame);
-        assertEquals(5,returnedGame.getId());
+        assertEquals(4,returnedGame.getId());
         assertEquals(newGame.getDate(),returnedGame.getDate());
     }
 
@@ -45,21 +45,22 @@ class GameServiceTest {
         assertTrue(newGame.isPresent());
         Game game = newGame.get();
         assertEquals(1,game.getId());
-        assertTrue(game.isSuccess());
-        assertEquals(2024, game.getDate().getYear());
+        assertFalse(game.isSuccess());
+        assertEquals(2025, game.getDate().getYear());
     }
 
     @Test
     void update() throws SQLException {
-        GameMaker.GameBuilder newBuilder = gameMaker.createGameBuilder(4,LocalDate.now());
+        GameBuilder newBuilder = new GameBuilder(4,LocalDate.now());
         Game newGame = newBuilder.set_id(4).setSuccess(true).setCaptain_id(2).setEllapsedTimeInSeconds(4800).build();
         service.update(newGame);
     }
 
     @Test
     void delete() throws SQLException {
-        assertFalse(service.delete(2));
+        assertTrue(service.delete(3));
     }
+
     @Test
     void getAll() throws SQLException {
         List<Game> games = service.getAllEntities(service.getConnection());
