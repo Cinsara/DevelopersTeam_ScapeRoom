@@ -8,20 +8,15 @@ import escapeRoom.Service.GetAllService;
 import java.sql.*;
 import java.util.Optional;
 
-abstract class AssetService implements CrudeService<Asset>, GetAllService<Asset> {
-    private final Connection connection = ConnectionManager.getConnection();
+abstract class AssetService <T extends Asset> implements CrudeService<T>, GetAllService<T> {
+    protected final Connection connection = ConnectionManager.getConnection();
 
     protected AssetService() throws SQLException {
     }
 
 
      @Override
-     public Asset mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-         return null;
-     }
-
-     @Override
-     public Asset create(Asset entity) throws SQLException {
+     public T create(T entity) throws SQLException {
          String query = "INSERT into " + getTableName() + "(customer_customer_id,game_game_id) VALUES (?,?)";
          try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
              preparedStatement.setInt(1,entity.getUser_id());
@@ -36,7 +31,7 @@ abstract class AssetService implements CrudeService<Asset>, GetAllService<Asset>
          }
      }
      @Override
-     public Optional<Asset> read(int id) throws SQLException {
+     public Optional<T> read(int id) throws SQLException {
         String query = "SELECT * FROM " + getTableName() + " WHERE " + getTableName() + "_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -51,8 +46,15 @@ abstract class AssetService implements CrudeService<Asset>, GetAllService<Asset>
      }
 
     @Override
-    public Asset update(Asset entity) throws SQLException {
-        return null;
+    public T update(T entity) throws SQLException {
+        String query = "UPDATE " + getTableName() + " SET captain_customer_id = ?, game_game_id = ?,ticket_price = ?,ticket_saleDate = ? WHERE "+getTableName()+"_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1,entity.getUser_id());
+            preparedStatement.setInt(2, entity.getGame_id());
+            preparedStatement.setInt(5,entity.getId());
+            preparedStatement.executeUpdate();
+        }
+        return entity;
     }
 
     @Override
