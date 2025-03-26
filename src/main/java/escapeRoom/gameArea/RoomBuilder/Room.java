@@ -17,8 +17,8 @@ public class Room {
         this.name = name;
         this.theme = theme;
         this.difficulty = difficulty;
-        this.clues_id = new ArrayList<>(clues_id);
-        this.props_id = new ArrayList<>(props_id);
+        this.clues_id = clues_id == null ? new ArrayList<>() : new ArrayList<>(clues_id);
+        this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
     }
 
     public String getName() {
