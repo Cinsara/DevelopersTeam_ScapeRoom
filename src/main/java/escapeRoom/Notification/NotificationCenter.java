@@ -1,4 +1,4 @@
-package escapeRoom.Notification_Classes;
+package escapeRoom.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class NotificationCenter {
         System.out.println("The user " + observerUser.toString() + " has been unsubscribed");
     }
 
-    public void notifyUsers(Notifications notification){
+    public void notifyUsers(Notification notification){
         for(Observer observerUser : observersUsers){
             observerUser.update(notification);
         }

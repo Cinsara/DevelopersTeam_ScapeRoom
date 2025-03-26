@@ -1,10 +1,10 @@
-package escapeRoom.Notification_Classes;
+package escapeRoom.Notification;
 
-public class Notifications {
+public class Notification {
     private String id;
     private String content;
 
-    public Notifications(String content){
+    public Notification(String content){
         this.content = content;
     }
 

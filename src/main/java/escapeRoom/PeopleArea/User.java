@@ -1,8 +1,11 @@
 package escapeRoom.PeopleArea;
 
+import escapeRoom.Notification.Notification;
+import escapeRoom.Notification.Observer;
+
 import java.time.LocalDate;
 
-public class User extends Person { //falta añadir: implements Observer
+public class User extends Person implements Observer {
     private LocalDate dateRegistration;
     private boolean notificationStatus;
 
@@ -38,12 +41,11 @@ public class User extends Person { //falta añadir: implements Observer
         this.notificationStatus = notificationStatus;
     }
 
-    // Se queda comentado hasta implementar la clase NotificationsArea, Notifications y Observer
 
-   /* @Override
+    @Override
     public void update(Notification notification){
         System.out.printf("%s have received a new notification: %s%n", this.getName(), notification.getContent());
-    } */
+    }
 
     @Override
     public String toString(){
