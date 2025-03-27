@@ -60,10 +60,7 @@ public class RoomService implements GetAllService<Room> {
         String name = resultSet.getString("room_name");
         Theme theme = mapStringToTheme(resultSet.getString("room_theme"));
         Difficulty difficulty = mapStringToDifficulty(resultSet.getString("room_difficulty"));
-        List<Integer> cluesId = new ArrayList<>();
-        List<Integer> propsId = new ArrayList<>();
-
-        Room room = new Room(id,name,theme,difficulty,cluesId,propsId);
+        Room room = new Room(id,name,theme,difficulty,null,null);
         room.setId(id);
         return room;
     }
@@ -72,24 +69,18 @@ public class RoomService implements GetAllService<Room> {
     public Room create(Room entity) throws SQLException {
         String query = "INSERT INTO " + getTableName() + " (room_name, room_theme, room_difficulty) " +
                 "VALUES (?, ?, ?)";
-
         try(PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1,entity.getName());
             preparedStatement.setString(2,entity.getTheme().name());
             preparedStatement.setString(3,entity.getDifficulty().name());
-
             preparedStatement.executeUpdate();
-
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     entity.setId(generatedKeys.getInt(1));
                 }
             }
-
-        } catch (SQLException e){
-            throw new RuntimeException(e);
+            return entity;
         }
-        return entity;
     }
 
     @Override

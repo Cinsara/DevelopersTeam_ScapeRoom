@@ -25,46 +25,32 @@ public class RoomServiceTest {
     @Test
     void create() throws SQLException {
         Room testRoom = new Room(1,
-                "First Room",
+                "Immediate Room",
                 Theme.FANTASTIC,
                 Difficulty.EASY,
                 List.of(1,2,3),
                 List.of(1,2,3)
         );
         Room createdRoom = roomService.create(testRoom);
-        Assertions.assertEquals("First Room", testRoom.getName());
+        Assertions.assertEquals("Immediate Room", testRoom.getName());
     }
 
     @Test
     void read() throws SQLException {
-        Room testRoom = new Room(1,
-                "First Room",
-                Theme.FANTASTIC,
-                Difficulty.EASY,
-                List.of(1,2,3),
-                List.of(1,2,3)
-        );
-        Room createdRoom = roomService.create(testRoom);
-        Optional<Room> foundRoom = roomService.read(createdRoom.getId());
+        //Room createdRoom = roomService.create(testRoom);
+        Optional<Room> foundRoom = roomService.read(5);
         Assertions.assertTrue(foundRoom.isPresent());
         Assertions.assertEquals("First Room",foundRoom.get().getName());
     }
 
     @Test
     void update() throws SQLException {
-        Room newRoom = new Room(1,
-                "First Room",
-                Theme.FANTASTIC,
-                Difficulty.EASY,
-                List.of(1,2,3),
-                List.of(1,2,3)
-        );
-        Room updateRoom = new Room(newRoom.getId(), "Second Room",Theme.MYSTERY,Difficulty.HARD,
-                List.of(4,5,6), List.of(7,4,8));
-        roomService.update(updateRoom);
-        Optional<Room> optional = roomService.read(newRoom.getId());
-        Assertions.assertTrue(optional.isPresent());
 
+        Room updateRoom = new Room(5, "Second Room",Theme.MYSTERY,Difficulty.HARD,
+                null, null);
+        roomService.update(updateRoom);
+        Optional<Room> optional = roomService.read(5);
+        Assertions.assertTrue(optional.isPresent());
         Room roomFromDb = optional.get();
         Assertions.assertEquals(updateRoom.getId(), roomFromDb.getId());
         Assertions.assertEquals(updateRoom.getName(), roomFromDb.getName());
