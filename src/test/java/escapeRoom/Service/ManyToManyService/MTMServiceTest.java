@@ -39,4 +39,12 @@ class MTMServiceTest {
         assertTrue(gameHasUserService.deleteMatch(4,3));
 
     }
+
+    @Test
+    void getMatchesReverse() throws SQLException {
+        List<Integer> gamesMatches = gameHasUserService.getMatchesReverse(2);
+        assertEquals(3, gamesMatches.size());
+        assertEquals(1,gamesMatches.getFirst());
+
+    }
 }

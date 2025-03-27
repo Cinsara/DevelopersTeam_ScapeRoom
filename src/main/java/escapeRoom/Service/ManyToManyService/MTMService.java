@@ -26,6 +26,21 @@ public abstract class MTMService {
             return matches;
         }
     }
+
+    public List<Integer> getMatchesReverse(int target_id) throws SQLException {
+        String query = "SELECT " + getOriginColumn() + " FROM " +getTableName()+ " WHERE "+ getTargetColumn()+" = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1, target_id);
+            List<Integer> matches = new ArrayList<>();
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while(resultSet.next()){
+                    matches.add(resultSet.getInt(getOriginColumn()));
+                }
+            }
+            return matches;
+        }
+    }
+
     public boolean createMatch(int origin_id, int target_id) throws SQLException {
         String query = "INSERT into " + getTableName()+ " ("+ getTargetColumn()+","+ getOriginColumn()+") VALUE (?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
