@@ -1,5 +1,6 @@
 package escapeRoom.Service.UserService;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.PeopleArea.User;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -65,13 +66,14 @@ public class UserServiceTest {
 
     @Test
     void update() throws SQLException {
-        User createdUser = userService.create(testUser);
 
-        User updateData = new User(createdUser.getId(), "Sani", "Lorec",
-                "sani@gmail.com","656890345",  LocalDate.of(1999, 2, 3), false);
+        Optional<User> result = userService.read(3);
+
+        User updateData = new User(3, "Santi", "Lorec",
+                "sani@gmail.com","656890666",  LocalDate.of(1999, 2, 3), false);
         userService.update(updateData);
 
-        Optional<User> optional = userService.read(createdUser.getId());
+        Optional<User> optional = userService.read(3);
         Assertions.assertTrue(optional.isPresent());
 
         User userFromDb = optional.get();
