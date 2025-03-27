@@ -54,7 +54,7 @@ class PropServiceTest {
         Prop createdProp = propService.create(newProp);
 
         System.out.println("sent to create prop -> ID: " + createdProp.getId() + ", TYPE: " + createdProp.getType() +
-                ", ROOM_ID: " + createdProp.getRoomId() + ", VALUE: " + createdProp.getENUMValue());
+                ", ROOM_ID: " + createdProp.getRoomId() + ", VALUE: " + createdProp.getValue());
 
         assertNotNull(createdProp.getId(), "The generated ID shouldn't be null");
         assertTrue(createdProp.getId() > 0, "The generated ID should be greater than 0");
@@ -73,7 +73,7 @@ class PropServiceTest {
                 // Verificar los valores de los campos
                 assertEquals("Spade", rs.getString("prop_type"), "Prop type mismatch");
                 assertEquals(3, rs.getInt("room_room_id"), "Room ID mismatch");
-                assertEquals(17, rs.getInt("prop_id"), "Prop ID mismatch");
+                assertEquals(22, rs.getInt("prop_id"), "Prop ID mismatch");
                 assertEquals(20, rs.getInt("prop_value"), "Prop Value mismatch");
             }
         }
@@ -90,7 +90,7 @@ class PropServiceTest {
     @Test
     void read() throws SQLException {
 
-        int testId = 3; // ID existente en la base de datos
+        int testId = 6; // ID existente en la base de datos
 
         try (CONNECTION) {
             Optional<Prop> result = propService.read(testId);
@@ -99,12 +99,12 @@ class PropServiceTest {
 
             Prop prop = result.get();
             System.out.println("ID: " + prop.getId() + ", TYPE: " + prop.getType() +
-                    ", ROOM_ID: " + prop.getRoomId() + ", VALUE: " + prop.getDBValue());
+                    ", ROOM_ID: " + prop.getRoomId() + ", VALUE: " + prop.getValue());
 
-            assertEquals(PropType.MOUNTAIN, prop.getType(), "Prop type should be SPADE");
-            assertEquals(70, prop.getDBValue(), "Value should be 21");
-            assertEquals(4, prop.getRoomId(), "room_room_id should be 3");
-            assertEquals(3, prop.getId(), "Prop ID should be 3");
+            assertEquals(PropType.CLOSET, prop.getType(), "Prop type should be SPADE");
+            assertEquals(140, prop.getValue(), "Value should be 21");
+            assertEquals(1, prop.getRoomId(), "room_room_id should be 3");
+            assertEquals(6, prop.getId(), "Prop ID should be 3");
         } catch (SQLException e) {
             fail("SQLException occurred: " + e.getMessage());
         }
@@ -117,19 +117,21 @@ class PropServiceTest {
             Optional<Prop> result = propService.read(3);
 
             System.out.println("Prop before update -> ID: " + result.get().getId() + ", TYPE: " + result.get().getType() +
-                    ", ROOM_ID: " + result.get().getRoomId() + ", VALUE: " + result.get().getDBValue());
+                    ", ROOM_ID: " + result.get().getRoomId() + ", VALUE: " + result.get().getValue());
 
-            Prop newProp = new Prop(PropType.MOUNTAIN, 3, 4,PropType.MOUNTAIN.getValue());
+            Prop newProp = new Prop(PropType.CLOSET, 3, 2,PropType.CLOSET.getValue());
             propService.update(newProp);
 
             try (CONNECTION) {
                 Optional<Prop> propUpdated = propService.read(3);
 
                 System.out.println("Prop after update -> ID: " + propUpdated.get().getId() + ", TYPE: " + propUpdated.get().getType() +
-                        ", ROOM_ID: " + propUpdated.get().getRoomId() + ", VALUE: " + propUpdated.get().getDBValue());
+                        ", ROOM_ID: " + propUpdated.get().getRoomId() + ", VALUE: " + propUpdated.get().getValue());
 
                 assertTrue(propUpdated.isPresent(), "Prop should be present");
-                assertEquals(4, propUpdated.get().getRoomId(), "Prop room_room_id should be 4");
+                assertEquals(2, propUpdated.get().getRoomId(), "Prop room_room_id should be 4");
+                assertEquals(PropType.CLOSET, propUpdated.get().getType(), "Type should be CLOSET");
+                assertEquals(140, propUpdated.get().getType().getValue(), "Prop value should be 140");
 
             } catch (SQLException e) {
                 fail("SQLException occurred: " + e.getMessage());
@@ -142,7 +144,7 @@ class PropServiceTest {
     @Test
     void delete() throws SQLException {
 
-        Prop newProp = new Prop(PropType.MOUNTAIN, 1);
+        Prop newProp = new Prop(PropType.MOUNTAIN, 3);
         Prop createdProp = propService.create(newProp);
 
         String deleteQuery = "DELETE FROM " + propService.getTableName() + " WHERE prop_id = ?";

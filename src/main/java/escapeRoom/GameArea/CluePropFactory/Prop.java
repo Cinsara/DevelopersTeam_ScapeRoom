@@ -35,7 +35,7 @@ public class Prop implements GameElement {
 
     @Override
     public String printElement() {
-        return this.id +", " + this.type +", Value: "+ getDBValue();
+        return this.id +", " + this.type +", Value: "+ getValue();
     }
 
     @Override
@@ -48,9 +48,7 @@ public class Prop implements GameElement {
         return this.room_room_id;
     }
 
-    public double getDBValue(){ return this.value; }
-
-    public double getENUMValue() { return this.type.getValue(); }
+    public int getValue() { return this.type.getValue(); }
 
     @Override
     public String toString() {

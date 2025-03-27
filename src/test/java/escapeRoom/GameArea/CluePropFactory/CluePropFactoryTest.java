@@ -47,7 +47,7 @@ public class CluePropFactoryTest {
 
         Assertions.assertEquals(202, prop.getId(), "ID should be 202");
         Assertions.assertEquals(PropType.SPADE, prop.getType(), "Type should be SPADE");
-        Assertions.assertEquals(20.0, prop.getDBValue(), 0.01, "Value should be 20.0");
+        Assertions.assertEquals(20.0, prop.getValue(), 0.01, "Value should be 20.0");
         Assertions.assertEquals("202, SPADE, Value: 20.0", prop.printElement(), "Printed output is incorrect");
 
     }

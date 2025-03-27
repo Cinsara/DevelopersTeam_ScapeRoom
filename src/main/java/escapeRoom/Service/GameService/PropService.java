@@ -47,7 +47,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
 
         try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getType().toString());
-            preparedStatement.setDouble(2, entity.getENUMValue());
+            preparedStatement.setInt(2, entity.getValue());
             preparedStatement.setInt(3, entity.getRoomId());
 
             int affectedRows = preparedStatement.executeUpdate();
@@ -106,7 +106,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
         try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getType().toString());
             preparedStatement.setInt(2, entity.getRoomId());
-            preparedStatement.setDouble(3, entity.getENUMValue());
+            preparedStatement.setDouble(3, entity.getValue());
             preparedStatement.setInt(4, entity.getId());
 
             preparedStatement.executeUpdate();
