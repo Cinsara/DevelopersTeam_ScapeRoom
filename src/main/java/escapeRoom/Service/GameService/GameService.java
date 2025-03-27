@@ -1,8 +1,8 @@
 package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.GameArea.GameBuilder.Game;
-import escapeRoom.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.Service.CrudeService;
 import escapeRoom.Service.GetAllService;
 

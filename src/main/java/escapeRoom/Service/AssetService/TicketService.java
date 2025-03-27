@@ -2,7 +2,7 @@ package escapeRoom.Service.AssetService;
 
 
 
-import escapeRoom.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,5 +1,7 @@
 package escapeRoom.GameArea.GameBuilder;
 
+import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

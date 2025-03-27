@@ -1,10 +1,13 @@
 package escapeRoom.AssetsArea.AssetBuilder;
 
-import escapeRoom.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.GameArea.RoomBuilder.Theme;
-import escapeRoom.PeopleArea.User;
-import escapeRoom.GameArea.GameBuilder.Game;
-import escapeRoom.GameArea.RoomBuilder.Room;
+import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.model.GameArea.RoomBuilder.Theme;
+import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
+import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
+import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.model.PeopleArea.User;
+import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 class AssetFactoryTest {
-    static AssetFactory  factory;
+    static AssetFactory factory;
 
     @BeforeAll
     static void setUp(){

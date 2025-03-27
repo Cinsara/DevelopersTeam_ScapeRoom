@@ -1,5 +1,9 @@
 package escapeRoom.GameArea.RoomBuilder;
 
+import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.model.GameArea.RoomBuilder.RoomBuilder;
+import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

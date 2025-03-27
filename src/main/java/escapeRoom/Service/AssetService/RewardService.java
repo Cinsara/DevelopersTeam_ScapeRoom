@@ -1,14 +1,9 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.AssetsArea.TicketBuilder.Ticket;
-import escapeRoom.Notification.Notification;
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class RewardService extends AssetService<Reward> {
     protected RewardService() throws SQLException {

@@ -1,7 +1,7 @@
 package escapeRoom.Service.NotificationService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Notification.Notification;
+import escapeRoom.model.Notification.Notification;
 import escapeRoom.Service.CrudeService;
 import escapeRoom.Service.GetAllService;
 

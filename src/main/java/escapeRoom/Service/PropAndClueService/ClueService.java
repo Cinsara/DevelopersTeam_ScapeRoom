@@ -1,10 +1,8 @@
 package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.GameArea.CluePropFactory.Clue;
-import escapeRoom.GameArea.CluePropFactory.ClueType;
-import escapeRoom.GameArea.CluePropFactory.Prop;
-import escapeRoom.GameArea.CluePropFactory.PropType;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
+import escapeRoom.model.GameArea.CluePropFactory.ClueType;
 import escapeRoom.Service.CrudeService;
 import escapeRoom.Service.GetAllService;
 

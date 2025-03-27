@@ -1,5 +1,8 @@
 package escapeRoom.GameArea.RoomBuilder;
 
+import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +14,7 @@ class RoomTest {
     static Room newRoom;
     @BeforeAll
     static void setUp(){
-        newRoom = new Room(1,"Acid Fantasy", Theme.FANTASTIC,Difficulty.HARD, List.of(1,2,3),List.of(1,2,3));
+        newRoom = new Room(1,"Acid Fantasy", Theme.FANTASTIC, Difficulty.HARD, List.of(1,2,3),List.of(1,2,3));
     }
 
     @Test

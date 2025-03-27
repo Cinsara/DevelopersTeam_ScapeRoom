@@ -1,7 +1,6 @@
 package escapeRoom.Service.UserService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.PeopleArea.User;
+import escapeRoom.model.PeopleArea.User;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

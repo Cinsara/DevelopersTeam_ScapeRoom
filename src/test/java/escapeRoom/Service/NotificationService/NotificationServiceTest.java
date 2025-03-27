@@ -1,6 +1,6 @@
 package escapeRoom.Service.NotificationService;
 
-import escapeRoom.Notification.Notification;
+import escapeRoom.model.Notification.Notification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

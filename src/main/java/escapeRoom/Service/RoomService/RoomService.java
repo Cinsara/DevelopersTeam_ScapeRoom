@@ -1,17 +1,15 @@
 package escapeRoom.Service.RoomService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.GameArea.RoomBuilder.Room;
-import escapeRoom.GameArea.RoomBuilder.Theme;
+import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class RoomService implements GetAllService<Room> {

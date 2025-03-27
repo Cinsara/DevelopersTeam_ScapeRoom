@@ -1,6 +1,6 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.AssetsArea.AssetBuilder.Asset;
+import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.CrudeService;
 import escapeRoom.Service.GetAllService;

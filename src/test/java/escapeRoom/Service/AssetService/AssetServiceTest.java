@@ -1,8 +1,8 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
