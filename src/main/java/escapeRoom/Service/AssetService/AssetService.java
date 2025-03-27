@@ -47,11 +47,11 @@ abstract class AssetService <T extends Asset> implements CrudeService<T>, GetAll
 
     @Override
     public T update(T entity) throws SQLException {
-        String query = "UPDATE " + getTableName() + " SET captain_customer_id = ?, game_game_id = ?,ticket_price = ?,ticket_saleDate = ? WHERE "+getTableName()+"_id = ?";
+        String query = "UPDATE " + getTableName() + " SET customer_customer_id = ?, game_game_id = ? WHERE "+getTableName()+"_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1,entity.getUser_id());
             preparedStatement.setInt(2, entity.getGame_id());
-            preparedStatement.setInt(5,entity.getId());
+            preparedStatement.setInt(3,entity.getId());
             preparedStatement.executeUpdate();
         }
         return entity;
