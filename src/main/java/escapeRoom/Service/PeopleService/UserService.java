@@ -56,12 +56,13 @@ public class UserService implements GetAllService<User> {
 
             preparedStatement.executeUpdate();
 
-            System.out.println(getGeneratedId(preparedStatement));
-            user.setId(getGeneratedId(preparedStatement));
-        } catch(SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
+             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                }
+            }
+            return user;
+        } 
     }
 
     @Override
@@ -106,4 +107,5 @@ public class UserService implements GetAllService<User> {
         }
     }
 }
+
 
