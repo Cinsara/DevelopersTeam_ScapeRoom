@@ -2,12 +2,11 @@ package escapeRoom.Service.forTesting;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
+import escapeRoom.Service.forTesting.Prop;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PropServiceTest {
