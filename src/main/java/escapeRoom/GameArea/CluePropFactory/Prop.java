@@ -3,11 +3,21 @@ package escapeRoom.GameArea.CluePropFactory;
 public class Prop implements GameElement {
 
     private final PropType type;
-    private int _id;
+    private int id;
+    private int room_room_id;
+    private int value;
 
-    public Prop(PropType type, int _id) {
+    public Prop(PropType type, int room_room_id) {
         this.type = type;
-        this._id = _id;
+        this.room_room_id = room_room_id;
+        this.id = getId();
+    }
+
+    public Prop(PropType type, int id, int room_room_id, int value) {
+        this.type = type;
+        this.id = id;
+        this.room_room_id = room_room_id;
+        this.value = value;
     }
 
     public Prop(PropType type) {
@@ -16,7 +26,7 @@ public class Prop implements GameElement {
 
     @Override
     public int getId() {
-        return _id;
+        return id;
     }
 
     public PropType getType() {
@@ -25,11 +35,28 @@ public class Prop implements GameElement {
 
     @Override
     public String printElement() {
-        return this._id +", " + this.type +", Value: "+ getValue();
+        return this.id +", " + this.type +", Value: "+ getValue();
     }
 
-    public double getValue(){
-        return this.type.getValue();
+    @Override
+    public void setId(int generatedId) {
+        this.id = generatedId;
     }
 
+    @Override
+    public int getRoomId() {
+        return this.room_room_id;
+    }
+
+    public int getValue() { return this.type.getValue(); }
+
+    @Override
+    public String toString() {
+        return "Prop{" +
+                "type=" + type +
+                ", id=" + id +
+                ", room_room_id=" + room_room_id +
+                ", value=" + value +
+                '}';
+    }
 }
