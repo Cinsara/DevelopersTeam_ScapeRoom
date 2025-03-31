@@ -4,6 +4,8 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.GameService.ClueService;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
+import escapeRoom.model.GameArea.CluePropFactory.ClueType;
+import escapeRoom.model.GameArea.RoomBuilder.Theme;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +22,15 @@ public class ClueManager {
 
         try {
 
+            int id = 0;
+            String newName = inputService.readString("Enter name:");
+            String newType = (inputService.readString(("Enter Type (ENIGMA, INDICATION): "))).toUpperCase();
+            ClueType newTypeEnum = null;
+
+            switch(newType){
+                case "ENIGMA" -> newTypeEnum = ClueType.ENIGMA;
+                case "INDICATION" -> newTypeEnum = ClueType.INDICATION;
+            }
 
 
         } catch (SQLException e) {
