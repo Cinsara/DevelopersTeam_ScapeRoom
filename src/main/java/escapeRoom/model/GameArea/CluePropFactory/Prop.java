@@ -20,6 +20,13 @@ public class Prop implements GameElement {
         this.value = value;
     }
 
+    public Prop(PropType type, int id, int room_room_id) {
+        this.type = type;
+        this.id = id;
+        this.room_room_id = room_room_id;
+
+    }
+
     public Prop(PropType type) {
         this.type = type;
     }
