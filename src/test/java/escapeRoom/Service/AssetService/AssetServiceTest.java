@@ -62,6 +62,6 @@ class AssetServiceTest {
     void delete() throws SQLException {
         certifService.delete(1);
         rewardService.delete(1);
-        ticketService.delete(1);
+        ticketService.delete(8);
     }
 }
