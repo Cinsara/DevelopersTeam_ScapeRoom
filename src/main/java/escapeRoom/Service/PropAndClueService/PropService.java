@@ -1,4 +1,4 @@
-package escapeRoom.Service.GameService;
+package escapeRoom.Service.PropAndClueService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.GameArea.CluePropFactory.Prop;

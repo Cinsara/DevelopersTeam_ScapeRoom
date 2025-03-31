@@ -1,53 +1,124 @@
 package escapeRoom.Manager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.GameService.ClueService;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.ClueType;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
+import escapeRoom.Service.PropAndClueService.ClueService;
+import escapeRoom.model.GameArea.CluePropFactory.*;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ClueManager {
 
     private final Connection connection = ConnectionManager.getConnection();
     private ClueService clueService;
     private InputService inputService;
+    private GameElementFactory elementFactory;
+    private RoomManager roomManager;
 
     public ClueManager() throws SQLException {}
 
-    public void create() throws SQLException{
+    public Clue create() throws SQLException{
 
         try {
+            String type = (inputService.readString(("Enter Type (ENIGMA or INDICATION): "))).toUpperCase();
+            ClueType typeEnum = null;
 
-            int id = 0;
-            String newName = inputService.readString("Enter name:");
-            String newType = (inputService.readString(("Enter Type (ENIGMA, INDICATION): "))).toUpperCase();
-            ClueType newTypeEnum = null;
+            switch(type) {
+                case "ENIGMA" -> typeEnum = ClueType.ENIGMA;
+                case "INDICATION" -> typeEnum = ClueType.INDICATION;
+            }
+
+            int room_room_id = roomManager.getNextRoomId();
+
+            Clue newClue = (Clue) elementFactory.createGameElement(typeEnum,room_room_id);
+
+            clueService.create(newClue);
+
+            return newClue;
+
+        } catch (SQLException e) {
+            System.out.println("Error creating Clue: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void read(int id) throws SQLException {
+
+        try {
+            Optional<Clue> ClueOpt = clueService.read(id);
+            if (ClueOpt.isEmpty()) {
+                System.out.println("Clue not found with ID: " + id);
+            } else {
+                System.out.println(ClueOpt);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving Clue from DB: " + e.getMessage());;
+        }
+
+    }
+
+    public void update(int id){
+
+        try {
+            Optional<Clue> clueOpt = clueService.read(id);
+            if (clueOpt.isEmpty()) {
+                System.out.println("Clue not found with ID: " + id);
+                return;
+            }
+
+            Clue existingClue = clueOpt.get();
+
+            System.out.println("\nEnter new values (leave blank to keep current):");
+
+            String newType = (inputService.readString(("Enter new Type (ENIGMA or INDICATION): "))).toUpperCase();
+            ElementType newTypeEnum = null;
 
             switch(newType){
                 case "ENIGMA" -> newTypeEnum = ClueType.ENIGMA;
                 case "INDICATION" -> newTypeEnum = ClueType.INDICATION;
             }
 
+            int newRoomId = inputService.readInt("Enter new Room ID for the Clue: ");
+
+            try {
+                for (Room room : roomManager.getAllRooms()) {
+                    System.out.println(room);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error retrieving all the rooms available: " + e.getMessage());
+            }
+
+            Clue updatedClue = new Clue(
+                    (ClueType) (newType.isEmpty() ? existingClue.getType() : newTypeEnum),
+                    id,
+                    newRoomId==0 ? existingClue.getRoomId() : newRoomId);
+
+            clueService.update(updatedClue);
+            System.out.println("Clue updated successfully!");
+            System.out.println(updatedClue);
 
         } catch (SQLException e) {
-            System.out.println("Error creating Clue: " + e.getMessage());
+            System.out.println("Error updating room: " + e.getMessage());
         }
 
     }
 
+    public void delete(int id) throws SQLException {
 
-
-
-    public void read(int id) {}
-
-    public void update(int id){}
-
-    public void delete(int id){}
-
-
+        try {
+            Optional<Clue> clueOpt = clueService.read(id);
+            if (clueOpt.isEmpty()) {
+                System.out.println("Clue not found with ID: " + id);
+            } else {
+                clueService.delete(id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting Clue: " + e.getMessage());
+        }
+    }
 
 }

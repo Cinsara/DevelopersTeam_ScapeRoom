@@ -3,6 +3,8 @@ package escapeRoom.Manager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
+import escapeRoom.model.GameArea.CluePropFactory.*;
+import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.RoomBuilder.*;
 
 import java.sql.Connection;
@@ -16,6 +18,8 @@ public class RoomManager {
     private final Connection connection = ConnectionManager.getConnection();
     private RoomService roomService;
     private InputService inputService;
+    GameElementFactory elementFactory;
+    ClueManager clueManager;
 
     public RoomManager() throws SQLException {
     }
@@ -23,7 +27,7 @@ public class RoomManager {
     public void createRoom() throws SQLException {
 
         try{
-            int id = 0;
+            int id = getNextRoomId();
             String newName = inputService.readString("Enter name:");
             String newTheme = (inputService.readString(("Enter Theme (LOVEAFFAIR, FANTASTIC, MYSTERY, SCIFI): "))).toUpperCase();
             Theme newThemeEnum = null;
@@ -44,12 +48,32 @@ public class RoomManager {
                 case "HARD" -> newDifficultyEnum = Difficulty.HARD;
             }
 
-            //TODO: UPDATE LISTA CLUES
-            List<Integer> newCluesId = null;
+            //LISTA CLUES
+            List<GameElement> clues = new ArrayList<>();
+
+            int opc = inputService.readInt("How many Clues - Indications?\n");
+            for (int i = 0; i < opc; i++) {clues.add(elementFactory.createGameElement(ClueType.INDICATION, id));}
+
+            opc = inputService.readInt("How many Clues - Enigmas?\n");
+            for (int i = 0; i < opc; i++) {clues.add(elementFactory.createGameElement(ClueType.ENIGMA, id));}
+
+            List<Integer> newCluesId = new ArrayList<>(); for (GameElement clue : clues) { newCluesId.add(clue.getId()); }
 
 
-            //TODO: UPDATE LISTA PROPS
-            List<Integer> newPropsId = null;
+            //LISTA PROPS
+            List<GameElement> props = new ArrayList<>();
+
+            opc = inputService.readInt("How many Props - Spade?\n");
+            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.CLOSET, id));}
+
+            opc = inputService.readInt("How many Props - Closet?\n");
+            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.SPADE, id));}
+
+            opc = inputService.readInt("How many Props - Mountain?\n");
+            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.MOUNTAIN, id));}
+
+            List<Integer> newPropsId = new ArrayList<>(); for (GameElement prop : props) { newPropsId.add(prop.getId()); }
+
 
             Builder<Room> roomBuilder = new RoomBuilder();
 
@@ -94,6 +118,16 @@ public class RoomManager {
 
     }
 
+    public int getNextRoomId() throws SQLException {
+
+        Optional<Integer> maxId = getAllRooms().stream()
+                .map(Room::getId)
+                .max(Integer::compareTo);
+
+        return maxId.orElse(0) + 1;
+
+    }
+
     public void updateRoom(int id) throws SQLException {
 
         try {
@@ -127,12 +161,46 @@ public class RoomManager {
                 case "HARD" -> newDifficultyEnum = Difficulty.HARD;
             }
 
-            //TODO: UPDATE LISTA CLUES
-            List<Integer> newCluesId = null;
+            //UPDATE LISTA CLUES
+            System.out.println("This Room has " + roomOpt.get().getClues_id().size() + " clues: \n");
+
+            for (Integer clueid :  roomOpt.get().getClues_id()){
+                clueManager.read(clueid);
+            }
+
+            boolean opc = inputService.readBoolean("Do you want to add more clues? Y/N");
+
+            if (opc) {
+                roomOpt.get().getClues_id().add(clueManager.create().getId());
+            }
 
 
-            //TODO: UPDATE LISTA PROPS
-            List<Integer> newPropsId = null;
+            //UPDATE LISTA PROPS
+            System.out.println("This Room has " + roomOpt.get().getProps_id().size() +
+                    " props: " + roomOpt.get().getProps_id().toString());
+
+
+            List<GameElement> props = new ArrayList<>();
+            opc = inputService.readInt("How many Spade props?\n");
+
+            for (int i = 0; i < opc; i++) {
+                props.add(propFactory.createGameElement(PropType.SPADE, roomManager.getNextRoomId()));
+            }
+
+            opc = inputService.readInt("How many Closet props?\n");
+            for (int i = 0; i < opc; i++) {
+                props.add(propFactory.createGameElement(PropType.CLOSET, roomManager.getNextRoomId()));
+            }
+
+            opc = inputService.readInt("How many Mountain props?\n");
+            for (int i = 0; i < opc; i++) {
+                props.add(propFactory.createGameElement(PropType.MOUNTAIN, roomManager.getNextRoomId()));
+            }
+
+            List<Integer> props_id = new ArrayList<>();
+            for (GameElement prop : props) {
+                props_id.add(prop.getId());
+            }
 
             Room updatedRoom = new Room(
                     id,
