@@ -48,6 +48,21 @@ public class PropManager {
         return null;
     }
 
+    public Prop createInRoom(PropType type, int roomId) throws SQLException{
+
+        try {
+            Prop newProp = (Prop) elementFactory.createGameElement(type,roomId);
+
+            propService.create(newProp);
+
+            return newProp;
+
+        } catch (SQLException e) {
+            System.out.println("Error creating Prop: " + e.getMessage());
+        }
+        return null;
+    }
+
     public void read(int id) throws SQLException {
 
         try {

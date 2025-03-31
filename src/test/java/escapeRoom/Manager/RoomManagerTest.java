@@ -1,17 +1,55 @@
 package escapeRoom.Manager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.RoomService.RoomService;
+import escapeRoom.model.GameArea.CluePropFactory.*;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 class RoomManagerTest {
 
-    static RoomService roomService;
+    public static RoomService roomService;
+    public static RoomManager roomManager;
+
+    String simulatedInput = """
+        Lovely House
+        MYSTERY
+        MEDIUM
+        2
+        1
+        2
+        1
+        1
+        """;
+    Scanner mockScanner = new Scanner(simulatedInput);
+    InputService testInputService = new InputService(mockScanner);
+
+    @BeforeEach
+    void setup() throws SQLException {
+
+        ClueService clueService = new ClueService(ConnectionManager.getConnection());
+        GameElementFactory clueFactory = new ClueFactory();
+        GameElementFactory propFactory = new PropFactory();
+
+        roomManager = new RoomManager(roomService, clueManager, propManager, testInputService,
+                clueFactory, propFactory);
+
+        ClueManager clueManager = new ClueManager(clueService, testInputService,clueFactory,roomManager);
+        PropManager propManager = new PropManager();
+
+
+
+
+    }
 
     static {
         try {
@@ -22,7 +60,11 @@ class RoomManagerTest {
     }
 
     @Test
-    void createRoom() {
+    void createRoom() throws SQLException {
+
+            roomManager.createRoom();
+
+
     }
 
     @Test

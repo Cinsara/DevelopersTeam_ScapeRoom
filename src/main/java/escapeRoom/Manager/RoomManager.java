@@ -17,12 +17,21 @@ public class RoomManager {
 
     private final Connection connection = ConnectionManager.getConnection();
     private RoomService roomService;
-    private InputService inputService;
-    GameElementFactory elementFactory;
-    ClueManager clueManager;
-    PropManager propManager;
+    private final InputService inputService;
+    private GameElementFactory clueFactory;
+    private GameElementFactory propFactory;
+    private ClueManager clueManager;
+    private PropManager propManager;
 
-    public RoomManager() throws SQLException {
+    public RoomManager(RoomService roomService, ClueManager clueManager,
+                       PropManager propManager, InputService inputService,
+                       GameElementFactory clueFactory, GameElementFactory propFactory ) throws SQLException {
+        this.roomService = roomService;
+        this.clueManager = clueManager;
+        this.propManager = propManager;
+        this.inputService = inputService;
+        this.clueFactory = clueFactory;
+        this.propFactory = propFactory;
     }
 
     public void createRoom() throws SQLException {
@@ -53,10 +62,10 @@ public class RoomManager {
             List<GameElement> clues = new ArrayList<>();
 
             int opc = inputService.readInt("How many Clues - Indications?\n");
-            for (int i = 0; i < opc; i++) {clues.add(elementFactory.createGameElement(ClueType.INDICATION, id));}
+            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.INDICATION, id));}
 
             opc = inputService.readInt("How many Clues - Enigmas?\n");
-            for (int i = 0; i < opc; i++) {clues.add(elementFactory.createGameElement(ClueType.ENIGMA, id));}
+            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.ENIGMA, id));}
 
             List<Integer> newCluesId = new ArrayList<>(); for (GameElement clue : clues) { newCluesId.add(clue.getId()); }
 
@@ -65,13 +74,13 @@ public class RoomManager {
             List<GameElement> props = new ArrayList<>();
 
             opc = inputService.readInt("How many Props - Spade?\n");
-            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.CLOSET, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.CLOSET, id));}
 
             opc = inputService.readInt("How many Props - Closet?\n");
-            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.SPADE, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.SPADE, id));}
 
             opc = inputService.readInt("How many Props - Mountain?\n");
-            for (int i = 0; i < opc; i++) {props.add(elementFactory.createGameElement(PropType.MOUNTAIN, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.MOUNTAIN, id));}
 
             List<Integer> newPropsId = new ArrayList<>(); for (GameElement prop : props) { newPropsId.add(prop.getId()); }
 

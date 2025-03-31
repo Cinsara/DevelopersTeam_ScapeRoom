@@ -1,6 +1,7 @@
 package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.model.GameArea.CluePropFactory.Clue;
 import escapeRoom.model.GameArea.CluePropFactory.ClueType;
 import org.junit.jupiter.api.BeforeAll;

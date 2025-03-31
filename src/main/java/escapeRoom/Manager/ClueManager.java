@@ -18,7 +18,14 @@ public class ClueManager {
     private GameElementFactory elementFactory;
     private RoomManager roomManager;
 
-    public ClueManager() throws SQLException {}
+    public ClueManager(ClueService clueService, InputService inputService,
+                       GameElementFactory elementFactory,
+                       RoomManager roomManager) throws SQLException {
+        this.clueService = clueService;
+        this.inputService = inputService;
+        this.elementFactory = elementFactory;
+        this.roomManager = roomManager;
+    }
 
     public Clue create() throws SQLException{
 
@@ -44,6 +51,23 @@ public class ClueManager {
         }
         return null;
     }
+
+    public Clue createInRoom(ClueType type, int roomId) throws SQLException{
+
+        try {
+            Clue newClue = (Clue) elementFactory.createGameElement(type,roomId);
+
+            clueService.create(newClue);
+
+            return newClue;
+
+        } catch (SQLException e) {
+            System.out.println("Error creating Clue: " + e.getMessage());
+        }
+        return null;
+    }
+
+
 
     public void read(int id) throws SQLException {
 
