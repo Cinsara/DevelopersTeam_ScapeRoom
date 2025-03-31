@@ -33,6 +33,7 @@ class AssetFactoryTest {
         newReward.expressAsset(newUser,newGame,newGame.getDate());
         Asset newTicket = factory.createAsset(AssetType.TICKET,1,1);
         System.out.println(newTicket.getId());
+        System.out.println(newTicket.getUser_id());
         newTicket.expressAsset(newUser,newGame,newGame.getDate());
     }
 
