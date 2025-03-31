@@ -1,6 +1,8 @@
 package escapeRoom.Service.InputService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class InputService {
@@ -16,11 +18,30 @@ public class InputService {
     }
 
     public LocalDate readDate(String prompt, String pattern){
-        return null;
+        while(true){
+            System.out.print(prompt);
+            String result = input.nextLine();
+
+            if(result.isEmpty()) {
+                return null;
+            }
+
+            try {
+                return LocalDate.parse(result, DateTimeFormatter.ofPattern(pattern));
+            } catch(DateTimeParseException e) {
+                System.out.println("Invalid date format. Please use '" + pattern + "' (e.g. 2000 12 31)");
+            }
+        }
     }
 
     public boolean readBoolean(String prompt){
-        return false;
+        System.out.print(prompt);
+        String result = input.nextLine().toLowerCase();
+        while (!result.equals("yes") && !result.equals("no")) {
+            System.out.println("Please, write 'yes' or 'no':");
+            result = input.nextLine().toLowerCase();
+        }
+        return result.equals("yes");
     }
 
     public int readInt(String prompt){
