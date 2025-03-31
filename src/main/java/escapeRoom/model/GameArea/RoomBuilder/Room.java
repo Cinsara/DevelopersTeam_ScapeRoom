@@ -21,6 +21,15 @@ public class Room {
         this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
     }
 
+    public Room(String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+        this.name = name;
+        this.theme = theme;
+        this.difficulty = difficulty;
+        this.clues_id = clues_id == null ? new ArrayList<>() : new ArrayList<>(clues_id);
+        this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
+    }
+
+
     public String getName() {
         return name;
     }

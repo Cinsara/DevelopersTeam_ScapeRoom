@@ -20,9 +20,10 @@ public class RoomManager {
     public RoomManager() throws SQLException {
     }
 
-    public void createRoom(int id, String roomName, Theme theme, Difficulty difficulty) throws SQLException {
+    public void createRoom() throws SQLException {
 
         try{
+            int id = 0;
             String newName = inputService.readString("Enter name:");
             String newTheme = (inputService.readString(("Enter Theme (LOVEAFFAIR, FANTASTIC, MYSTERY, SCIFI): "))).toUpperCase();
             Theme newThemeEnum = null;
@@ -50,17 +51,21 @@ public class RoomManager {
             //TODO: UPDATE LISTA PROPS
             List<Integer> newPropsId = null;
 
-            Room updatedRoom = new Room(
-                    id,
-                    newName,
-                    newThemeEnum,
-                    newDifficultyEnum,
-                    newCluesId,
-                    newPropsId);
+            Builder<Room> roomBuilder = new RoomBuilder();
 
-            roomService.update(updatedRoom);
+            roomBuilder.setId(id);
+            roomBuilder.setRoomName(newName);
+            roomBuilder.setRoomTheme(newThemeEnum);
+            roomBuilder.setRoomDifficulty(newDifficultyEnum);
+            roomBuilder.setRoomClues(newCluesId);
+            roomBuilder.setRoomProps(newPropsId);
+
+            Room newRoom = roomBuilder.build();
+
+            roomService.create(new Room(newName,newThemeEnum,newDifficultyEnum,newCluesId, newPropsId));
+
             System.out.println("Room created successfully!");
-            System.out.println(updatedRoom);
+            System.out.println(newRoom);
 
         } catch (SQLException e) {
             System.out.println("Error updating room: " + e.getMessage());
