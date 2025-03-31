@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CertificateService extends AssetService<Certificate> {
-    protected CertificateService() throws SQLException {
+    public CertificateService() throws SQLException {
     }
     @Override
     public Certificate mapResultSetToEntity(ResultSet resultSet) throws SQLException {

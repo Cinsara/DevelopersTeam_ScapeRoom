@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 
 public class TicketService extends AssetService<Ticket> {
-    protected TicketService() throws SQLException {
+    public TicketService() throws SQLException {
     }
 
     @Override
