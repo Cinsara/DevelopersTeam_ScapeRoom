@@ -20,6 +20,7 @@ public class RoomManager {
     private InputService inputService;
     GameElementFactory elementFactory;
     ClueManager clueManager;
+    PropManager propManager;
 
     public RoomManager() throws SQLException {
     }
@@ -145,7 +146,7 @@ public class RoomManager {
             String newTheme = (inputService.readString(("Enter new Theme (LOVEAFFAIR, FANTASTIC, MYSTERY, SCIFI): "))).toUpperCase();
             Theme newThemeEnum = null;
 
-            switch(newTheme){
+            switch (newTheme) {
                 case "LOVEAFFAIR" -> newThemeEnum = Theme.LOVEAFFAIR;
                 case "FANTASTIC" -> newThemeEnum = Theme.FANTASTIC;
                 case "MYSTERY" -> newThemeEnum = Theme.MYSTERY;
@@ -155,51 +156,42 @@ public class RoomManager {
             String newDifficulty = (inputService.readString(("Enter new Difficulty (EASY, MEDIUM, HARD): "))).toUpperCase();
             Difficulty newDifficultyEnum = null;
 
-            switch(newDifficulty){
+            switch (newDifficulty) {
                 case "EASY" -> newDifficultyEnum = Difficulty.EASY;
                 case "MEDIUM" -> newDifficultyEnum = Difficulty.MEDIUM;
                 case "HARD" -> newDifficultyEnum = Difficulty.HARD;
             }
 
             //UPDATE LISTA CLUES
-            System.out.println("This Room has " + roomOpt.get().getClues_id().size() + " clues: \n");
+            System.out.println("This Room has " + roomOpt.get().getClues_id().size() + " Clues: \n");
 
-            for (Integer clueid :  roomOpt.get().getClues_id()){
-                clueManager.read(clueid);
+            for (Integer clueId : roomOpt.get().getClues_id()) {
+                clueManager.read(clueId);
             }
 
-            boolean opc = inputService.readBoolean("Do you want to add more clues? Y/N");
+            boolean moreClues = inputService.readBoolean("Do you want to add more Clues? Y/N");
 
-            if (opc) {
-                roomOpt.get().getClues_id().add(clueManager.create().getId());
+            List<Integer> newCluesId = null;
+            if (moreClues) {
+                newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
+                newCluesId.add(propManager.create().getId());
             }
 
 
             //UPDATE LISTA PROPS
-            System.out.println("This Room has " + roomOpt.get().getProps_id().size() +
-                    " props: " + roomOpt.get().getProps_id().toString());
+            System.out.println("This Room has " + roomOpt.get().getProps_id().size() + " Props: \n");
 
-
-            List<GameElement> props = new ArrayList<>();
-            opc = inputService.readInt("How many Spade props?\n");
-
-            for (int i = 0; i < opc; i++) {
-                props.add(propFactory.createGameElement(PropType.SPADE, roomManager.getNextRoomId()));
+            for (Integer propId : roomOpt.get().getProps_id()) {
+                propManager.read(propId);
             }
 
-            opc = inputService.readInt("How many Closet props?\n");
-            for (int i = 0; i < opc; i++) {
-                props.add(propFactory.createGameElement(PropType.CLOSET, roomManager.getNextRoomId()));
-            }
+            boolean moreProps = inputService.readBoolean("Do you want to add more Props? Y/N");
 
-            opc = inputService.readInt("How many Mountain props?\n");
-            for (int i = 0; i < opc; i++) {
-                props.add(propFactory.createGameElement(PropType.MOUNTAIN, roomManager.getNextRoomId()));
-            }
+            List<Integer> newPropsId = null;
 
-            List<Integer> props_id = new ArrayList<>();
-            for (GameElement prop : props) {
-                props_id.add(prop.getId());
+            if (moreProps) {
+                newPropsId = new ArrayList<>(roomOpt.get().getProps_id());
+                newPropsId.add(propManager.create().getId());
             }
 
             Room updatedRoom = new Room(
@@ -207,8 +199,8 @@ public class RoomManager {
                     newName.isEmpty() ? existingRoom.getName() : newName,
                     newTheme.isEmpty() ? existingRoom.getTheme() : newThemeEnum,
                     newDifficulty.isEmpty() ? existingRoom.getDifficulty() : newDifficultyEnum,
-                    newCluesId.isEmpty() ? existingRoom.getClues_id() : newCluesId,
-                    newPropsId.isEmpty() ? existingRoom.getProps_id() : newPropsId);
+                    moreClues ? existingRoom.getClues_id() : newCluesId,
+                    moreProps ? existingRoom.getProps_id() : newPropsId);
 
             roomService.update(updatedRoom);
             System.out.println("Room updated successfully!");
