@@ -1,69 +1,39 @@
-package escapeRoom.Controller;
+package escapeRoom.UserManager;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.PeopleArea.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
-public class UserController {
-    private final Scanner input;
+public class UserManager {
     private final UserService userService;
+    private final InputService inputService;
+    private final Connection connection = ConnectionManager.getConnection();
 
-    public UserController(Scanner input, UserService userService){
-        this.input = new Scanner(System.in);
+    public UserManager(UserService userService, InputService inputService) throws SQLException {
+        this.inputService = inputService;
         this.userService = userService;
     }
 
     public int selectOptionMenu(){
-        System.out.print("Select an option:");
-        int option = input.nextInt();
-        input.nextLine();
-        return option;
+        return inputService.readInt("Select an option:");
     }
 
     public void createUser() {
-        String name = "";
-        String lastname = "";
-        String email = "";
-        String phoneNumber = "";
-        LocalDate bodLocalDate = null;
-        boolean notifications = false;
-
         try {
-            System.out.println("Users creation." +
-                    "\nWrite a name: ");
-            name = input.nextLine();
+            String name = inputService.readString("Write a name:");
+            String lastname = inputService.readString("Write a lastname:");
+            String email = inputService.readString("Email:");
+            String phoneNumber = inputService.readString("Phone number:");
+            LocalDate bod = inputService.readDate("Birth date [yyyy MM dd] :", "yyyy MM dd");
+            boolean notifications = inputService.readBoolean("Do you would like receive notifications about our new rooms? (yes/no)");
 
-            System.out.println("Write a lastname:");
-            lastname = input.nextLine();
-
-            System.out.println("Email:");
-            email = input.nextLine();
-
-            System.out.println("Phone number:");
-            phoneNumber = input.nextLine();
-
-            System.out.println("Birth date [yyyy MM dd] :");
-            String bod = input.nextLine();
-            DateTimeFormatter bodTransform = DateTimeFormatter.ofPattern("yyyy MM dd");
-            bodLocalDate = LocalDate.parse(bod, bodTransform);
-
-            System.out.println("Do you would like receive notifications about our new rooms? (yes/no)");
-            String choose = input.nextLine();
-
-            if (choose.equalsIgnoreCase("yes")) {
-                notifications = true;
-            } else if (choose.equalsIgnoreCase("no")) {
-                notifications = false;
-            } else {
-                System.out.println("Please, write yes or no");
-            }
-
-            User user = new User(name, lastname, email, phoneNumber, bodLocalDate, notifications);
+            User user = new User(name, lastname, email, phoneNumber, bod, notifications);
             userService.create(user);
 
         } catch (SQLException e) {
@@ -72,10 +42,7 @@ public class UserController {
     }
 
     public void showUserById(){
-        System.out.print("Enter user ID: ");
-        int id = input.nextInt();
-        input.nextLine();
-
+        int id = inputService.readInt("Enter user ID:");
         try {
             Optional<User> userOptional = userService.read(id);
             if (userOptional.isPresent()) {
@@ -89,51 +56,46 @@ public class UserController {
         }
     }
 
+    public void showAllUsers(){
+        try {
+            List<User> userList = userService.getAllEntities(connection);
+
+            if(userList.isEmpty()){
+                System.out.println("The user list is empty.");
+            } else {
+                System.out.println("User list:");
+                for(User user : userList ){
+                    System.out.println(user);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user list: " + e.getMessage());
+        }
+    }
+
     public void updateUser() {
         try {
-            System.out.println("Please, enter the user ID:");
-            int id = input.nextInt();
-            input.nextLine();
+            int id = inputService.readInt("Enter user ID:");
 
             Optional<User> userOpt = userService.read(id);
             if (userOpt.isEmpty()) {
                 System.out.println("User not found with ID: " + id);
                 return;
             }
-
             User existingUser = userOpt.get();
 
             System.out.println("\nEnter new values (leave blank to keep current):");
 
-            System.out.print("New name: ");
-            String name = input.nextLine();
-
-            System.out.print("New lastname: ");
-            String lastname = input.nextLine();
-
-            System.out.print("New email: ");
-            String email = input.nextLine();
-
-            System.out.print("New Phone number: ");
-            String phoneNumber = input.nextLine();
-
-            System.out.print("New birth date [yyyy MM dd] : ");
-            String bod = input.nextLine();
-            LocalDate bodLocalDate = existingUser.getDob();
-
-            if (!bod.isEmpty()) {
-                try {
-                    DateTimeFormatter bodTransform = DateTimeFormatter.ofPattern("yyyy MM dd");
-                    bodLocalDate = LocalDate.parse(bod, bodTransform);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Invalid date format. Keeping current birth date.");
-                }
-            }
+            String name = inputService.readString("New name:");
+            String lastname = inputService.readString("New lastname:");
+            String email = inputService.readString("New email:");
+            String phoneNumber = inputService.readString("New Phone number:");
+            LocalDate bod = inputService.readDate("New birth date [yyyy MM dd]:", "yyyy MM dd");
 
             boolean notificationStatus = existingUser.isNotificationStatus();
             System.out.print("Change notification status? (current: " +
-                    (notificationStatus ? "enabled" : "disabled") + ") [y/n]: ");
-            String choose = input.nextLine().trim().toLowerCase();
+                    (notificationStatus ? "enabled)" : "disabled)"));
+            String choose = inputService.readString("").toLowerCase();
 
             if (choose.equals("y") || choose.equals("yes")) {
                 notificationStatus = !notificationStatus;
@@ -148,7 +110,7 @@ public class UserController {
                     lastname.isEmpty() ? existingUser.getLastname() : lastname,
                     email.isEmpty() ? existingUser.getEmail() : email,
                     phoneNumber.isEmpty() ? existingUser.getPhoneNumber() : phoneNumber,
-                    bodLocalDate,
+                    bod == null ? existingUser.getDob() : bod,
                     notificationStatus
             );
 
@@ -162,10 +124,7 @@ public class UserController {
     }
 
         public void deleteUserById() {
-            System.out.print("Enter user ID to delete: ");
-            int id = input.nextInt();
-            input.nextLine();
-
+            int id = inputService.readInt("Enter user ID to delete: ");
             try {
             boolean isDeleted = userService.delete(id);
             if (isDeleted) {
@@ -179,10 +138,7 @@ public class UserController {
         }
 
     public boolean subscribeUser() {
-        System.out.print("Enter user ID to subscribe: ");
-        int id = input.nextInt();
-        input.nextLine();
-
+        int id = inputService.readInt("Enter user ID to subscribe: ");
         try {
             Optional<User> userOpt = userService.read(id);
             if (userOpt.isPresent()) {
@@ -202,9 +158,7 @@ public class UserController {
     }
 
     public boolean unsubscribeUser() {
-        System.out.print("Enter user ID to unsubscribe: ");
-        int id = input.nextInt();
-        input.nextLine();
+        int id = inputService.readInt("Enter user ID to unsubscribe:");
 
         try {
             Optional<User> userOpt = userService.read(id);
