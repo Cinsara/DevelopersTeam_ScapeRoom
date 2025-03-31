@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RewardService extends AssetService<Reward> {
-    protected RewardService() throws SQLException {
+    public RewardService() throws SQLException {
     }
     @Override
     public Reward mapResultSetToEntity(ResultSet resultSet) throws SQLException {
