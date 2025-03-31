@@ -1,6 +1,7 @@
 package escapeRoom.Manager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
@@ -23,6 +24,10 @@ public class GameManager {
     private TicketService ticketService;
     private UserService userService;
     private List<Game> games;
+
+    public List<Game> getGames() {
+        return games;
+    }
 
     public GameManager(InputService inputService, GameService gameService, TicketService ticketService, UserService userService) throws SQLException {
         this.inputService = inputService;
@@ -48,8 +53,8 @@ public class GameManager {
         Game selectedGame;
          try {
              return this.games.stream()
-                .filter(game->game.getDate() == dateGame)
-                .filter(game -> game.getRoom_id()==roomId)
+                .filter(game-> game.getDate().equals(dateGame))
+                .filter(game -> game.getRoom_id() == (roomId))
                 .toList().getFirst();
          } catch (RuntimeException e) {
              throw new GameNotAvailableException(dateGame);
@@ -57,34 +62,27 @@ public class GameManager {
     }
 
     private Game checkGameAvailable(Game game, LocalDate dateGame, int roomId) throws GameNotAvailableException {
-        if (game.getCaptain_id()!=null){
+        if (game.getCaptain_id()!=0){
             throw new GameNotAvailableException(dateGame,roomId);
         }
         return game;
     }
 
-    private boolean existUser(int id) throws SQLException, AbsentUserException {
-        Optional<User> potentialUser = userService.read(id);
-        if (potentialUser.isPresent()){
-            return true;
-        } else {
-            throw new AbsentUserException(id);
-        }
 
-    }
     public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
         Game targetGame, bookableGame;
         try {
             targetGame = selectGame(dateGame,roomId);
             bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
-            if (existUser(captainId)){
+            if (userService.existEntity(captainId, User.class)){
                 bookableGame.setCaptain(captainId);
             }
             AssetFactory ticketFactory = new AssetFactory();
-            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20);
+
+            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20.0F);
             ticketService.create(newTicket);
             return true;
-        } catch (GameNotAvailableException | SQLException | AbsentUserException e ) {
+        } catch (GameNotAvailableException | SQLException | AbsentEntityException e ) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }

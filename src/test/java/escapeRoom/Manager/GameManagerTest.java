@@ -34,6 +34,8 @@ class GameManagerTest {
 
     @Test
     void bookGame() {
-        gameManager.bookGame(LocalDate.now().plusDays(1),3,1);
+     //gameManager.bookGame(LocalDate.now(),3,1);
+     //gameManager.bookGame(LocalDate.now(),2,10);
+     gameManager.bookGame(LocalDate.now(),2,1);
     }
 }
