@@ -5,6 +5,7 @@ import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
@@ -23,13 +24,14 @@ public class GameManager {
     private GameService gameService;
     private TicketService ticketService;
     private UserService userService;
+    private GameHasUserService gameHasUserService;
     private List<Game> games;
 
     public List<Game> getGames() {
         return games;
     }
 
-    public GameManager(InputService inputService, GameService gameService, TicketService ticketService, UserService userService) throws SQLException {
+    public GameManager(InputService inputService, GameService gameService, TicketService ticketService, UserService userService, GameHasUserService gameHasUserService) throws SQLException {
         this.inputService = inputService;
         this.gameService = gameService;
         this.ticketService = ticketService;
@@ -47,6 +49,39 @@ public class GameManager {
            System.out.println("Error creating game in " + roomId + " on " + dateGame + ": "+ e.getMessage());
            return null;
         }
+    }
+
+    public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
+        Game targetGame, bookableGame;
+        try {
+            targetGame = selectGame(dateGame,roomId);
+            bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
+            if (userService.existEntity(captainId, User.class)){
+                bookableGame.setCaptain(captainId);
+            }
+            AssetFactory ticketFactory = new AssetFactory();
+
+            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20.0F);
+            ticketService.create(newTicket);
+            gameService.update(bookableGame);
+            return true;
+        } catch (GameNotAvailableException | SQLException | AbsentEntityException e ) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void addPlayerToGame(LocalDate dateGame,int roomId, int userId){
+       try {
+           Game targetGame = selectGame(dateGame,roomId);
+           targetGame.getPlayers_id().add(userId);
+
+           System.out.println("Player correctly added to game");
+       } catch (GameNotAvailableException e) {
+           System.out.println("Error: " + e.getMessage());
+           return false;
+       }
+
     }
 
     private Game selectGame(LocalDate dateGame, int roomId) throws GameNotAvailableException {
@@ -67,28 +102,5 @@ public class GameManager {
         }
         return game;
     }
-
-
-    public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
-        Game targetGame, bookableGame;
-        try {
-            targetGame = selectGame(dateGame,roomId);
-            bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
-            if (userService.existEntity(captainId, User.class)){
-                bookableGame.setCaptain(captainId);
-            }
-            AssetFactory ticketFactory = new AssetFactory();
-
-            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20.0F);
-            ticketService.create(newTicket);
-            return true;
-        } catch (GameNotAvailableException | SQLException | AbsentEntityException e ) {
-            System.out.println("Error: " + e.getMessage());
-            return false;
-        }
-    }
-
-
-
 
 }

@@ -3,6 +3,7 @@ package escapeRoom.Manager;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,7 +24,8 @@ class GameManagerTest {
         GameService gs = new GameService();
         TicketService ts = new TicketService();
         UserService us = new UserService();
-        gameManager = new GameManager(is,gs,ts,us);
+        GameHasUserService ghus = new GameHasUserService();
+        gameManager = new GameManager(is,gs,ts,us,ghus);
 
     }
 
@@ -34,8 +36,8 @@ class GameManagerTest {
 
     @Test
     void bookGame() {
-     //gameManager.bookGame(LocalDate.now(),3,1);
-     //gameManager.bookGame(LocalDate.now(),2,10);
+     gameManager.bookGame(LocalDate.now(),3,1);
+     gameManager.bookGame(LocalDate.now(),2,10);
      gameManager.bookGame(LocalDate.now(),2,1);
     }
 }
