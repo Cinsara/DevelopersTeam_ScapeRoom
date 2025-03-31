@@ -32,7 +32,7 @@ class GameServiceTest {
 
     @Test
     void create() throws SQLException {
-        GameBuilder builder = new GameBuilder(1,LocalDate.now());
+        GameBuilder builder = new GameBuilder(1,LocalDate.of(2024,3,16));
         Game newGame = builder.build();
         Game returnedGame = service.create(newGame);
         assertEquals(12,returnedGame.getId());
