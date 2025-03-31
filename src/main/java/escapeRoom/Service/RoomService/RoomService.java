@@ -1,6 +1,7 @@
 package escapeRoom.Service.RoomService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.CheckExistenceService;
 import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import escapeRoom.model.GameArea.RoomBuilder.Theme;
@@ -12,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class RoomService implements GetAllService<Room> {
+public class RoomService implements GetAllService<Room>, CheckExistenceService<Room> {
     private final Connection connection = ConnectionManager.getConnection();
 
     public Connection getConnection() {

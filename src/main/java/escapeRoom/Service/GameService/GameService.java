@@ -1,6 +1,7 @@
 package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.CheckExistenceService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.Service.CrudeService;
@@ -11,7 +12,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class GameService implements CrudeService<Game>, GetAllService<Game> {
+public class GameService implements GetAllService<Game>, CheckExistenceService<Game> {
 
     private final Connection connection = ConnectionManager.getConnection();
 

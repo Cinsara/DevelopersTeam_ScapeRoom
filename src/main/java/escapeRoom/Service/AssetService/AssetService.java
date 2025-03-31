@@ -8,7 +8,7 @@ import escapeRoom.Service.GetAllService;
 import java.sql.*;
 import java.util.Optional;
 
-abstract class AssetService <T extends Asset> implements CrudeService<T>, GetAllService<T> {
+abstract class AssetService <T extends Asset> implements GetAllService<T> {
     protected final Connection connection = ConnectionManager.getConnection();
 
     protected AssetService() throws SQLException {
