@@ -4,31 +4,26 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
 import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class GameManager {
     private InputService inputService;
     private GameService gameService;
     private TicketService ticketService;
-    private UserService userService;
     private List<Game> games;
 
-    public GameManager(InputService inputService, GameService gameService, TicketService ticketService, UserService userService) throws SQLException {
+    public GameManager(InputService inputService, GameService gameService, TicketService ticketService) throws SQLException {
         this.inputService = inputService;
         this.gameService = gameService;
         this.ticketService = ticketService;
-        this.userService = userService;
         this.games = gameService.getAllEntities(ConnectionManager.getConnection());
     }
 
@@ -44,18 +39,19 @@ public class GameManager {
         }
     }
 
-    private Game selectGame(LocalDate dateGame, int roomId) throws GameNotAvailableException {
-        Game selectedGame;
-         try {
-             return this.games.stream()
+    private Game selectGame(LocalDate dateGame, int roomId){
+        return this.games.stream()
                 .filter(game->game.getDate() == dateGame)
                 .filter(game -> game.getRoom_id()==roomId)
                 .toList().getFirst();
-         } catch (RuntimeException e) {
-             throw new GameNotAvailableException(dateGame);
-         }
     }
 
+    private Game checkGameExist(Game game,LocalDate dateGame) throws GameNotAvailableException {
+        if (game == null) {
+            throw new GameNotAvailableException(dateGame);
+        }
+        return game;
+    }
     private Game checkGameAvailable(Game game, LocalDate dateGame, int roomId) throws GameNotAvailableException {
         if (game.getCaptain_id()!=null){
             throw new GameNotAvailableException(dateGame,roomId);
@@ -63,28 +59,18 @@ public class GameManager {
         return game;
     }
 
-    private boolean existUser(int id) throws SQLException, AbsentUserException {
-        Optional<User> potentialUser = userService.read(id);
-        if (potentialUser.isPresent()){
-            return true;
-        } else {
-            throw new AbsentUserException(id);
-        }
-
-    }
     public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
-        Game targetGame, bookableGame;
+        Game targetGame = selectGame(dateGame, roomId);
+        Game existingGame,bookableGame;
         try {
-            targetGame = selectGame(dateGame,roomId);
-            bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
-            if (existUser(captainId)){
-                bookableGame.setCaptain(captainId);
-            }
+            existingGame = checkGameExist(targetGame,dateGame);
+            bookableGame = checkGameAvailable(existingGame,dateGame,roomId);
+            bookableGame.setCaptain(captainId);
             AssetFactory ticketFactory = new AssetFactory();
             Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20);
             ticketService.create(newTicket);
             return true;
-        } catch (GameNotAvailableException | SQLException | AbsentUserException e ) {
+        } catch (GameNotAvailableException | SQLException e ) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
