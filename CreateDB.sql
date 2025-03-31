@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `customer_mail` VARCHAR(45) NOT NULL,
   `customer_phone_number` VARCHAR(45) NULL,
   `customer_notifications` TINYINT(1) NOT NULL,
-  `customer_signedUpNotifOn` DATE NULL,
+  `customer_dateRegistration` DATE NULL,
   PRIMARY KEY (`customer_id`));
 
 CREATE TABLE IF NOT EXISTS `game` (

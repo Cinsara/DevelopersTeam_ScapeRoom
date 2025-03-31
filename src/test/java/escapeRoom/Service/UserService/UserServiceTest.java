@@ -1,5 +1,6 @@
 package escapeRoom.Service.UserService;
 
+import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.model.PeopleArea.User;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class UserServiceTest {
@@ -107,5 +110,11 @@ public class UserServiceTest {
         }
             assertFalse(userExists, "The user should not exist after the delete");
         }
+    }
+
+    @Test
+    void testCheckExistence() throws SQLException, AbsentEntityException {
+        assertTrue(userService.existEntity(1,User.class));
+        assertThrows(AbsentEntityException.class, ()->userService.existEntity(8,User.class));
     }
 }
