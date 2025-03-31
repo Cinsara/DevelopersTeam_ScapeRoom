@@ -9,7 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class NotificationService implements CrudeService<Notification>, GetAllService<Notification> {
+public class NotificationService implements GetAllService<Notification> {
 
     private final Connection connection = ConnectionManager.getConnection();
 
