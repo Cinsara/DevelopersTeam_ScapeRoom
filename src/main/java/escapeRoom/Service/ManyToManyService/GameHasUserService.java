@@ -3,7 +3,7 @@ package escapeRoom.Service.ManyToManyService;
 import java.sql.SQLException;
 
 public class GameHasUserService extends MTMService {
-    protected GameHasUserService() throws SQLException {
+    public GameHasUserService() throws SQLException {
     }
 
     @Override

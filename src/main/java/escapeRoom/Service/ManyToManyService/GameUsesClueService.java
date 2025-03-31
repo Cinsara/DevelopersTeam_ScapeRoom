@@ -3,7 +3,7 @@ package escapeRoom.Service.ManyToManyService;
 import java.sql.SQLException;
 
 public class GameUsesClueService extends MTMService {
-    protected GameUsesClueService() throws SQLException {
+    public GameUsesClueService() throws SQLException {
     }
 
     @Override
