@@ -17,7 +17,7 @@ public class TicketBuilder implements AssetBuilder<Ticket> {
 
     @Override
     public AssetBuilder<Ticket> setUserId(int user_id) {
-        this.captain_id = captain_id;
+        this.captain_id = user_id;
         return this;
     }
 
