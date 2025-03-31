@@ -16,12 +16,12 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `customer_mail` VARCHAR(45) NOT NULL,
   `customer_phone_number` VARCHAR(45) NULL,
   `customer_notifications` TINYINT(1) NOT NULL,
-  `customer_dateRegistration` DATE NOT NULL,
+  `customer_signedUpNotifOn` DATE NULL,
   PRIMARY KEY (`customer_id`));
 
 CREATE TABLE IF NOT EXISTS `game` (
   `game_id` INT NOT NULL AUTO_INCREMENT,
-  `game_date` DATETIME NOT NULL,
+  `game_date` DATE NOT NULL,
   `game_success` TINYINT(1) NULL,
   `game_lengthInSec` INT NULL,
   `room_room_id` INT NOT NULL,
@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS `game` (
   PRIMARY KEY (`game_id`),
   INDEX `fk_game_room1_idx` (`room_room_id` ASC) VISIBLE,
   INDEX `fk_game_customer1_idx` (`captain_customer_id` ASC) VISIBLE,
+  CONSTRAINT unique_game_per_date_day
+	UNIQUE (`game_date`, `room_room_id`),
   CONSTRAINT `fk_game_room1`
     FOREIGN KEY (`room_room_id`)
     REFERENCES `room` (`room_id`)
