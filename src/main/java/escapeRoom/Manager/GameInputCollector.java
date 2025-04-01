@@ -32,6 +32,19 @@ public class GameInputCollector {
         return newCoordinates;
     }
 
+    static public LocalDate getGameDate() {
+        return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
+    }
+    static public int getGameRoomId() throws SQLException {
+        RoomService roomService = new RoomService();
+        List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
+        StringBuilder listrooms = new StringBuilder();
+        for (Room room: rooms){
+            listrooms.append("Room Number: ").append(room.getId()).append(" - Room Name: ").append(room.getName()).append(" - Room Theme: ").append(room.getTheme().name()).append(" - Room Difficulty: ").append(room.getDifficulty()).append("\n");
+        }
+        return inputService.readInt("Introduce the number of the room you want to play in :\n"+listrooms);
+    }
+
     static public int getTargetCostumer() throws SQLException {
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
@@ -39,7 +52,6 @@ public class GameInputCollector {
         for (User user: users){
             listusers.append("User ID: ").append(user.getId()).append(" // ").append(user.getName()).append(" ").append(user.getLastname()).append("\n");
         }
-
         AtomicInteger returnedValue = new AtomicInteger(inputService.readInt("Introduce the ID of the customer your are interested in :\n"+listusers));
         while(users.stream().filter(user -> user.getId()== returnedValue.get()).toList().isEmpty()){
             returnedValue.set(inputService.readInt("Let's do it again. Make sure to introduce the ID of an existing customer:\n"+listusers));
