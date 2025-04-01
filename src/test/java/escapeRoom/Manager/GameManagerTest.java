@@ -23,28 +23,43 @@ class GameManagerTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        InputService is = new InputService(new Scanner(System.in));
-        gameManager = new GameManager(is);
+        gameManager = new GameManager();
 
     }
 
     @Test
     void createGame() {
         gameManager.createGame(LocalDate.now(),2);
+        gameManager.createGame(LocalDate.now(),3);
+        gameManager.createGame(LocalDate.now(),4);
+        gameManager.createGame(LocalDate.now(),1);
+        gameManager.createGame(LocalDate.now(),2);
+        gameManager.createGame(LocalDate.now(),5);
     }
 
     @Test
     void bookGame() {
-     gameManager.bookGame(LocalDate.now(),3,1);
-     gameManager.bookGame(LocalDate.now(),2,10);
-     gameManager.bookGame(LocalDate.now(),2,1);
+     gameManager.bookGame(LocalDate.now().plusDays(1),3,1);
+     gameManager.bookGame(LocalDate.now(),1,10);
+     gameManager.bookGame(LocalDate.now(),1,1);
     }
 
     @Test
-    void addPlayerToGame(){
-        gameManager.addPlayerToGame(LocalDate.now(),2,1);
+    void addPlayerToGame() throws SQLException, GameNotAvailableException {
+        UserService userService = new UserService();
+        List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
+        for (User user : users){
+            gameManager.addPlayerToGame(LocalDate.now(),2,user.getId());
+            if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user.getId());
+        }
+        GameHasUserService gameHasUserService = new GameHasUserService();
+        List<Integer> usersFirstGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),2).getId());
+        List<Integer> usersSecondGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),3).getId());
+        System.out.println(usersFirstGame.toString());
+        System.out.println(usersSecondGame.toString());
     }
     @Test
+
     void loadGames(){
         gameManager.getGames().forEach(game -> {
             System.out.println("players: "+game.getPlayers_id().toString()+", clues: "+ game.getUsed_clues_id()+", rewards: "+game.getRewards_id());
@@ -58,11 +73,14 @@ class GameManagerTest {
 
     @Test
     void playGame() throws SQLException {
-        LocalDate dateGame = LocalDate.of(2025,3,31);
+        LocalDate dateGame = LocalDate.now().plusDays(1);
+        Game newGame = gameManager.createGame(dateGame,1);
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
-        users.forEach(user->gameManager.addPlayerToGame(dateGame,2,user.getId()));
-        Game playedGame = gameManager.playGame(dateGame,2);
+        users.forEach(user -> newGame.addPlayer(user.getId()));
+        Game playedGame = gameManager.playGame(dateGame,1);
         System.out.println(playedGame.toString());
+        GameService gameService = new GameService();
+        gameService.delete(newGame.getId());
     }
 }
