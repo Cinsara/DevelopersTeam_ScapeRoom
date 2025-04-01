@@ -164,7 +164,6 @@ public class RoomManager {
 
             String newName = inputService.readString("Enter new name:");
             String newTheme = (inputService.readString(("Enter new Theme (LOVEAFFAIR, FANTASTIC, MYSTERY, SCIFI): "))).toUpperCase();
-//            Theme newThemeEnum = null;
 
             switch (newTheme) {
                 case "LOVEAFFAIR" -> newTheme = Theme.LOVEAFFAIR.getDisplayName();
@@ -189,7 +188,9 @@ public class RoomManager {
                 clueManager.read(clueId);
             }
 
-            boolean moreClues = inputService.readBoolean("Do you want to add more Clues? Y/N");
+            System.out.println();
+
+            boolean moreClues = inputService.readBoolean("Do you want to add more Clues? yes/no");
 
             List<Integer> newCluesId = null;
             if (moreClues) {
@@ -205,7 +206,9 @@ public class RoomManager {
                 propManager.read(propId);
             }
 
-            boolean moreProps = inputService.readBoolean("Do you want to add more Props? Y/N");
+            System.out.println();
+
+            boolean moreProps = inputService.readBoolean("Do you want to add more Props? yes/no");
 
             List<Integer> newPropsId = null;
 
@@ -214,17 +217,26 @@ public class RoomManager {
                 newPropsId.add(propManager.create(roomId).getId());
             }
 
-            Room updatedRoom = new Room(
-                    roomId,
-                    newName.isEmpty() ? existingRoom.getName() : newName,
-                    newTheme.isEmpty() ? existingRoom.getTheme() : newTheme,
-                    newDifficulty.isEmpty() ? existingRoom.getDifficulty() : newDifficultyEnum,
-                    moreClues ? existingRoom.getClues_id() : newCluesId,
-                    moreProps ? existingRoom.getProps_id() : newPropsId);
+            if (newName.isEmpty() && newTheme.isEmpty() && newDifficulty.isEmpty() && !moreClues && !moreProps) {
+                System.out.println("Nothing new to update. Room stays the same!");
+            } else {
 
-            roomService.update(updatedRoom);
-            System.out.println("Room updated successfully!");
-            System.out.println(updatedRoom);
+                Room updatedRoom = new Room(
+                        roomId,
+                        newName.isEmpty() ? existingRoom.getName() : newName,
+                        newTheme.isEmpty() ? existingRoom.getTheme() : newTheme,
+                        newDifficulty.isEmpty() ? existingRoom.getDifficulty() : newDifficultyEnum,
+                        moreClues ? existingRoom.getClues_id() : newCluesId,
+                        moreProps ? existingRoom.getProps_id() : newPropsId);
+
+                roomService.update(updatedRoom);
+
+                System.out.println("Room updated successfully!");
+
+            }
+            System.out.println();
+
+            readRoom(roomId);
 
         } catch (SQLException e) {
             System.out.println("Error updating room: " + e.getMessage());
@@ -239,6 +251,7 @@ public class RoomManager {
                 System.out.println("Room not found with ID: " + id);
             } else {
                 roomService.delete(id);
+                System.out.println("Room with ID " + id + " deleted successfully!");
             }
         } catch (SQLException e) {
             System.out.println("Error deleting Room: " + e.getMessage());

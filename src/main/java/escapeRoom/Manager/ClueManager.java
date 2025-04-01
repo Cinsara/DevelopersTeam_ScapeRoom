@@ -28,27 +28,34 @@ public class ClueManager {
 
     public Clue create(int roomId) throws SQLException{
 
-        try {
+        String opc = "y";
+        do {
+            try {
 
-            GameElementFactory clueFactory = ElementsFactoryProducer.getFactory("Clue");
+                GameElementFactory clueFactory = ElementsFactoryProducer.getFactory("Clue");
 
-            String type = (inputService.readString(("Enter Type (ENIGMA or INDICATION): "))).toUpperCase();
-            ClueType typeEnum = null;
+                String type = (inputService.readString(("Enter Type (ENIGMA or INDICATION): "))).toUpperCase();
+                ClueType typeEnum = null;
 
-            switch(type) {
-                case "ENIGMA" -> typeEnum = ClueType.ENIGMA;
-                case "INDICATION" -> typeEnum = ClueType.INDICATION;
+                switch (type) {
+                    case "ENIGMA" -> typeEnum = ClueType.ENIGMA;
+                    case "INDICATION" -> typeEnum = ClueType.INDICATION;
+                }
+
+                Clue newClue = (Clue) clueFactory.createGameElement(typeEnum, roomId);
+
+                clueService.create(newClue);
+
+                //return newClue;
+
+            } catch (SQLException e) {
+                System.out.println("Error creating Clue: " + e.getMessage());
             }
 
-            Clue newClue = (Clue) clueFactory.createGameElement(typeEnum,roomId);
+            inputService.readBoolean("Do you want to create another one? y/n");
 
-            clueService.create(newClue);
+        } while (!opc.equals("no"));
 
-            return newClue;
-
-        } catch (SQLException e) {
-            System.out.println("Error creating Clue: " + e.getMessage());
-        }
         return null;
     }
 

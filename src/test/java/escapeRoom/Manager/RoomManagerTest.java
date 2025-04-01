@@ -69,7 +69,7 @@ class RoomManagerTest {
 
     @Test
     void readRoom() throws SQLException {
-        Optional<Room> foundRoom = roomService.read(1);
+        Optional<Room> foundRoom = roomService.read(16);
         System.out.println(foundRoom);
 
     }
@@ -77,7 +77,13 @@ class RoomManagerTest {
     @Test
     void getAllRooms() throws SQLException {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
-        rooms.forEach(room -> System.out.println(room.toString()));
+        rooms.forEach(room -> {
+            try {
+                System.out.println(roomService.read(room.getId()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
     }
 
