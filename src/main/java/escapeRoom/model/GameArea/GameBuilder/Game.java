@@ -38,6 +38,9 @@ public class Game {
         // Does the player exist?
         this.players_id.add(player_id);
     }
+    public void removePlayer(int player_id){
+        this.players_id.remove((Object) player_id);
+    }
 
     public void calculateResult(){
         this.success = Math.random() > 0.5;
