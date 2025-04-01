@@ -4,6 +4,7 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
+import escapeRoom.Service.GameService.ClueService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
@@ -13,16 +14,14 @@ import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class GameManager {
     private InputService inputService;
@@ -100,16 +99,43 @@ public class GameManager {
        }
     }
 
+    public boolean removePlayerFromGame(LocalDate dateGame,int roomId, int userId){
+        try {
+            Game targetGame = selectGame(dateGame,roomId);
+            targetGame.removePlayer(userId);
+            gameHasUserService.deleteMatch(targetGame.getId(),userId);
+            return true;
+        } catch (GameNotAvailableException | SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void playGame(LocalDate dateGame,int roomId){
+        try{
+            Game targetGame = selectGame(dateGame,roomId);
+            List<Integer> availableClues = getAvailableClues(targetGame);
+            targetGame.calculateResult(availableClues);
+            for (int clue: targetGame.getUsed_clues_id()){
+                gameUsesClueService.createMatch(targetGame.getId(),clue);
+            }
+            targetGame.setRewards_id(getRewardsId(targetGame));
+
+        } catch (GameNotAvailableException | SQLException e) {
+            System.out.println("Error: "+ e.getMessage());
+        }
+    }
+
     private Game selectGame(LocalDate dateGame, int roomId) throws GameNotAvailableException {
         Game selectedGame;
-         try {
-             return this.games.stream()
-                .filter(game-> game.getDate().equals(dateGame))
-                .filter(game -> game.getRoom_id() == (roomId))
-                .toList().getFirst();
-         } catch (RuntimeException e) {
-             throw new GameNotAvailableException(dateGame);
-         }
+        try {
+            return this.games.stream()
+                    .filter(game -> game.getDate().equals(dateGame))
+                    .filter(game -> game.getRoom_id() == (roomId))
+                    .toList().getFirst();
+        } catch (RuntimeException e) {
+            throw new GameNotAvailableException(dateGame);
+        }
     }
 
     private Game checkGameAvailable(Game game, LocalDate dateGame, int roomId) throws GameNotAvailableException {
@@ -119,4 +145,21 @@ public class GameManager {
         return game;
     }
 
+    private List<Integer> getAvailableClues(Game game) throws SQLException {
+        ClueService clueService = new ClueService(ConnectionManager.getConnection());
+        return clueService.getAllEntities(ConnectionManager.getConnection()).stream()
+                .filter(clue -> clue.getRoomId() == game.getRoom_id())
+                .map(Clue::getId)
+                .toList();
+    }
+    private List<Integer> getRewardsId(Game game) throws SQLException {
+        List<Integer> ids = new ArrayList<>();
+        for (Integer reward : game.getRewards_id()) {
+            AssetFactory factory = new AssetFactory();
+            Reward newReward = (Reward) factory.createAsset(AssetType.REWARD, reward, game.getId());
+            Reward createdReward = rewardService.create(newReward);  // may throw SQLException
+            ids.add(createdReward.getId());
+        }
+        return ids;
+    }
 }
