@@ -16,8 +16,10 @@ import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class GameManager {
     private InputService inputService;
@@ -25,9 +27,9 @@ public class GameManager {
     private TicketService ticketService;
     private UserService userService;
     private GameHasUserService gameHasUserService;
-    private List<Game> games;
+    private Set<Game> games;
 
-    public List<Game> getGames() {
+    public Set<Game> getGames() {
         return games;
     }
 
@@ -36,7 +38,11 @@ public class GameManager {
         this.gameService = gameService;
         this.ticketService = ticketService;
         this.userService = userService;
-        this.games = gameService.getAllEntities(ConnectionManager.getConnection());
+        this.gameHasUserService = gameHasUserService;
+        this.games = new HashSet<>(gameService.getAllEntities(ConnectionManager.getConnection()));
+        for (Game game : this.games) {
+            game.setPlayers(gameHasUserService.getMatches(game.getId()));
+        }
     }
 
     public Game createGame(LocalDate dateGame, int roomId){
@@ -71,17 +77,16 @@ public class GameManager {
         }
     }
 
-    public void addPlayerToGame(LocalDate dateGame,int roomId, int userId){
+    public boolean addPlayerToGame(LocalDate dateGame,int roomId, int userId){
        try {
            Game targetGame = selectGame(dateGame,roomId);
-           targetGame.getPlayers_id().add(userId);
-
-           System.out.println("Player correctly added to game");
-       } catch (GameNotAvailableException e) {
+           targetGame.addPlayer(userId);
+           gameHasUserService.createMatch(targetGame.getId(),userId);
+           return true;
+       } catch (GameNotAvailableException | SQLException e) {
            System.out.println("Error: " + e.getMessage());
            return false;
        }
-
     }
 
     private Game selectGame(LocalDate dateGame, int roomId) throws GameNotAvailableException {
