@@ -3,6 +3,7 @@ package escapeRoom.Manager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PropAndClueService.ClueService;
+import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
@@ -21,9 +22,9 @@ class RoomManagerTest {
     public static RoomManager roomManager;
 
     String simulatedInput = """
-        Lovely House
-        MYSTERY
-        MEDIUM
+        Alien House
+        SCI-FI
+        HARD
         2
         1
         2
@@ -37,15 +38,14 @@ class RoomManagerTest {
     void setup() throws SQLException {
 
         ClueService clueService = new ClueService(ConnectionManager.getConnection());
+        PropService propService = new PropService(ConnectionManager.getConnection());
         GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
 
+        ClueManager clueManager = new ClueManager(clueService, testInputService,clueFactory);
+        PropManager propManager = new PropManager(propService, testInputService, propFactory);
         roomManager = new RoomManager(roomService, clueManager, propManager, testInputService,
                 clueFactory, propFactory);
-
-        ClueManager clueManager = new ClueManager(clueService, testInputService,clueFactory,roomManager);
-        PropManager propManager = new PropManager();
-
 
 
 
@@ -62,14 +62,14 @@ class RoomManagerTest {
     @Test
     void createRoom() throws SQLException {
 
-            roomManager.createRoom();
+        roomManager.createRoom();
 
 
     }
 
     @Test
     void readRoom() throws SQLException {
-        Optional<Room> foundRoom = roomService.read(3);
+        Optional<Room> foundRoom = roomService.read(1);
         System.out.println(foundRoom);
 
     }

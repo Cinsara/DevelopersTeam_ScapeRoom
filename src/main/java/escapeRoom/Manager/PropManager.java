@@ -18,13 +18,18 @@ public class PropManager {
     private GameElementFactory elementFactory;
     private RoomManager roomManager;
 
-
-    public PropManager() throws SQLException {
+    public PropManager(PropService propService, InputService inputService,
+                       GameElementFactory elementFactory) throws SQLException {
+        this.propService = propService;
+        this.inputService = inputService;
+        this.elementFactory = elementFactory;
     }
 
-    public Prop create() throws SQLException{
+    public Prop create(int roomId) throws SQLException{
 
         try {
+            GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
+
             String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
             PropType typeEnum = null;
 
@@ -34,9 +39,7 @@ public class PropManager {
                 case "MOUNTAIN" -> typeEnum = PropType.MOUNTAIN;
             }
 
-            int roomId = roomManager.getNextRoomId();
-
-            Prop newProp = (Prop) elementFactory.createGameElement(typeEnum,roomId);
+            Prop newProp = (Prop) propFactory.createGameElement(typeEnum,roomId);
 
             propService.create(newProp);
 

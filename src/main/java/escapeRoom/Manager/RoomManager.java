@@ -43,10 +43,10 @@ public class RoomManager {
             Theme newThemeEnum = null;
 
             switch(newTheme){
-                case "LOVEAFFAIR" -> newThemeEnum = Theme.LOVEAFFAIR;
-                case "FANTASTIC" -> newThemeEnum = Theme.FANTASTIC;
-                case "MYSTERY" -> newThemeEnum = Theme.MYSTERY;
-                case "SCIFI" -> newThemeEnum = Theme.SCIFI;
+                case "LOVEAFFAIR" -> newTheme = Theme.LOVEAFFAIR.getDisplayName();
+                case "FANTASTIC" -> newTheme = Theme.FANTASTIC.getDisplayName();
+                case "MYSTERY" -> newTheme = Theme.MYSTERY.getDisplayName();
+                case "SCIFI" -> newTheme = Theme.SCIFI.getDisplayName();
             }
 
             String newDifficulty = (inputService.readString(("Enter new Difficulty (EASY, MEDIUM, HARD): "))).toUpperCase();
@@ -58,45 +58,56 @@ public class RoomManager {
                 case "HARD" -> newDifficultyEnum = Difficulty.HARD;
             }
 
+            Builder<Room> roomBuilder = new RoomBuilder();
+
+            roomBuilder.setId(id);
+            roomBuilder.setRoomName(newName);
+            roomBuilder.setRoomTheme(newTheme);
+            roomBuilder.setRoomDifficulty(newDifficultyEnum);
+//            roomBuilder.setRoomClues(newCluesId);
+//            roomBuilder.setRoomProps(newPropsId);
+
+            Room newRoom = roomBuilder.build();
+
+            roomService.create(newRoom);
+            //roomService.create(new Room(newName,newThemeEnum,newDifficultyEnum));
+            //roomService.create(new Room(newName,newThemeEnum,newDifficultyEnum,newCluesId, newPropsId));
+
+
             //LISTA CLUES
             List<GameElement> clues = new ArrayList<>();
 
             int opc = inputService.readInt("How many Clues - Indications?\n");
-            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.INDICATION, id));}
+            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.INDICATION, newRoom.getId()));}
 
             opc = inputService.readInt("How many Clues - Enigmas?\n");
-            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.ENIGMA, id));}
+            for (int i = 0; i < opc; i++) {clues.add(clueManager.createInRoom(ClueType.ENIGMA, newRoom.getId()));}
 
-            List<Integer> newCluesId = new ArrayList<>(); for (GameElement clue : clues) { newCluesId.add(clue.getId()); }
+            List<Integer> newCluesId = new ArrayList<>();
+
+            for (GameElement clue : clues) { newCluesId.add(clue.getId()); }
+
+            newRoom.setClues_id(newCluesId);
 
 
             //LISTA PROPS
             List<GameElement> props = new ArrayList<>();
 
             opc = inputService.readInt("How many Props - Spade?\n");
-            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.CLOSET, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.CLOSET, newRoom.getId()));}
 
             opc = inputService.readInt("How many Props - Closet?\n");
-            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.SPADE, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.SPADE, newRoom.getId()));}
 
             opc = inputService.readInt("How many Props - Mountain?\n");
-            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.MOUNTAIN, id));}
+            for (int i = 0; i < opc; i++) {props.add(propManager.createInRoom(PropType.MOUNTAIN, newRoom.getId()));}
 
-            List<Integer> newPropsId = new ArrayList<>(); for (GameElement prop : props) { newPropsId.add(prop.getId()); }
+            List<Integer> newPropsId = new ArrayList<>();
 
+            for (GameElement prop : props) { newPropsId.add(prop.getId()); }
 
-            Builder<Room> roomBuilder = new RoomBuilder();
+            newRoom.setProps_id(newPropsId);
 
-            roomBuilder.setId(id);
-            roomBuilder.setRoomName(newName);
-            roomBuilder.setRoomTheme(newThemeEnum);
-            roomBuilder.setRoomDifficulty(newDifficultyEnum);
-            roomBuilder.setRoomClues(newCluesId);
-            roomBuilder.setRoomProps(newPropsId);
-
-            Room newRoom = roomBuilder.build();
-
-            roomService.create(new Room(newName,newThemeEnum,newDifficultyEnum,newCluesId, newPropsId));
 
             System.out.println("Room created successfully!");
             System.out.println(newRoom);
@@ -138,12 +149,12 @@ public class RoomManager {
 
     }
 
-    public void updateRoom(int id) throws SQLException {
+    public void updateRoom(int roomId) throws SQLException {
 
         try {
-            Optional<Room> roomOpt = roomService.read(id);
+            Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
-                System.out.println("Room not found with ID: " + id);
+                System.out.println("Room not found with ID: " + roomId);
                 return;
             }
 
@@ -153,13 +164,13 @@ public class RoomManager {
 
             String newName = inputService.readString("Enter new name:");
             String newTheme = (inputService.readString(("Enter new Theme (LOVEAFFAIR, FANTASTIC, MYSTERY, SCIFI): "))).toUpperCase();
-            Theme newThemeEnum = null;
+//            Theme newThemeEnum = null;
 
             switch (newTheme) {
-                case "LOVEAFFAIR" -> newThemeEnum = Theme.LOVEAFFAIR;
-                case "FANTASTIC" -> newThemeEnum = Theme.FANTASTIC;
-                case "MYSTERY" -> newThemeEnum = Theme.MYSTERY;
-                case "SCIFI" -> newThemeEnum = Theme.SCIFI;
+                case "LOVEAFFAIR" -> newTheme = Theme.LOVEAFFAIR.getDisplayName();
+                case "FANTASTIC" -> newTheme = Theme.FANTASTIC.getDisplayName();
+                case "MYSTERY" -> newTheme = Theme.MYSTERY.getDisplayName();
+                case "SCIFI" -> newTheme = Theme.SCIFI.getDisplayName();
             }
 
             String newDifficulty = (inputService.readString(("Enter new Difficulty (EASY, MEDIUM, HARD): "))).toUpperCase();
@@ -183,7 +194,7 @@ public class RoomManager {
             List<Integer> newCluesId = null;
             if (moreClues) {
                 newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
-                newCluesId.add(propManager.create().getId());
+                newCluesId.add(clueManager.create(roomId).getId());
             }
 
 
@@ -200,13 +211,13 @@ public class RoomManager {
 
             if (moreProps) {
                 newPropsId = new ArrayList<>(roomOpt.get().getProps_id());
-                newPropsId.add(propManager.create().getId());
+                newPropsId.add(propManager.create(roomId).getId());
             }
 
             Room updatedRoom = new Room(
-                    id,
+                    roomId,
                     newName.isEmpty() ? existingRoom.getName() : newName,
-                    newTheme.isEmpty() ? existingRoom.getTheme() : newThemeEnum,
+                    newTheme.isEmpty() ? existingRoom.getTheme() : newTheme,
                     newDifficulty.isEmpty() ? existingRoom.getDifficulty() : newDifficultyEnum,
                     moreClues ? existingRoom.getClues_id() : newCluesId,
                     moreProps ? existingRoom.getProps_id() : newPropsId);

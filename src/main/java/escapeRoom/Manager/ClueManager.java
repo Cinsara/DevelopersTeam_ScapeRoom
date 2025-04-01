@@ -19,17 +19,19 @@ public class ClueManager {
     private RoomManager roomManager;
 
     public ClueManager(ClueService clueService, InputService inputService,
-                       GameElementFactory elementFactory,
-                       RoomManager roomManager) throws SQLException {
+                       GameElementFactory elementFactory) throws SQLException {
         this.clueService = clueService;
         this.inputService = inputService;
         this.elementFactory = elementFactory;
-        this.roomManager = roomManager;
+//        this.roomManager = roomManager;
     }
 
-    public Clue create() throws SQLException{
+    public Clue create(int roomId) throws SQLException{
 
         try {
+
+            GameElementFactory clueFactory = ElementsFactoryProducer.getFactory("Clue");
+
             String type = (inputService.readString(("Enter Type (ENIGMA or INDICATION): "))).toUpperCase();
             ClueType typeEnum = null;
 
@@ -38,9 +40,7 @@ public class ClueManager {
                 case "INDICATION" -> typeEnum = ClueType.INDICATION;
             }
 
-            int room_room_id = roomManager.getNextRoomId();
-
-            Clue newClue = (Clue) elementFactory.createGameElement(typeEnum,room_room_id);
+            Clue newClue = (Clue) clueFactory.createGameElement(typeEnum,roomId);
 
             clueService.create(newClue);
 
