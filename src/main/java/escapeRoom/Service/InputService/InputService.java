@@ -13,17 +13,17 @@ public class InputService {
     }
 
     public String readString(String prompt) {
-        System.out.print(prompt);
+        System.out.println(prompt);
         return input.nextLine();
     }
 
     public LocalDate readDate(String prompt, String pattern){
         while(true){
-            System.out.print(prompt);
+            System.out.println(prompt);
             String result = input.nextLine();
 
             if(result.isEmpty()) {
-                return null;
+                System.out.println("Date cannot be empty. Please provide a date with the following pattern: " + pattern);
             }
 
             try {
@@ -35,7 +35,7 @@ public class InputService {
     }
 
     public boolean readBoolean(String prompt){
-        System.out.print(prompt);
+        System.out.println(prompt);
         String result = input.nextLine().toLowerCase();
         while (!result.equals("yes") && !result.equals("no")) {
             System.out.println("Please, write 'yes' or 'no':");
@@ -47,7 +47,7 @@ public class InputService {
     public int readInt(String prompt){
         while(true){
             try{
-                System.out.print(prompt);
+                System.out.println(prompt);
                 String result = input.nextLine().trim();
                 return Integer.parseInt(result);
             } catch (NumberFormatException e){
