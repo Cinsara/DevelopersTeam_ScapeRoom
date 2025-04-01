@@ -31,7 +31,7 @@ class RoomBuilderTest {
     @Test
     void setRoomTheme() {
         RoomBuilder builder = new RoomBuilder();
-        Room room = builder.setRoomTheme(Theme.FANTASTIC).build();
+        Room room = builder.setRoomTheme(Theme.FANTASTIC.getDisplayName()).build();
         assertTrue(room != null);
         assertEquals(Theme.FANTASTIC,room.getTheme());
     }

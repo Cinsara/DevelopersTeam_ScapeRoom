@@ -6,7 +6,7 @@ public class RoomBuilder implements Builder<Room>{
 
     private int id;
     private String name;
-    private Theme theme;
+    private String theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
@@ -25,7 +25,7 @@ public class RoomBuilder implements Builder<Room>{
     }
 
     @Override
-    public Builder<Room> setRoomTheme(Theme theme) {
+    public Builder<Room> setRoomTheme(String theme) {
         this.theme = theme;
         return this;
     }
@@ -36,19 +36,20 @@ public class RoomBuilder implements Builder<Room>{
         return this;
     }
 
-    @Override
+//    @Override
     public Builder<Room>  setRoomClues(List<Integer> clues_id) {
         this.clues_id = clues_id;
         return this;
     }
 
-    @Override
+//    @Override
     public Builder<Room>  setRoomProps(List<Integer> props_id) {
         this.props_id = props_id;
         return this;
     }
     @Override
     public Room build() {
-        return new Room(this.id,this.name,this.theme,this.difficulty,this.clues_id,this.props_id);
+//        return new Room(this.id,this.name,this.theme,this.difficulty,this.clues_id,this.props_id);
+        return new Room(this.name,this.theme,this.difficulty);
     }
 }

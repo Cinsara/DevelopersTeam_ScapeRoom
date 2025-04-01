@@ -7,12 +7,12 @@ public class Room {
 
     private int id;
     private String name;
-    private Theme theme;
+    private String theme;
     private Difficulty difficulty;
     private List<Integer> clues_id;
     private List<Integer> props_id;
 
-    public Room(int id,String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+    public Room(int id,String name, String theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
         this.id = id;
         this.name = name;
         this.theme = theme;
@@ -21,12 +21,18 @@ public class Room {
         this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
     }
 
-    public Room(String name, Theme theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
+    public Room(String name, String theme, Difficulty difficulty, List<Integer> clues_id, List<Integer> props_id) {
         this.name = name;
         this.theme = theme;
         this.difficulty = difficulty;
         this.clues_id = clues_id == null ? new ArrayList<>() : new ArrayList<>(clues_id);
         this.props_id = props_id == null ? new ArrayList<>() : new ArrayList<>(props_id);
+    }
+
+    public Room(String name, String theme, Difficulty difficulty) {
+        this.name = name;
+        this.theme = theme;
+        this.difficulty = difficulty;
     }
 
 
@@ -41,10 +47,10 @@ public class Room {
         this.id = id;
     }
 
-    public Theme getTheme() {
+    public String getTheme() {
         return theme;
     }
-    public void setTheme(Theme theme) {
+    public void setTheme(String theme) {
         this.theme = theme;
     }
 
