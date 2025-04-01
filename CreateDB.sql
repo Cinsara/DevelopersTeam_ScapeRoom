@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `game` (
   PRIMARY KEY (`game_id`),
   INDEX `fk_game_room1_idx` (`room_room_id` ASC) VISIBLE,
   INDEX `fk_game_customer1_idx` (`captain_customer_id` ASC) VISIBLE,
-  CONSTRAINT unique_game_per_date_day
+  CONSTRAINT `unique_game_per_date_day`
 	UNIQUE (`game_date`, `room_room_id`),
   CONSTRAINT `fk_game_room1`
     FOREIGN KEY (`room_room_id`)
@@ -110,6 +110,8 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   PRIMARY KEY (`ticket_id`),
   INDEX `fk_ticket_customer1_idx` (`captain_customer_id` ASC) VISIBLE,
   INDEX `fk_ticket_game1_idx` (`game_game_id` ASC) VISIBLE,
+  CONSTRAINT `unique_ticket_per_game`
+   UNIQUE (`game_game_id`),	
   CONSTRAINT `fk_ticket_customer1`
     FOREIGN KEY (`captain_customer_id`)
     REFERENCES `customer` (`customer_id`)
