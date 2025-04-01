@@ -28,15 +28,15 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
         return "room";
     }
 
-    private Theme mapStringToTheme(String dbValue) {
+    private String mapStringToTheme(String dbValue) {
         if (dbValue == null) {
             throw new IllegalArgumentException("Theme can't be null.");
         }
         return switch (dbValue.trim()) {
-            case "Love Affair" -> Theme.LOVEAFFAIR;
-            case "Fantastic" -> Theme.FANTASTIC;
-            case "Mystery" -> Theme.MYSTERY;
-            case "Sci-Fi" -> Theme.SCIFI;
+            case "Love Affair" -> Theme.LOVEAFFAIR.getDisplayName();
+            case "Fantastic" -> Theme.FANTASTIC.getDisplayName();
+            case "Mystery" -> Theme.MYSTERY.getDisplayName();
+            case "Sci-Fi" -> Theme.SCIFI.getDisplayName();
             default -> throw new IllegalArgumentException("Valor not supported for Theme: " + dbValue);
         };
     }
@@ -57,7 +57,7 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
     public Room mapResultSetToEntity(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("room_id");
         String name = resultSet.getString("room_name");
-        Theme theme = mapStringToTheme(resultSet.getString("room_theme"));
+        String theme = mapStringToTheme(resultSet.getString("room_theme"));
         Difficulty difficulty = mapStringToDifficulty(resultSet.getString("room_difficulty"));
         Room room = new Room(id,name,theme,difficulty,null,null);
         room.setId(id);
@@ -70,7 +70,7 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
                 "VALUES (?, ?, ?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1,entity.getName());
-            preparedStatement.setString(2,entity.getTheme().name());
+            preparedStatement.setString(2,entity.getTheme());
             preparedStatement.setString(3,entity.getDifficulty().name());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -102,7 +102,7 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
         String query = "UPDATE " + getTableName() + " SET room_name = ?, room_theme = ?, room_difficulty = ? WHERE room_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,entity.getName());
-            preparedStatement.setString(2,entity.getTheme().name());
+            preparedStatement.setString(2,entity.getTheme());
             preparedStatement.setString(3,entity.getDifficulty().name());
             preparedStatement.setInt(4, entity.getId());
             preparedStatement.executeUpdate();

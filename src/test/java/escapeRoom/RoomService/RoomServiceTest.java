@@ -26,7 +26,7 @@ public class RoomServiceTest {
     void create() throws SQLException {
         Room testRoom = new Room(1,
                 "Immediate Room",
-                Theme.FANTASTIC,
+                Theme.FANTASTIC.getDisplayName(),
                 Difficulty.EASY,
                 List.of(1,2,3),
                 List.of(1,2,3)
@@ -46,7 +46,7 @@ public class RoomServiceTest {
     @Test
     void update() throws SQLException {
 
-        Room updateRoom = new Room(5, "Second Room",Theme.MYSTERY,Difficulty.HARD,
+        Room updateRoom = new Room(5, "Second Room",Theme.MYSTERY.getDisplayName(),Difficulty.HARD,
                 null, null);
         roomService.update(updateRoom);
         Optional<Room> optional = roomService.read(5);
@@ -62,7 +62,7 @@ public class RoomServiceTest {
     void delete() throws SQLException {
         Room newRoom = new Room(1,
                 "First Room",
-                Theme.FANTASTIC,
+                Theme.FANTASTIC.getDisplayName(),
                 Difficulty.EASY,
                 List.of(1,2,3),
                 List.of(1,2,3)
