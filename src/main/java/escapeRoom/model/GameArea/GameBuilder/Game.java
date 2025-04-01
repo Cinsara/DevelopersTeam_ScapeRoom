@@ -120,6 +120,13 @@ public class Game {
         this.success = success;
     }
 
+    public void setUsed_clues_id(List<Integer> used_clues_id) {
+        this.used_clues_id = used_clues_id;
+    }
+
+    public void setRewards_id(List<Integer> rewards_id) {
+        this.rewards_id = rewards_id;
+    }
 
     @Override
     public boolean equals(Object o) {
