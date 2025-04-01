@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class mainGameManager {
     static public void main (String[] args){
         try{
-            GameInputCollector.getGameCoordinates();
+            GameInputCollector.getTargetCostumer();
         } catch (SQLException e) {
 
         }
