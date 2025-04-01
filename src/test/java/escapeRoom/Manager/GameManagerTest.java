@@ -43,6 +43,8 @@ class GameManagerTest {
     }
     @Test
     void loadGames(){
-        gameManager.getGames().forEach(game -> System.out.println(game.getPlayers_id().toString()));
+        gameManager.getGames().forEach(game -> {
+            System.out.println("players: "+game.getPlayers_id().toString()+", clues: "+ game.getUsed_clues_id()+", rewards: "+game.getRewards_id());
+        });
     }
 }
