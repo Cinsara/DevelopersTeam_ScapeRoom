@@ -2,6 +2,7 @@ package escapeRoom.Manager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AbsentEntityException;
+import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
@@ -10,6 +11,7 @@ import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
@@ -29,6 +31,7 @@ public class GameManager {
     private UserService userService;
     private GameHasUserService gameHasUserService;
     private GameUsesClueService gameUsesClueService;
+    private RewardService rewardService;
     private Set<Game> games;
 
     public Set<Game> getGames() {
@@ -42,10 +45,14 @@ public class GameManager {
         this.userService = new UserService();
         this.gameHasUserService = new GameHasUserService();
         this.gameUsesClueService = new GameUsesClueService();
+        this.rewardService = new RewardService();
         this.games = new HashSet<>(gameService.getAllEntities(ConnectionManager.getConnection()));
         for (Game game : this.games) {
             game.setPlayers(gameHasUserService.getMatches(game.getId()));
             game.setUsed_clues_id(gameUsesClueService.getMatches(game.getId()));
+            game.setRewards_id(rewardService.getAllEntities(ConnectionManager.getConnection()).stream()
+                    .filter(reward -> reward.getGame_id()== game.getId())
+                    .map(Reward::getId).toList());
         }
     }
 
