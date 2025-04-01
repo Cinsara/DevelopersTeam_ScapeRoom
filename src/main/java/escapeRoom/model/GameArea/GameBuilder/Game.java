@@ -42,18 +42,14 @@ public class Game {
         this.players_id.remove((Object) player_id);
     }
 
-    public void calculateResult(){
+    public void calculateResult(List<Integer> available_clues){
         this.success = Math.random() > 0.5;
         this.ellapsedTimeInSeconds = (int) Math.floor(Math.random()*7200);
-
-        //Hardcode --later to be recovered from DB
-        List<Integer> available_clues = List.of(1,5,6);
         available_clues.forEach(clue-> {
             if (Math.random()>0.66) {
                 this.used_clues_id.add(clue);
             }
         });
-        //Instead of simply adding rewards -- here we need to create rewards
         this.players_id.forEach((player)-> {
             if (Math.random()>0.85) {
                 this.rewards_id.add(player);

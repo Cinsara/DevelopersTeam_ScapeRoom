@@ -5,6 +5,7 @@ import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +19,7 @@ class GameBuilderTest {
         assertEquals(2015,newGame.getDate().getYear());
         newGame.addPlayer(10);
         assertEquals(10, newGame.getPlayers_id().getFirst());
-        newGame.calculateResult();
+        newGame.calculateResult(List.of(1,5,6));
         System.out.println(newGame.toString());
     }
 
