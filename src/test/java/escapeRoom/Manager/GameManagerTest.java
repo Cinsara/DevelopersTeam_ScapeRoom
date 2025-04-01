@@ -21,11 +21,7 @@ class GameManagerTest {
     @BeforeAll
     static void setUp() throws SQLException {
         InputService is = new InputService(new Scanner(System.in));
-        GameService gs = new GameService();
-        TicketService ts = new TicketService();
-        UserService us = new UserService();
-        GameHasUserService ghus = new GameHasUserService();
-        gameManager = new GameManager(is,gs,ts,us,ghus);
+        gameManager = new GameManager(is);
 
     }
 
