@@ -62,6 +62,7 @@ class GameManagerTest {
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         users.forEach(user->gameManager.addPlayerToGame(dateGame,2,user.getId()));
-        gameManager.playGame(dateGame,2);
+        Game playedGame = gameManager.playGame(dateGame,2);
+        System.out.println(playedGame.toString());
     }
 }

@@ -111,7 +111,7 @@ public class GameManager {
         }
     }
 
-    public void playGame(LocalDate dateGame,int roomId){
+    public Game playGame(LocalDate dateGame,int roomId){
         try{
             Game targetGame = selectGame(dateGame,roomId);
             List<Integer> availableClues = getAvailableClues(targetGame);
@@ -120,9 +120,11 @@ public class GameManager {
                 gameUsesClueService.createMatch(targetGame.getId(),clue);
             }
             targetGame.setRewards_id(getRewardsId(targetGame));
+            return targetGame;
 
         } catch (GameNotAvailableException | SQLException e) {
             System.out.println("Error: "+ e.getMessage());
+            return null;
         }
     }
 
