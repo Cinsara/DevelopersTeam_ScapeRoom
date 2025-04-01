@@ -40,4 +40,13 @@ class GameManagerTest {
      gameManager.bookGame(LocalDate.now(),2,10);
      gameManager.bookGame(LocalDate.now(),2,1);
     }
+
+    @Test
+    void addPlayerToGame(){
+        gameManager.addPlayerToGame(LocalDate.now(),2,1);
+    }
+    @Test
+    void loadGames(){
+        gameManager.getGames().forEach(game -> System.out.println(game.getPlayers_id().toString()));
+    }
 }
