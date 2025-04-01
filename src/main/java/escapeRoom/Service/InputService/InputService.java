@@ -21,11 +21,9 @@ public class InputService {
         while(true){
             System.out.println(prompt);
             String result = input.nextLine();
-
             if(result.isEmpty()) {
                 System.out.println("Date cannot be empty. Please provide a date with the following pattern: " + pattern);
             }
-
             try {
                 return LocalDate.parse(result, DateTimeFormatter.ofPattern(pattern));
             } catch(DateTimeParseException e) {
