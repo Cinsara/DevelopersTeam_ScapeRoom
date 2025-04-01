@@ -44,6 +44,39 @@ public class GameManager {
         }
     }
 
+    public List<Game> showBookedGames(){
+        return this.games.stream().filter(game->game.getCaptain_id()!=0).toList();
+    }
+    public List<Game> showBookedGames(LocalDate dateGame){
+        return this.games.stream()
+                .filter(game->game.getCaptain_id()!=0)
+                .filter(game -> game.getDate().equals(dateGame))
+                .toList();
+
+    }
+    public List<Game> showBookedGames(int roomId){
+        return this.games.stream()
+                .filter(game->game.getCaptain_id()!=0)
+                .filter(game -> game.getRoom_id() == roomId)
+                .toList();
+    }
+    public List<Game> showAvailableGAmes(){
+        return this.games.stream().filter(game -> game.getCaptain_id()==0).toList();
+    }
+    public List<Game> showAvailableGAmes(LocalDate dateGame){
+        return this.games.stream()
+                .filter(game->game.getCaptain_id()==0)
+                .filter(game -> game.getDate().equals(dateGame))
+                .toList();
+
+    }
+    public List<Game> showAvailableGAmes(int roomId){
+        return this.games.stream()
+                .filter(game->game.getCaptain_id()==0)
+                .filter(game -> game.getRoom_id() == roomId)
+                .toList();
+    }
+
     public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
         Game targetGame, bookableGame;
         try {
@@ -151,8 +184,6 @@ public class GameManager {
     public void setGames(Set<Game> games) {
         this.games = games;
     }
-
-
     public void setGameService(GameService gameService) {
         this.gameService = gameService;
     }
