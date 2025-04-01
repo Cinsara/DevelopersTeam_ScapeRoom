@@ -6,6 +6,7 @@ import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
+import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
@@ -27,21 +28,24 @@ public class GameManager {
     private TicketService ticketService;
     private UserService userService;
     private GameHasUserService gameHasUserService;
+    private GameUsesClueService gameUsesClueService;
     private Set<Game> games;
 
     public Set<Game> getGames() {
         return games;
     }
 
-    public GameManager(InputService inputService, GameService gameService, TicketService ticketService, UserService userService, GameHasUserService gameHasUserService) throws SQLException {
+    public GameManager(InputService inputService) throws SQLException {
         this.inputService = inputService;
-        this.gameService = gameService;
-        this.ticketService = ticketService;
-        this.userService = userService;
-        this.gameHasUserService = gameHasUserService;
+        this.gameService = new GameService();
+        this.ticketService = new TicketService();
+        this.userService = new UserService();
+        this.gameHasUserService = new GameHasUserService();
+        this.gameUsesClueService = new GameUsesClueService();
         this.games = new HashSet<>(gameService.getAllEntities(ConnectionManager.getConnection()));
         for (Game game : this.games) {
             game.setPlayers(gameHasUserService.getMatches(game.getId()));
+            game.setUsed_clues_id(gameUsesClueService.getMatches(game.getId()));
         }
     }
 
