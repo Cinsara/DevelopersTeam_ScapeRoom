@@ -14,7 +14,6 @@ public class GameBuilder {
     private boolean success;
     private List<Integer> used_clues_id = new ArrayList<>();;
     private int ellapsedTimeInSeconds;
-
     private List<Integer> rewards_id = new ArrayList<>();;
 
     public GameBuilder(int room_id, LocalDate date) {

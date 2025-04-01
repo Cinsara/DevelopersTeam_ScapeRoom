@@ -26,12 +26,12 @@ public class Game {
         this.id = id;
         this.room_id = room_id;
         this.date = date;
-        this.players_id = players_id;
+        this.players_id.addAll(players_id);
         this.captain_id = captain_id;
         this.success = success;
-        this.used_clues_id = used_clues_id;
+        this.used_clues_id.addAll(used_clues_id);
         this.ellapsedTimeInSeconds = ellapsedTimeInSeconds;
-        this.rewards_id = rewards_id;
+        this.rewards_id.addAll(rewards_id);
     }
 
     public void addPlayer(int player_id){
