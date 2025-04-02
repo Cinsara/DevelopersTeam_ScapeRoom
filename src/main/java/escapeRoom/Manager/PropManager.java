@@ -3,11 +3,14 @@ package escapeRoom.Manager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PropAndClueService.PropService;
+import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class PropManager {
@@ -25,33 +28,54 @@ public class PropManager {
         this.elementFactory = elementFactory;
     }
 
-    public Prop create(int roomId) throws SQLException{
+    public Prop create() throws SQLException{
 
-        try {
-            GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
+        RoomService roomService = new RoomService();
 
-            String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
-            PropType typeEnum = null;
+        String opc = "yes";
+        do {
+            try {
+                GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
 
-            switch(type) {
-                case "CLOSET" -> typeEnum = PropType.CLOSET;
-                case "SPADE" -> typeEnum = PropType.SPADE;
-                case "MOUNTAIN" -> typeEnum = PropType.MOUNTAIN;
+                String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
+                PropType typeEnum = null;
+
+                switch (type) {
+                    case "CLOSET" -> typeEnum = PropType.CLOSET;
+                    case "SPADE" -> typeEnum = PropType.SPADE;
+                    case "MOUNTAIN" -> typeEnum = PropType.MOUNTAIN;
+                }
+
+                System.out.println("***AVAILABLE ROOMS***");
+
+                try {
+                    for (Room room : roomService.getAllEntities(connection)) {
+                        roomService.read(room.getId()).ifPresent(System.out::println);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Error retrieving all the rooms available: " + e.getMessage());
+                }
+
+                int newRoomId = inputService.readInt("Enter new Room ID for the Clue: ");
+
+
+                Prop newProp = (Prop) propFactory.createGameElement(typeEnum, newRoomId);
+
+                propService.create(newProp);
+
+                System.out.println("Here's your new Prop: \n" + newProp);
+
+            } catch (SQLException e) {
+                System.out.println("Error creating Prop: " + e.getMessage());
             }
+            opc = inputService.readString("Do you want to create another one? y/n");
 
-            Prop newProp = (Prop) propFactory.createGameElement(typeEnum,roomId);
+        } while (!opc.equals("no"));
 
-            propService.create(newProp);
-
-            return newProp;
-
-        } catch (SQLException e) {
-            System.out.println("Error creating Prop: " + e.getMessage());
-        }
         return null;
     }
 
-    public Prop createInRoom(PropType type, int roomId) throws SQLException{
+    public Prop createInNewRoom(PropType type, int roomId) throws SQLException{
 
         try {
             Prop newProp = (Prop) elementFactory.createGameElement(type,roomId);
@@ -66,23 +90,58 @@ public class PropManager {
         return null;
     }
 
-    public void read(int id) throws SQLException {
+    public Prop addPropsToRoom(int roomId) throws SQLException{
+
+        String opc = "yes";
+        do {
+            try {
+                GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
+
+                String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
+                PropType typeEnum = null;
+
+                switch (type) {
+                    case "CLOSET" -> typeEnum = PropType.CLOSET;
+                    case "SPADE" -> typeEnum = PropType.SPADE;
+                    case "MOUNTAIN" -> typeEnum = PropType.MOUNTAIN;
+                }
+
+                Prop newProp = (Prop) propFactory.createGameElement(typeEnum, roomId);
+
+                propService.create(newProp);
+
+                return newProp;
+
+            } catch (SQLException e) {
+                System.out.println("Error creating Prop: " + e.getMessage());
+            }
+            opc = inputService.readString("Do you want to create another one? y/n");
+
+        } while (!opc.equals("no"));
+
+        return null;
+    }
+
+    public Optional<Prop> read(int id) throws SQLException {
 
         try {
             Optional<Prop> PropOpt = propService.read(id);
             if (PropOpt.isEmpty()) {
-                System.out.println("Prop not found with ID: " + id);
+                System.out.println("Prop with ID: " + id + "not found.");
             } else {
-                System.out.println(PropOpt);
+                PropOpt.ifPresent(System.out::println);
+                return PropOpt;
             }
 
         } catch (SQLException e) {
-            System.out.println("Error retrieving Prop from DB: " + e.getMessage());;
+            System.out.println("Error retrieving Prop from DB: " + e.getMessage());
         }
-
+        return null;
     }
 
-    public void update(int id){
+    public void update(int id) throws SQLException {
+
+        RoomService roomService = new RoomService();
 
         try {
             Optional<Prop> propOpt = propService.read(id);
@@ -103,16 +162,19 @@ public class PropManager {
                 case "SPADE" -> newTypeEnum = PropType.SPADE;
                 case "MOUNTAIN" -> newTypeEnum = PropType.MOUNTAIN;
             }
-
-            int newRoomId = inputService.readInt("Enter new Room ID for the Clue: ");
+            System.out.println();
+            System.out.println("***AVAILABLE ROOMS***");
 
             try {
-                for (Room room : roomManager.getAllRooms()) {
-                    System.out.println(room);
+                for (Room room : roomService.getAllEntities(connection)) {
+                    roomService.read(room.getId()).ifPresent(System.out::println);
                 }
             } catch (SQLException e) {
                 System.out.println("Error retrieving all the rooms available: " + e.getMessage());
             }
+
+            int newRoomId = inputService.readInt("Enter new Room ID for the Clue: ");
+
 
             Prop updatedProp = new Prop(
                     (PropType) (newType.isEmpty() ? existingProp.getType() : newTypeEnum),
@@ -137,10 +199,49 @@ public class PropManager {
                 System.out.println("Prop not found with ID: " + id);
             } else {
                 propService.delete(id);
+                System.out.println("Prop with ID " + id + "deleted successfully!");
             }
         } catch (SQLException e) {
             System.out.println("Error deleting Prop: " + e.getMessage());
         }
+    }
+
+    public void removePropFromRoom(int roomId) throws SQLException {
+
+        RoomService roomService = new RoomService();
+
+        String opc = "yes";
+        do {
+            try {
+                Optional<Room> optRoom = null;
+                try {
+                    optRoom = roomService.read(roomId);
+                } catch (SQLException e) {
+                    System.out.println("Error retrieving Room " + roomId + ": " + e.getMessage());
+                }
+
+                System.out.println("This Room has the following Props: ");
+
+                List<Integer> listProps = new ArrayList<>(optRoom.get().getProps_id());
+
+                for (Integer prop : listProps) {
+                    read(prop);
+                }
+
+                int propIdToRemove = inputService.readInt("Which one do you want to remove?");
+
+                propService.delete(propIdToRemove);
+
+                System.out.println("Prop with ID " + propIdToRemove + " has been removed." );
+
+
+            } catch (SQLException e) {
+                System.out.println("Error removing Prop: " + e.getMessage());
+            }
+            opc = inputService.readString("Do you want to remove another one? y/n");
+
+        } while (!opc.equals("no"));
+
     }
 
 }
