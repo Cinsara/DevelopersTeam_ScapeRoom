@@ -27,11 +27,12 @@ public class RewardController {
                 if (potentialUser.isEmpty()) throw new AbsentEntityException(reward.getUser_id(),User.class);
                 User user = potentialUser.get();
                 Optional<Game> potentialGame = gameService.read(reward.getGame_id());
-                if(potentialGame.isEmpty()) throw new AbsentEntityException()
+                if(potentialGame.isEmpty()) throw new AbsentEntityException(reward.getGame_id(),Game.class);
+                Game game = potentialGame.get();
+                reward.expressAsset(user,game,game.getDate());
             }
-        } catch (SQLException e) {
+        } catch (SQLException | AbsentEntityException e) {
             System.out.println("Error:" + e.getMessage());
         }
-
     }
 }

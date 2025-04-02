@@ -22,7 +22,7 @@ public class TicketManager {
         try{
             List<Ticket> listTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
             float totalSale = listTickets.stream().map(Ticket::getPrice).reduce(0F, Float::sum);
-            listTickets.forEach(ticket -> System.out.println("Ticket number " + ticket.getId()+ " for game number " + ticket.getGame_id() + " held by user number " + ticket.getUser_id()));
+            listTickets.forEach(ticket -> System.out.println("Ticket number " + ticket.getId()+ " for game number " + ticket.getGame_id() +"with price "+ticket.getPrice() +" held by user number " + ticket.getUser_id()));
             System.out.println("\n---------------------------\nTotal Sales\n" + totalSale);
         } catch (SQLException e) {
             System.out.println("Error" + e.getMessage());

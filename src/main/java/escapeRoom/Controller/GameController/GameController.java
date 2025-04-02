@@ -27,7 +27,7 @@ public class GameController {
                 System.out.println("New game booked on the " + gameDate + " in room " + roomId + " for customer " + captainId);
             }
         } catch (SQLException e) {
-
+            System.out.println("Error: " + e.getMessage());
         }
     }
 

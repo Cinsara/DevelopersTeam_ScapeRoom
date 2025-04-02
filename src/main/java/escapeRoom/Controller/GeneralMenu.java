@@ -1,6 +1,7 @@
 package escapeRoom.Controller;
 
 import escapeRoom.Controller.GameController.GameMenu;
+import escapeRoom.Controller.RewardController.RewardController;
 import escapeRoom.Controller.TicketController.TicketMenu;
 import escapeRoom.Service.InputService.InputService;
 
@@ -10,11 +11,13 @@ public class GeneralMenu {
     private InputService inputService;
     private TicketMenu ticketMenu;
     private GameMenu  gameMenu;
+    private RewardController rewardController;
 
     public GeneralMenu(){
         this.inputService = new InputService(new Scanner(System.in));
         this.ticketMenu = new TicketMenu(this.inputService,this);
         this.gameMenu = new GameMenu(this.inputService, this);
+        this.rewardController = new RewardController();
     }
 
     public int principalTicketMenu(){
@@ -24,6 +27,7 @@ public class GeneralMenu {
                 ------
                 1. Game related operations
                 2. Sale Inventory
+                3. Rewards Inventory
                 0. Exit.
                 ------""";
         return inputService.readInt(menu);
@@ -35,6 +39,7 @@ public class GeneralMenu {
             switch(option){
                 case 1 -> gameMenu.startGameMenu();
                 case 2 -> ticketMenu.startticketMenu();
+                case 3 -> rewardController.showAllRewards();
                 case 0 -> System.out.println("Bye bye!");
                 default -> System.out.println("Invalid option. Please try again.");
             }
