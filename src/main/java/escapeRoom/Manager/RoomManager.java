@@ -4,7 +4,6 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.RoomBuilder.*;
 
 import java.sql.Connection;
@@ -120,7 +119,7 @@ public class RoomManager {
     public void readRoom(int id) throws SQLException {
 
         try {
-            Optional <Room> roomOpt = roomService.read(id);
+            Optional<Room> roomOpt = roomService.read(id);
             if (roomOpt.isEmpty()) {
                 System.out.println("Room not found with ID: " + id);
             } else {

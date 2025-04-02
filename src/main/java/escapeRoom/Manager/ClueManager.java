@@ -8,6 +8,7 @@ import escapeRoom.model.GameArea.RoomBuilder.Room;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class ClueManager {
@@ -23,12 +24,12 @@ public class ClueManager {
         this.clueService = clueService;
         this.inputService = inputService;
         this.elementFactory = elementFactory;
-//        this.roomManager = roomManager;
+        this.roomManager = roomManager;
     }
 
     public Clue create(int roomId) throws SQLException{
 
-        String opc = "y";
+        String opc = "yes";
         do {
             try {
 
@@ -52,7 +53,7 @@ public class ClueManager {
                 System.out.println("Error creating Clue: " + e.getMessage());
             }
 
-            inputService.readBoolean("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? y/n");
 
         } while (!opc.equals("no"));
 
@@ -81,7 +82,7 @@ public class ClueManager {
         try {
             Optional<Clue> ClueOpt = clueService.read(id);
             if (ClueOpt.isEmpty()) {
-                System.out.println("Clue not found with ID: " + id);
+                System.out.println("Clue with ID: " + id + " not found!");
             } else {
                 System.out.println(ClueOpt);
             }
@@ -90,6 +91,14 @@ public class ClueManager {
             System.out.println("Error retrieving Clue from DB: " + e.getMessage());;
         }
 
+    }
+
+    public List<Clue> getAllClues() throws SQLException {
+
+        List<Clue> clues = clueService.getAllEntities(connection);
+        clues.forEach(System.out::println);
+
+        return clues;
     }
 
     public void update(int id){
