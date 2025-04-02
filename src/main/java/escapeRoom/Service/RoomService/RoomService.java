@@ -7,10 +7,10 @@ import escapeRoom.model.GameArea.RoomBuilder.Room;
 import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import escapeRoom.Service.GetAllService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class RoomService implements GetAllService<Room>, CheckExistenceService<Room> {
@@ -53,16 +53,59 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
         };
     }
 
+
     @Override
     public Room mapResultSetToEntity(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("room_id");
         String name = resultSet.getString("room_name");
         String theme = mapStringToTheme(resultSet.getString("room_theme"));
         Difficulty difficulty = mapStringToDifficulty(resultSet.getString("room_difficulty"));
-        Room room = new Room(id,name,theme,difficulty,null,null);
-        room.setId(id);
-        return room;
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        boolean hasCluesColumn = false;
+        boolean hasPropsColumn = false;
+
+        // Check if the column exists
+        int columnCount = metaData.getColumnCount();
+        for (int i = 1; i <= columnCount; i++) {
+            String columnName = metaData.getColumnName(i);
+            if (columnName.equalsIgnoreCase("clues_ids")) {
+                hasCluesColumn = true;
+            }
+            if (columnName.equalsIgnoreCase("props_ids")) {
+                hasPropsColumn = true;
+            }
+        }
+
+        if (!hasCluesColumn) {
+            Room room = new Room(name, theme, difficulty);
+            room.setId(id);
+            return room;
+        } else {
+            // Process clues
+            String cluesStr = resultSet.getString("clues_ids");
+            List<Integer> clueIds = (cluesStr != null && !cluesStr.isBlank()) ?
+                    Arrays.stream(cluesStr.split(","))
+                            .map(Integer::parseInt)
+                            .toList()
+                    : new ArrayList<>();
+
+            // Process props
+            List<Integer> propIds = new ArrayList<>();
+            if (hasPropsColumn) {
+                String propsStr = resultSet.getString("props_ids");
+                propIds = (propsStr != null && !propsStr.isBlank()) ?
+                        Arrays.stream(propsStr.split(","))
+                                .map(Integer::parseInt)
+                                .toList()
+                        : new ArrayList<>();
+            }
+
+            return new Room(id, name, theme, difficulty, clueIds, propIds);
+        }
     }
+
+
 
     @Override
     public Room create(Room entity) throws SQLException {
@@ -82,9 +125,23 @@ public class RoomService implements GetAllService<Room>, CheckExistenceService<R
         }
     }
 
+
     @Override
     public Optional<Room> read(int id) throws SQLException {
-        String query = "SELECT * FROM " + getTableName() + " WHERE room_id = ?";
+        String query = """
+        SELECT 
+            r.room_id,
+            r.room_name,
+            r.room_theme,
+            r.room_difficulty,
+            GROUP_CONCAT(DISTINCT c.clue_id ORDER BY c.clue_id SEPARATOR ',') AS clues_ids,
+            GROUP_CONCAT(DISTINCT p.prop_id ORDER BY p.prop_id SEPARATOR ',') AS props_ids
+        FROM room r
+        LEFT JOIN clue c ON r.room_id = c.room_room_id
+        LEFT JOIN prop p ON r.room_id = p.room_room_id
+        WHERE r.room_id = ?
+        GROUP BY r.room_id, r.room_name, r.room_theme, r.room_difficulty
+    """;
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()){

@@ -59,8 +59,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
-                    System.out.println("Generated ID: " + generatedId); // Confirma el ID
-                    entity.setId(generatedId); // Asegúrate de estar asignando el ID al objeto
+                    entity.setId(generatedId);
                 } else {
                     throw new SQLException("Failed to obtain generated ID.");
                 }
@@ -77,13 +76,13 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
             preparedStatement.setInt(1, id);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    // Get actual values from the database
-                    int retrievedId = rs.getInt("prop_id");  // Real ID from DB
+
+                    int retrievedId = rs.getInt("prop_id");
                     String propTypeString = rs.getString("prop_type");
                     int roomId = rs.getInt("room_room_id");
                     int value = rs.getInt("prop_value");
 
-                    // Convert String to Enum
+
                     PropType type;
                     try {
                         type = PropType.valueOf(propTypeString.toUpperCase());
@@ -91,7 +90,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
                         throw new SQLException("Invalid PropType found in database: " + propTypeString);
                     }
 
-                    // Use the correct constructor for reading
+
                     return Optional.of(new Prop(type, retrievedId, roomId, value));
                 } else {
                     return Optional.empty();

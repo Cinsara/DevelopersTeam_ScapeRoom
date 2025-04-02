@@ -58,11 +58,9 @@ public class Prop implements GameElement {
 
     @Override
     public String toString() {
-        return "Prop{" +
-                "type=" + type +
-                ", id=" + id +
-                ", room_room_id=" + room_room_id +
-                ", value=" + value +
-                '}';
+        return "Prop ID: " + id +
+                ", Type: " + type +
+                ", Room ID: " + room_room_id +
+                ", Value: " + value + "€";
     }
 }
