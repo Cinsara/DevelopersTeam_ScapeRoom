@@ -1,14 +1,17 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.GameController;
 
+import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 
 public class GameMenu {
     private GameController gameController;
     private InputService inputService;
+    private GeneralMenu generalMenu;
 
-    public GameMenu(GameController gameController, InputService inputService){
-        this.gameController = gameController;
+    public GameMenu(InputService inputService, GeneralMenu generalMenu){
+        this.gameController = new GameController();
         this.inputService = inputService;
+        this.generalMenu = generalMenu;
     }
 
     public int principalGameMenu(){
@@ -40,9 +43,13 @@ public class GameMenu {
                 case 5 -> gameController.playGame();
                 case 6 -> gameController.showBookedGames();
                 case 7 -> gameController.showAvailableGames();
-                case 0 -> System.out.println("Returning to the main menu.");
+                case 0 -> {
+                    System.out.println("Returning to the main menu.");
+                    generalMenu.startGeneralMenu();
+                    return;
+                }
                 default -> System.out.println("Invalid option. Please try again.");
             }
-        } while(option != 0);
+        } while(true);
     }
 }

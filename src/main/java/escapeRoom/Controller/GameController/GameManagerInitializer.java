@@ -1,4 +1,4 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.RewardService;

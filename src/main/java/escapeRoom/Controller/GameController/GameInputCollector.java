@@ -1,4 +1,4 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameInputCollector {
@@ -26,7 +25,7 @@ public class GameInputCollector {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listRooms = new StringBuilder();
         for (Room room: rooms){
-            listRooms.append("Room Number: ").append(room.getId()).append(" - Room Name: ").append(room.getName()).append(" - Room Theme: ").append(room.getTheme().name()).append(" - Room Difficulty: ").append(room.getDifficulty()).append("\n");
+            listRooms.append("Room Number: ").append(room.getId()).append(" - Room Name: ").append(room.getName()).append(" - Room Theme: ").append(room.getTheme()).append(" - Room Difficulty: ").append(room.getDifficulty()).append("\n");
         }
         AtomicInteger roomId = new AtomicInteger(inputService.readInt("Introduce the number of the room you want to play in :\n"+listRooms));
         while (rooms.stream().filter(room -> room.getId()==roomId.get()).toList().isEmpty()){

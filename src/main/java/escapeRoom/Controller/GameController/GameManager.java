@@ -1,9 +1,9 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
-import escapeRoom.Service.GameService.ClueService;
+import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;

@@ -1,9 +1,9 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.AssetService.TicketService;
+import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Controller.GameController.GameNotAvailableException;
 import escapeRoom.Service.GameService.GameService;
-import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
@@ -14,9 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
     static private GameManager gameManager;
