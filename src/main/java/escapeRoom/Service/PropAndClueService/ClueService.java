@@ -57,8 +57,7 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
-                    System.out.println("Generated ID: " + generatedId); // Confirma el ID
-                    entity.setId(generatedId); // Asegúrate de estar asignando el ID al objeto
+                    entity.setId(generatedId);
                 } else {
                     throw new SQLException("Failed to obtain generated ID.");
                 }
@@ -77,10 +76,9 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
             preparedStatement.setInt(1, id);
             try(ResultSet rs = preparedStatement.executeQuery()){
                 if (rs.next()) {
-                    // 1. Obtener el tipo de clue como String
+
                     String clueTypeString = rs.getString("clue_type");
 
-                    // 2. Convertir el String a ClueType
                     ClueType type;
                     try {
                         type = ClueType.valueOf(clueTypeString.toUpperCase());
@@ -88,10 +86,8 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
                         throw new SQLException("Invalid ClueType found in database: " + clueTypeString);
                     }
 
-                    // 3. Obtener room_id (por si lo necesitas más adelante)
                     int roomId = rs.getInt("room_room_id");
 
-                    // 4. Retornar el Clue correctamente
                     return Optional.of(new Clue(type, id, roomId));
                 } else {
                     return Optional.empty();

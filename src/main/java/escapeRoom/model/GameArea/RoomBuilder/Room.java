@@ -94,13 +94,11 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name=" + name +
-                ", theme=" + theme +
-                ", difficulty=" + difficulty +
-                ", clues_id=" + clues_id +
-                ", props_id=" + props_id +
-                '}';
+        return "Room ID: " + id +
+                ", Name: " + name +
+                ", Theme: " + theme +
+                ", Difficulty: " + difficulty +
+                ", Clues IDs: " + clues_id +
+                ", Props IDs: " + props_id ;
     }
 }

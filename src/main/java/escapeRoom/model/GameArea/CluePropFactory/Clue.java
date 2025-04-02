@@ -40,10 +40,8 @@ public class Clue implements GameElement {
 
     @Override
     public String toString() {
-        return "Clue{" +
-                "type=" + type +
-                ", id=" + id +
-                ", room_room_id=" + room_room_id +
-                '}';
+        return "Clue ID: "+ id +
+                ", Type: " + type +
+                ", Room ID: " + room_room_id;
     }
 }
