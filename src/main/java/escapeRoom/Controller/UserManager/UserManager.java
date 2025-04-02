@@ -1,4 +1,4 @@
-package escapeRoom.UserManager;
+package escapeRoom.Controller.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;

@@ -1,4 +1,4 @@
-package escapeRoom.NotificationManager;
+package escapeRoom.Controller.NotificationManager;
 
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;

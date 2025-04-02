@@ -1,10 +1,23 @@
-package escapeRoom.UserManager;
+package escapeRoom.Controller.UserManager;
 
-public class UserMenuPrueba {
-    private final UserManager userManager;
+import escapeRoom.Controller.GeneralMenu;
+import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.PeopleService.UserService;
 
-    public UserMenuPrueba(UserManager userManager){
-        this.userManager = userManager;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class UserMenu {
+    private UserManager userManager;
+    private GeneralMenu generalMenu;
+
+    public UserMenu(InputService inputService,GeneralMenu generalMenu){
+        try {
+            this.userManager = new UserManager(new UserService(),inputService);
+        } catch (SQLException e) {
+            System.out.println("Error:"+ e.getMessage());
+        }
+        this.generalMenu = generalMenu;
     }
 
     public void principalUserMenu(){
@@ -38,9 +51,13 @@ public class UserMenuPrueba {
                 case 5 -> userManager.deleteUserById();
                 case 6 -> userManager.subscribeUser();
                 case 7 -> userManager.unsubscribeUser();
-                case 0 -> System.out.println("Returning to the main menu.");
+                case 0 -> {
+                    System.out.println("Returning to the main menu.");
+                    generalMenu.startGeneralMenu();
+                    return;
+                }
                 default -> System.out.println("Invalid option. Please try again.");
             }
-        } while(option != 0);
+        } while(true);
     }
 }

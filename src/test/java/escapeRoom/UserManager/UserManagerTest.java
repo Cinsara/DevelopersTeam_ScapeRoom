@@ -1,6 +1,7 @@
 package escapeRoom.UserManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.UserManager.UserManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.PeopleArea.User;

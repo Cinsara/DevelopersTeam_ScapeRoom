@@ -1,21 +1,17 @@
 package escapeRoom.NotificationManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.NotificationManager.NotificationManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.Notification.Notification;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
