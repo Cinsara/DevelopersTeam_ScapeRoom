@@ -54,6 +54,7 @@ public class CertificateManager {
         } catch (IllegalArgumentException e){
             System.out.println("Validation error: " + e.getMessage());
         }
+        System.out.println("Certificated saved!");
     }
 
     public void validateCertificate(int gameId, int userId) throws SQLException {
