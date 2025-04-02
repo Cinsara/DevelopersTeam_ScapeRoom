@@ -60,17 +60,17 @@ public class GameManager {
                 .filter(game -> game.getRoom_id() == roomId)
                 .toList();
     }
-    public List<Game> showAvailableGAmes(){
+    public List<Game> showAvailableGames(){
         return this.games.stream().filter(game -> game.getCaptain_id()==0).toList();
     }
-    public List<Game> showAvailableGAmes(LocalDate dateGame){
+    public List<Game> showAvailableGames(LocalDate dateGame){
         return this.games.stream()
                 .filter(game->game.getCaptain_id()==0)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
 
     }
-    public List<Game> showAvailableGAmes(int roomId){
+    public List<Game> showAvailableGames(int roomId){
         return this.games.stream()
                 .filter(game->game.getCaptain_id()==0)
                 .filter(game -> game.getRoom_id() == roomId)
@@ -78,11 +78,11 @@ public class GameManager {
     }
 
     public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
-        Game targetGame, bookableGame;
+
         try {
             TicketService ticketService = new TicketService();
-            targetGame = selectGame(dateGame,roomId);
-            bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
+            Game targetGame = selectGame(dateGame,roomId);
+            Game bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
             AssetFactory ticketFactory = new AssetFactory();
             Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20.0F);
             ticketService.create(newTicket);
@@ -90,6 +90,31 @@ public class GameManager {
             gameService.update(bookableGame);
             return true;
         } catch (GameNotAvailableException | SQLException e ) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean cancelBooking(LocalDate dateGame,int roomId){
+        try{
+            TicketService ticketService = new TicketService();
+            Game targetGame = selectGame(dateGame,roomId);
+            if (targetGame.getCaptain_id()==0) {
+                throw new GameNotBookedException(targetGame);
+            }
+            if (targetGame.getEllapsedTimeInSeconds()>0){
+                throw new GameAlreadyPlayed(targetGame.getDate(),targetGame.getRoom_id());
+            }
+            List<Ticket> allTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
+            Ticket targetTicket = allTickets.stream().filter(ticket -> ticket.getGame_id() == targetGame.getId()).findFirst().orElse(null);
+            if (targetTicket == null){
+                throw new NoTicketException(targetGame);
+            }
+            ticketService.delete(targetTicket.getId());
+            targetGame.setCaptain(0);
+            targetGame.getPlayers_id().clear();
+            return true;
+        } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
