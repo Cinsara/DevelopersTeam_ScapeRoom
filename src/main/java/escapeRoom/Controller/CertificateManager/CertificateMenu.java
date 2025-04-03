@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class CertificateMenu {
     private CertificateManager certificateManager;
 
-    public CertificateMenu(InputService inputService,) {
+    public CertificateMenu(InputService inputService) {
         try{
             this.certificateManager = new CertificateManager(inputService);
         } catch (SQLException e) {

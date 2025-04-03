@@ -3,6 +3,8 @@ package escapeRoom.Controller.GameController;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -25,10 +27,10 @@ public class GameController {
 
         try{
             LocalDate gameDate = InputCollector.getDate();
-            int roomId = InputCollector.getRoom();
-            int captainId = InputCollector.getTargetCostumer();
-            if (gameManager.bookGame(gameDate,roomId,captainId)){
-                System.out.println("New game booked on the " + gameDate + " in room " + roomId + " for customer " + captainId);
+            Room room = InputCollector.getRoom();
+            User captain = InputCollector.getTargetCostumer();
+            if (gameManager.bookGame(gameDate, room.getId(), captain.getId())){
+                System.out.println("New game booked on the " + gameDate + " in room " + room.getName().toUpperCase() + " for customer " + captain.getName().toUpperCase() + " " + captain.getLastname().toUpperCase());
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -38,9 +40,9 @@ public class GameController {
     public void cancelBooking(){
         try{
             LocalDate gameDate = InputCollector.getDate();
-            int roomId = InputCollector.getRoom();
-            if(gameManager.cancelBooking(gameDate,roomId)){
-                System.out.println("Booking on the " + gameDate + " in room " + roomId + " cancelled.");
+            Room room = InputCollector.getRoom();
+            if(gameManager.cancelBooking(gameDate,room.getId())){
+                System.out.println("Booking on the " + gameDate + " in room " + room.getName().toUpperCase() + " cancelled.");
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -50,11 +52,11 @@ public class GameController {
     public void addPlayerToGame(){
         try {
             LocalDate gameDate = InputCollector.getDate();
-            int roomId = InputCollector.getRoom();
-            int playerId = InputCollector.getTargetCostumer();
+            Room room = InputCollector.getRoom();
+            User player = InputCollector.getTargetCostumer();
 
-            if (gameManager.addPlayerToGame(gameDate,roomId,playerId)){
-                System.out.println("Customer number "+ playerId + " added to the game to be held on " + gameDate+ "in room " + roomId);
+            if (gameManager.addPlayerToGame(gameDate,room.getId(), player.getId())){
+                System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" added to the game to be held on " + gameDate+ "in room " + room.getName().toUpperCase());
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -64,10 +66,10 @@ public class GameController {
 
         try {
             LocalDate gameDate = InputCollector.getDate();
-            int roomId = InputCollector.getRoom();
-            int playerId = InputCollector.getTargetCostumer();
-            if (gameManager.removePlayerFromGame(gameDate,roomId,playerId)){
-                System.out.println("Customer number "+ playerId + " removed from the game to be held on " + gameDate + "in room " + roomId);
+            Room room = InputCollector.getRoom();
+            User player = InputCollector.getTargetCostumer();
+            if (gameManager.removePlayerFromGame(gameDate,room.getId(),player.getId())){
+                System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" removed from the game to be held on " + gameDate + "in room " + room.getName().toUpperCase());
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -78,8 +80,8 @@ public class GameController {
 
         try{
             LocalDate gameDate = InputCollector.getDate();
-            int roomId = InputCollector.getRoom();
-            Game playedGame = gameManager.playGame(gameDate,roomId);
+            Room room = InputCollector.getRoom();
+            Game playedGame = gameManager.playGame(gameDate,room.getId());
             if (playedGame != null){
                 String result = playedGame.isSuccess() ? "success":"failure";
                 System.out.println("On the " + playedGame.getDate() + " a game was played in room " + playedGame.getRoom_id()+ ". Its result was a " + result + ", after " + playedGame.getEllapsedTimeInSeconds() + "seconds.");
@@ -98,7 +100,7 @@ public class GameController {
                 case 2:
                     yield gameManager.showBookedGames(InputCollector.getDate());
                 case 3:
-                    yield gameManager.showBookedGames(InputCollector.getRoom());
+                    yield gameManager.showBookedGames(InputCollector.getRoom().getId());
                 default:
                     yield new ArrayList<>();
             };
@@ -122,7 +124,7 @@ public class GameController {
                 case 2:
                     yield gameManager.showAvailableGames(InputCollector.getDate());
                 case 3:
-                    yield gameManager.showAvailableGames(InputCollector.getRoom());
+                    yield gameManager.showAvailableGames(InputCollector.getRoom().getId());
                 default:
                     yield new ArrayList<>();
             };

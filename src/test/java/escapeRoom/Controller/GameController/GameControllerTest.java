@@ -18,7 +18,7 @@ class GameControllerTest {
 
     @Test
     void bookGame() {
-        String simulateInput = "2025 04 05\n1\n1";
+        String simulateInput = "2025 04 06\n3\n3";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
