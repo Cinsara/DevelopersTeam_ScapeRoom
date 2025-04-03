@@ -3,6 +3,7 @@ package escapeRoom.Controller;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.CertificateManager.CertificateMenu;
 import escapeRoom.Controller.GameController.GameMenu;
+import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Controller.NotificationManager.NotificationMenu;
 import escapeRoom.Controller.RewardController.RewardController;
 import escapeRoom.Controller.TicketController.TicketMenu;
@@ -21,6 +22,7 @@ public class GeneralMenu {
     private UserMenu userMenu;
     private NotificationMenu notificationMenu;
     private CertificateMenu certificateMenu;
+    private InventoryController inventoryController;
 
     public GeneralMenu(){
         this.inputService = new InputService(new Scanner(System.in));
@@ -30,6 +32,7 @@ public class GeneralMenu {
         this.userMenu = new UserMenu(this.inputService);
         this.notificationMenu = new NotificationMenu(this.inputService);
         this.certificateMenu = new CertificateMenu(this.inputService);
+        this.inventoryController = new InventoryController();
     }
 
     public int principalGeneralMenu(){
@@ -43,6 +46,8 @@ public class GeneralMenu {
                 4. User related operations
                 5. Notification Center
                 6. Certification Center
+                7. Room related operations
+                8. Inventory
                 0. Exit.
                 ------""";
         return inputService.readInt(menu);
@@ -58,6 +63,8 @@ public class GeneralMenu {
                 case 4 -> userMenu.startUserMenu();
                 case 5 -> notificationMenu.startNotificationMenu();
                 case 6 -> certificateMenu.startCertificationMenu();
+                case 7 -> System.out.println("Nothing yet");
+                case 8 -> inventoryController.showInventory();
                 case 0 -> {
                     System.out.println("Bye bye!");
                     try{
