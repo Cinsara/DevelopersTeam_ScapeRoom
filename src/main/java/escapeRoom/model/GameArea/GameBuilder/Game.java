@@ -126,7 +126,14 @@ public class Game {
 
     public void selfDescribe(){
         StringBuilder description = new StringBuilder();
-        description.append("Game number ").append(this.id).append(" //Date: ").append(this.date).append(" //Room: ").append(this.room_id).append(" // Booking Status: ").append(this.captain_id==0? "available":"booked");
+        description.append("Game number ").append(this.id)
+                .append(" //Date: ").append(this.date)
+                .append(" //Room: ").append(this.room_id)
+                .append(" // Booking Status: ").append(this.captain_id==0? "available":"booked")
+                .append(" // Result: ").append(this.isSuccess()? "success":"failure")
+                .append(" // Clues used: ").append(this.used_clues_id.size())
+                .append(" // Rewards given: ").append(this.rewards_id.size())
+                .append(" // Size team: ").append(this.players_id.size());
         System.out.println(description);
     }
 

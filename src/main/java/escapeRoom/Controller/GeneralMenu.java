@@ -6,6 +6,7 @@ import escapeRoom.Controller.GameController.GameMenu;
 import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Controller.NotificationManager.NotificationMenu;
 import escapeRoom.Controller.RewardController.RewardController;
+import escapeRoom.Controller.RoomManager.RoomMenu;
 import escapeRoom.Controller.TicketController.TicketMenu;
 import escapeRoom.Controller.UserManager.UserMenu;
 import escapeRoom.Service.InputService.InputService;
@@ -23,6 +24,7 @@ public class GeneralMenu {
     private NotificationMenu notificationMenu;
     private CertificateMenu certificateMenu;
     private InventoryController inventoryController;
+    private RoomMenu roomMenu;
 
     public GeneralMenu(){
         this.inputService = new InputService(new Scanner(System.in));
@@ -33,6 +35,7 @@ public class GeneralMenu {
         this.notificationMenu = new NotificationMenu(this.inputService);
         this.certificateMenu = new CertificateMenu(this.inputService);
         this.inventoryController = new InventoryController();
+        this.roomMenu = new RoomMenu(this.inputService);
     }
 
     public int principalGeneralMenu(){
@@ -63,7 +66,7 @@ public class GeneralMenu {
                 case 4 -> userMenu.startUserMenu();
                 case 5 -> notificationMenu.startNotificationMenu();
                 case 6 -> certificateMenu.startCertificationMenu();
-                case 7 -> System.out.println("Nothing yet");
+                case 7 -> roomMenu.startRoomMenu();
                 case 8 -> inventoryController.showInventory();
                 case 0 -> {
                     System.out.println("Bye bye!");

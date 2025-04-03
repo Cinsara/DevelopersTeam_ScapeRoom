@@ -1,5 +1,6 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.RoomManager;
 
+import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
 
@@ -9,14 +10,17 @@ public class RoomMenu {
 
     private RoomManager roomManager;
     private InputService inputService;
-    private GeneralMenu generalMenu;
 
 
-    public RoomMenu(InputService inputService, GeneralMenu generalMenu) throws SQLException {
-        this.roomManager = new RoomManager();
+    public RoomMenu(InputService inputService)  {
         this.inputService = inputService;
-        this.generalMenu = generalMenu;
-        RoomService roomService = new RoomService();
+        try{
+            this.roomManager = new RoomManager(this.inputService);
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
     }
 
     public int principalRoomMenu(){
@@ -33,22 +37,21 @@ public class RoomMenu {
         return inputService.readInt(menu);
     }
 
-    public void startRoomMenu() throws SQLException {
+    public void startRoomMenu() {
         int option;
         do {
             option = principalRoomMenu();
             switch(option){
                 case 1 -> roomManager.createRoom();
-                case 2 -> roomManager.getAllRooms();
+                case 2 -> new InventoryController().showInventory();
                 case 3 -> roomManager.updateRoom();
                 case 4 -> roomManager.deleteRoom();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
-                    generalMenu.startGeneralMenu();
-//                    return;
+                    return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }
-        } while(option!=0);
+        } while(true);
     }
 }

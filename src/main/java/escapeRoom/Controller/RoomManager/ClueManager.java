@@ -1,4 +1,4 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
@@ -19,13 +19,11 @@ public class ClueManager{
     private ClueService clueService;
     private InputService inputService;
     private GameElementFactory elementFactory;
-    private RoomManager roomManager;
 
-    public ClueManager(ClueService clueService, InputService inputService,
-                       GameElementFactory elementFactory, RoomManager roomManager) throws SQLException {
-        this.clueService = clueService;
+    public ClueManager(InputService inputService) throws SQLException {
+        this.clueService = new ClueService(ConnectionManager.getConnection());
         this.inputService = inputService;
-        this.elementFactory = elementFactory;
+        this.elementFactory = new ClueFactory();
     }
 
     public ClueManager() throws SQLException {

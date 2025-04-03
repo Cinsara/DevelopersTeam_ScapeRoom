@@ -1,4 +1,4 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
@@ -22,20 +22,18 @@ public class RoomManager {
     private ClueManager clueManager;
     private PropManager propManager;
 
-    public RoomManager(RoomService roomService, ClueManager clueManager,
-                       PropManager propManager, InputService inputService,
-                       GameElementFactory clueFactory, GameElementFactory propFactory ) throws SQLException {
-        this.roomService = roomService;
-        this.clueManager = clueManager;
-        this.propManager = propManager;
+    public RoomManager( InputService inputService) throws SQLException {
         this.inputService = inputService;
-        this.clueFactory = clueFactory;
-        this.propFactory = propFactory;
+        this.roomService = new RoomService();
+        this.clueManager = new ClueManager(inputService);
+        this.propManager = new PropManager(inputService);
+        this.clueFactory = new ClueFactory();
+        this.propFactory = new PropFactory();
     }
 
     public RoomManager() throws SQLException {}
 
-    public void createRoom() throws SQLException {
+    public void createRoom() {
 
         try{
             int id = getNextRoomId();
@@ -112,8 +110,7 @@ public class RoomManager {
         }
     }
 
-    public void readRoom(int id) throws SQLException {
-
+    public void readRoom(int id) {
         try {
             Optional<Room> roomOpt = roomService.read(id);
             if (roomOpt.isEmpty()) {
@@ -121,35 +118,32 @@ public class RoomManager {
             } else {
                 System.out.println(roomOpt);
             }
-
         } catch (SQLException e) {
             System.out.println("Error retrieving Room from DB: " + e.getMessage());;
         }
 
     }
 
-    public List<Room> getAllRooms() throws SQLException {
-
-        return roomService.getAllEntities(connection);
-
+    public List<Room> getAllRooms() {
+        try{
+            return roomService.getAllEntities(connection);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;
+        }
     }
 
-    public int getNextRoomId() throws SQLException {
-
+    public int getNextRoomId()  {
         Optional<Integer> maxId = getAllRooms().stream()
                 .map(Room::getId)
                 .max(Integer::compareTo);
 
         return maxId.orElse(0) + 1;
-
     }
 
-    public void updateRoom() throws SQLException {
-
+    public void updateRoom() {
         getAllRooms();
-
         int roomId = inputService.readInt("Which room do you want to update?");
-
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
@@ -242,7 +236,7 @@ public class RoomManager {
         }
     }
 
-    public void deleteRoom() throws SQLException {
+    public void deleteRoom() {
 
         getAllRooms();
 

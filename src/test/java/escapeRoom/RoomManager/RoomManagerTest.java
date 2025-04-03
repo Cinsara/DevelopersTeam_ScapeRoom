@@ -1,12 +1,12 @@
-package escapeRoom.Manager;
+package escapeRoom.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.RoomManager.ClueManager;
+import escapeRoom.Controller.RoomManager.PropManager;
+import escapeRoom.Controller.RoomManager.RoomManager;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.PropAndClueService.ClueService;
-import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,8 +46,7 @@ class RoomManagerTest {
        GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
 
-        roomManager = new RoomManager(roomService, clueManager, propManager, testInputService,
-                clueFactory, propFactory);
+        roomManager = new RoomManager(testInputService);
 
     }
 

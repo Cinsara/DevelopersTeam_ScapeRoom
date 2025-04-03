@@ -28,7 +28,7 @@ public class InventoryController {
             clues.forEach(clue -> {
                 description.append("- ").append(clue.getType()).append("\n");
             });
-            description.append(props.size()).append( "props:\n");
+            description.append(props.size()).append( " props:\n");
             props.forEach(prop -> {
                 description.append("- ").append(prop.getType()).append(" value ").append(prop.getValue()).append("\n");
             });

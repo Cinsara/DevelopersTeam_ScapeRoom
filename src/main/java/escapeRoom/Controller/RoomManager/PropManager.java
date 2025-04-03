@@ -1,4 +1,4 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
@@ -19,13 +19,12 @@ public class PropManager {
     private PropService propService;
     private InputService inputService;
     private GameElementFactory elementFactory;
-    private RoomManager roomManager;
 
-    public PropManager(PropService propService, InputService inputService,
-                       GameElementFactory elementFactory) throws SQLException {
-        this.propService = propService;
+
+    public PropManager(InputService inputService) throws SQLException {
+        this.propService = new PropService(ConnectionManager.getConnection());
         this.inputService = inputService;
-        this.elementFactory = elementFactory;
+        this.elementFactory = new PropFactory();
     }
 
     public PropManager() throws SQLException {};

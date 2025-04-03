@@ -144,7 +144,7 @@ public class GameController {
         StringBuilder listOptions = new StringBuilder();
         listOptions.append("1. All the ").append(bookedOrAvailable).append(" games\n").append("2. Only the ").append(bookedOrAvailable).append(" games on a given date\n").append("3. Only the ").append(bookedOrAvailable).append(" games in a given room.\n").append("4. Take me back!");
         int input;
-        do {input = inputService.readInt(menuBasis + listOptions);} while(!new HashSet<Integer>(List.of(1, 2, 3, 4)).contains(input));
+        do {input = inputService.readInt(menuBasis + listOptions);} while(!new HashSet<>(List.of(1, 2, 3, 4)).contains(input));
         return input;
     }
 

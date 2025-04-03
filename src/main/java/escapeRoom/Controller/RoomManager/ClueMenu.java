@@ -1,31 +1,29 @@
-package escapeRoom.Manager;
+package escapeRoom.Controller.RoomManager;
 
 
 import escapeRoom.Service.InputService.InputService;
 
 import java.sql.SQLException;
 
-public class PropMenu {
-
-    private PropManager propManager;
+public class ClueMenu {
+    private ClueManager clueManager;
     private InputService inputService;
-    private GeneralMenu generalMenu;
 
-    public PropMenu(InputService inputService, GeneralMenu generalMenu) throws SQLException {
-        this.propManager = new PropManager();
+    public ClueMenu(InputService inputService) throws SQLException {
+        this.clueManager = new ClueManager();
         this.inputService = inputService;
-        this.generalMenu = generalMenu;
+
     }
 
     public int principalRoomMenu(){
         String menu = """
                 ------
-                Prop menu:
+                Clue menu:
                 ------
-                1. Create Prop
-                2. Show all Props
-                3. Update Prop
-                4. Delete Prop
+                1. Create Clue
+                2. Show all Clues
+                3. Update Clue
+                4. Delete Clue
                 0. Back to the main menu.
                 ------""";
         return inputService.readInt(menu);
@@ -36,13 +34,12 @@ public class PropMenu {
         do {
             option = principalRoomMenu();
             switch(option){
-                case 1 -> propManager.create();
-                case 2 -> propManager.getAllProps();
-                case 3 -> propManager.update();
-                case 4 -> propManager.delete();
+                case 1 -> clueManager.create();
+                case 2 -> clueManager.getAllClues();
+                case 3 -> clueManager.update();
+                case 4 -> clueManager.delete();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
-                    generalMenu.startGeneralMenu();
                     return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");
