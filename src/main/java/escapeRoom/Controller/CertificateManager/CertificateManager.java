@@ -1,7 +1,9 @@
 package escapeRoom.Controller.CertificateManager;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
+import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
@@ -13,8 +15,11 @@ import escapeRoom.model.PeopleArea.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class CertificateManager {
@@ -40,8 +45,10 @@ public class CertificateManager {
 
     public void inputsCertificationCreation(){
         try {
-            int gameId = inputService.readInt("Enter the Game ID: ");
-            int userId = inputService.readInt("Enter the User ID:" );
+            LocalDate gameDate = InputCollector.getDate();
+            int userId = InputCollector.getTargetCostumer().getId();
+            int gameId = getGameIdByDate(gameDate);
+
             validateCertificate(gameId,userId);
 
             Certificate certificate = new Certificate(userId, gameId);
@@ -54,7 +61,7 @@ public class CertificateManager {
         } catch (IllegalArgumentException e){
             System.out.println("Validation error: " + e.getMessage());
         }
-        System.out.println("Certificated saved!");
+        System.out.println("\nCertificated saved!");
     }
 
     public void validateCertificate(int gameId, int userId) throws SQLException {
@@ -80,6 +87,15 @@ public class CertificateManager {
         return gameHasUserService.getMatches(gameId).contains(userId);
     }
 
+    public int getGameIdByDate(LocalDate gameDate) throws SQLException,IllegalArgumentException{
+        Connection connection = ConnectionManager.getConnection();
+        return gameService.getAllEntities(connection).stream()
+                .filter(g -> g.getDate().equals(gameDate))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Date not valid."))
+                .getId();
+    }
+
     public String createCertificate(Certificate certificate) throws SQLException {
         Game game = gameService.read(certificate.getGame_id())
                 .orElseThrow(() -> new SQLException("Game data not found"));
@@ -101,7 +117,15 @@ public class CertificateManager {
                 game.getDate().format(dateFormatter) + "\n- Completion time: " + minutes + " minutes.";
 
         String home = System.getProperty("user.home");
-        String filePath = Paths.get(home, "Desktop", "Certificate_" + user.getName() + "_" + user.getLastname() + ".txt").toString();
+        String fileName = "Certificate_" + user.getName() + "_" + user.getLastname() + ".txt";
+        String filePath;
+
+        try {
+            filePath = Paths.get(home, "Desktop", fileName).toString();
+            Files.createDirectories(Paths.get(filePath).getParent());
+        } catch(Exception e) {
+            filePath = Paths.get(home,fileName).toString();
+        }
 
         try(FileWriter writer = new FileWriter(filePath)) {
             writer.write(certificateText);
