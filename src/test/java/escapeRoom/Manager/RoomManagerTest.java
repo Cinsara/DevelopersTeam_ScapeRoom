@@ -24,6 +24,8 @@ class RoomManagerTest {
 
     public static RoomService roomService;
     public static RoomManager roomManager;
+    private ClueManager clueManager;
+    private PropManager propManager;
 
     String simulatedInput = """
         Alien House
@@ -41,17 +43,11 @@ class RoomManagerTest {
     @BeforeEach
     void setup() throws SQLException {
 
-        ClueService clueService = new ClueService(ConnectionManager.getConnection());
-        PropService propService = new PropService(ConnectionManager.getConnection());
-        GameElementFactory clueFactory = new ClueFactory();
+       GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
 
-        ClueManager clueManager = new ClueManager(clueService, testInputService,clueFactory);
-        PropManager propManager = new PropManager(propService, testInputService, propFactory);
         roomManager = new RoomManager(roomService, clueManager, propManager, testInputService,
                 clueFactory, propFactory);
-
-
 
     }
 
@@ -83,7 +79,7 @@ class RoomManagerTest {
             System.out.println("SQLException during test: " + e.getMessage());
         }
 
-        roomManager.deleteRoom(roomManager.getNextRoomId()-1);
+//        roomManager.deleteRoom(roomManager.getNextRoomId()-1);
 
     }
 

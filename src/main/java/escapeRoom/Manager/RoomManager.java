@@ -16,7 +16,7 @@ public class RoomManager {
 
     private final Connection connection = ConnectionManager.getConnection();
     private RoomService roomService;
-    private final InputService inputService;
+    private InputService inputService;
     private GameElementFactory clueFactory;
     private GameElementFactory propFactory;
     private ClueManager clueManager;
@@ -32,6 +32,8 @@ public class RoomManager {
         this.clueFactory = clueFactory;
         this.propFactory = propFactory;
     }
+
+    public RoomManager() throws SQLException {}
 
     public void createRoom() throws SQLException {
 
@@ -142,7 +144,11 @@ public class RoomManager {
 
     }
 
-    public void updateRoom(int roomId) throws SQLException {
+    public void updateRoom() throws SQLException {
+
+        getAllRooms();
+
+        int roomId = inputService.readInt("Which room do you want to update?");
 
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
@@ -236,15 +242,19 @@ public class RoomManager {
         }
     }
 
-    public void deleteRoom(int id) throws SQLException {
+    public void deleteRoom() throws SQLException {
+
+        getAllRooms();
+
+        int roomId = inputService.readInt("Which room do you want to delete?");
 
         try {
-            Optional<Room> roomOpt = roomService.read(id);
+            Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
-                System.out.println("Room not found with ID: " + id);
+                System.out.println("Room not found with ID: " + roomId);
             } else {
-                roomService.delete(id);
-                System.out.println("Room with ID " + id + " deleted successfully!");
+                roomService.delete(roomId);
+                System.out.println("Room with ID " + roomId + " deleted successfully!");
             }
         } catch (SQLException e) {
             System.out.println("Error deleting Room: " + e.getMessage());

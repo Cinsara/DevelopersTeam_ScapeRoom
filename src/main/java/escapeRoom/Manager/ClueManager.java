@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClueManager {
+public class ClueManager{
 
     private final Connection connection = ConnectionManager.getConnection();
     private ClueService clueService;
@@ -22,10 +22,14 @@ public class ClueManager {
     private RoomManager roomManager;
 
     public ClueManager(ClueService clueService, InputService inputService,
-                       GameElementFactory elementFactory) throws SQLException {
+                       GameElementFactory elementFactory, RoomManager roomManager) throws SQLException {
         this.clueService = clueService;
         this.inputService = inputService;
         this.elementFactory = elementFactory;
+    }
+
+    public ClueManager() throws SQLException {
+        clueService = new ClueService(connection);
     }
 
     public Clue create() throws SQLException{
@@ -148,14 +152,18 @@ public class ClueManager {
         return clues;
     }
 
-    public void update(int id) throws SQLException {
+    public void update() throws SQLException {
 
         RoomService roomService = new RoomService();
 
+        getAllClues();
+
+        int clueId = inputService.readInt("Which Clue do you want to update?");
+
         try {
-            Optional<Clue> clueOpt = clueService.read(id);
+            Optional<Clue> clueOpt = clueService.read(clueId);
             if (clueOpt.isEmpty()) {
-                System.out.println("Clue not found with ID: " + id);
+                System.out.println("Clue not found with ID: " + clueId);
                 return;
             }
 
@@ -185,7 +193,7 @@ public class ClueManager {
 
             Clue updatedClue = new Clue(
                     (ClueType) (newType.isEmpty() ? existingClue.getType() : newTypeEnum),
-                    id,
+                    clueId,
                     newRoomId==0 ? existingClue.getRoomId() : newRoomId);
 
             clueService.update(updatedClue);
@@ -198,15 +206,19 @@ public class ClueManager {
 
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete() throws SQLException {
+
+        getAllClues();
+
+        int clueId = inputService.readInt("Which Clue do you want to update?");
 
         try {
-            Optional<Clue> clueOpt = clueService.read(id);
+            Optional<Clue> clueOpt = clueService.read(clueId);
             if (clueOpt.isEmpty()) {
-                System.out.println("Clue not found with ID: " + id);
+                System.out.println("Clue not found with ID: " + clueId);
             } else {
-                clueService.delete(id);
-                System.out.println("Clue with ID: " + id + " deleted!");
+                clueService.delete(clueId);
+                System.out.println("Clue with ID: " + clueId + " deleted!");
             }
         } catch (SQLException e) {
             System.out.println("Error deleting Clue: " + e.getMessage());

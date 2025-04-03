@@ -28,6 +28,8 @@ public class PropManager {
         this.elementFactory = elementFactory;
     }
 
+    public PropManager() throws SQLException {};
+
     public Prop create() throws SQLException{
 
         RoomService roomService = new RoomService();
@@ -122,6 +124,14 @@ public class PropManager {
         return null;
     }
 
+    public List<Prop> getAllProps() throws SQLException {
+
+        List<Prop> props = propService.getAllEntities(connection);
+        props.forEach(System.out::println);
+
+        return props;
+    }
+
     public Optional<Prop> read(int id) throws SQLException {
 
         try {
@@ -139,14 +149,18 @@ public class PropManager {
         return null;
     }
 
-    public void update(int id) throws SQLException {
+    public void update() throws SQLException {
 
         RoomService roomService = new RoomService();
 
+        getAllProps();
+
+        int propId = inputService.readInt("Which Prop do you want to update?");
+
         try {
-            Optional<Prop> propOpt = propService.read(id);
+            Optional<Prop> propOpt = propService.read(propId);
             if (propOpt.isEmpty()) {
-                System.out.println("Prop not found with ID: " + id);
+                System.out.println("Prop not found with ID: " + propId);
                 return;
             }
 
@@ -178,7 +192,7 @@ public class PropManager {
 
             Prop updatedProp = new Prop(
                     (PropType) (newType.isEmpty() ? existingProp.getType() : newTypeEnum),
-                    id,
+                    propId,
                     newRoomId==0 ? existingProp.getRoomId() : newRoomId);
 
             propService.update(updatedProp);
@@ -191,15 +205,19 @@ public class PropManager {
 
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete() throws SQLException {
+
+        getAllProps();
+
+        int propId = inputService.readInt("Which Prop do you want to update?");
 
         try {
-            Optional<Prop> propOpt = propService.read(id);
+            Optional<Prop> propOpt = propService.read(propId);
             if (propOpt.isEmpty()) {
-                System.out.println("Prop not found with ID: " + id);
+                System.out.println("Prop not found with ID: " + propId);
             } else {
-                propService.delete(id);
-                System.out.println("Prop with ID " + id + "deleted successfully!");
+                propService.delete(propId);
+                System.out.println("Prop with ID " + propId + "deleted successfully!");
             }
         } catch (SQLException e) {
             System.out.println("Error deleting Prop: " + e.getMessage());
