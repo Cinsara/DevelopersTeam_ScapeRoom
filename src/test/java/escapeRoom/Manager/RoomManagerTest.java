@@ -6,6 +6,7 @@ import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
+import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 class RoomManagerTest {
 
@@ -64,6 +68,22 @@ class RoomManagerTest {
 
         roomManager.createRoom();
 
+        try{
+            List<Room> rooms = roomService.getAllEntities(roomService.getConnection());
+            Optional<Room> createdRoom = rooms.stream()
+                    .filter(r -> r.getName().equals("Alien House"))
+                    .findFirst();
+
+            assertTrue(createdRoom.isPresent(),"The room should exist");
+            assertEquals("Sci-Fi",createdRoom.get().getTheme());
+            assertEquals(3, createdRoom.get().getClues_id().size());
+            assertEquals(4, createdRoom.get().getProps_id().size());
+
+        } catch (SQLException e) {
+            System.out.println("SQLException during test: " + e.getMessage());
+        }
+
+        roomManager.deleteRoom(roomManager.getNextRoomId()-1);
 
     }
 
