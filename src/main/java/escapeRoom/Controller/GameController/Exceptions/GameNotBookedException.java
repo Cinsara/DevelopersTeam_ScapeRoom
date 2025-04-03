@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.Exceptions;
 
 import escapeRoom.model.GameArea.GameBuilder.Game;
 

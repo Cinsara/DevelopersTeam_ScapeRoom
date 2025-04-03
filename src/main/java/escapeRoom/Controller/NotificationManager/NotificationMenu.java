@@ -10,15 +10,13 @@ import java.sql.SQLException;
 
 public class NotificationMenu {
     private NotificationManager notificationManager;
-    private final GeneralMenu generalMenu;
 
-    public NotificationMenu(InputService inputService, GeneralMenu generalMenu) {
+    public NotificationMenu(InputService inputService) {
         try{
             this.notificationManager = new NotificationManager(new NotificationService(), ConnectionManager.getConnection(), inputService, new UserService());
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        this.generalMenu = generalMenu;
     }
 
     public void principalNotificationMenu(){
@@ -45,7 +43,6 @@ public class NotificationMenu {
                 case 2 -> notificationManager.deleteNotification();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
-                    generalMenu.startGeneralMenu();
                     return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");

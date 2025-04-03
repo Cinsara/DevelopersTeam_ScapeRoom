@@ -1,10 +1,19 @@
-package escapeRoom.CertificateManager;
+package escapeRoom.Controller.CertificateManager;
+
+import escapeRoom.Controller.GeneralMenu;
+import escapeRoom.Service.InputService.InputService;
+
+import java.sql.SQLException;
 
 public class CertificateMenu {
-    private final CertificateManager certificateManager;
+    private CertificateManager certificateManager;
 
-    public CertificateMenu(CertificateManager certificateManager) {
-        this.certificateManager = certificateManager;
+    public CertificateMenu(InputService inputService,) {
+        try{
+            this.certificateManager = new CertificateManager(inputService);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void principalCertificateMenu(){
@@ -26,9 +35,12 @@ public class CertificateMenu {
 
             switch(option){
                 case 1 -> certificateManager.inputsCertificationCreation();
-                case 0 -> System.out.println("Returning to the main menu.");
+                case 0 -> {
+                    System.out.println("Returning to the main menu.");
+                    return;
+                }
                 default -> System.out.println("Invalid option. Please try again.");
             }
-        } while(option != 0);
+        } while(true);
     }
 }

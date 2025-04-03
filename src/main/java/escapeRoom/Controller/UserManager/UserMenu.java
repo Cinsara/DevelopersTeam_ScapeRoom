@@ -9,15 +9,12 @@ import java.util.Scanner;
 
 public class UserMenu {
     private UserManager userManager;
-    private GeneralMenu generalMenu;
-
-    public UserMenu(InputService inputService,GeneralMenu generalMenu){
+    public UserMenu(InputService inputService){
         try {
             this.userManager = new UserManager(new UserService(),inputService);
         } catch (SQLException e) {
             System.out.println("Error:"+ e.getMessage());
         }
-        this.generalMenu = generalMenu;
     }
 
     public void principalUserMenu(){
@@ -53,7 +50,6 @@ public class UserMenu {
                 case 7 -> userManager.unsubscribeUser();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
-                    generalMenu.startGeneralMenu();
                     return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");

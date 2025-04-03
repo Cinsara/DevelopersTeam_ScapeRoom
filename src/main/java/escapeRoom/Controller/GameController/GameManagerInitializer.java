@@ -1,6 +1,7 @@
 package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;

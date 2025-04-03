@@ -1,4 +1,4 @@
-package escapeRoom.CertificateManager;
+package escapeRoom.Controller.CertificateManager;
 
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;

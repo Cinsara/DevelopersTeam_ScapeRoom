@@ -1,7 +1,6 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Service.InputService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
@@ -9,18 +8,17 @@ import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GameInputCollector {
+public class InputCollector {
     static InputService inputService = new InputService(new Scanner(System.in));
 
-    static public LocalDate getGameDate() {
+    static public LocalDate getDate() {
         return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
     }
-    static public int getGameRoomId() throws SQLException {
+    static public int getRoom() throws SQLException {
         RoomService roomService = new RoomService();
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listRooms = new StringBuilder();
@@ -48,12 +46,5 @@ public class GameInputCollector {
         return returnedValue.get();
     }
 
-    static public int chooseGamesClassification(String bookedOrAvailable){
-        String menuBasis = " ----\n Do you want to see \n ---- \n";
-        StringBuilder listOptions = new StringBuilder();
-        listOptions.append("1. All the ").append(bookedOrAvailable).append(" games\n").append("2. Only the ").append(bookedOrAvailable).append(" games on a given date\n").append("3. Only the ").append(bookedOrAvailable).append(" games in a given room.\n").append("4. Take me back!");
-        int input;
-        do {input = inputService.readInt(menuBasis + listOptions);} while(!new HashSet<Integer>(List.of(1, 2, 3, 4)).contains(input));
-        return input;
-    }
+
 }

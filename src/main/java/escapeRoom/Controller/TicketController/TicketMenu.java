@@ -6,12 +6,10 @@ import escapeRoom.Service.InputService.InputService;
 public class TicketMenu {
     private TicketController ticketController;
     private InputService inputService;
-    private GeneralMenu generalMenu;
 
-    public TicketMenu(InputService inputService, GeneralMenu generalMenu){
+    public TicketMenu(InputService inputService){
         this.ticketController = new TicketController();
         this.inputService = inputService;
-        this.generalMenu = generalMenu;
     }
 
     public int principalTicketMenu(){
@@ -34,7 +32,6 @@ public class TicketMenu {
                 case 2 -> ticketController.showYearlySalesInventory();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
-                    generalMenu.startGeneralMenu();
                     return;
                 }
                 default -> System.out.println("Invalid option. Please try again.");

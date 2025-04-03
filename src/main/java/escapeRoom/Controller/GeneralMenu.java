@@ -1,5 +1,7 @@
 package escapeRoom.Controller;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.CertificateManager.CertificateMenu;
 import escapeRoom.Controller.GameController.GameMenu;
 import escapeRoom.Controller.NotificationManager.NotificationMenu;
 import escapeRoom.Controller.RewardController.RewardController;
@@ -7,6 +9,8 @@ import escapeRoom.Controller.TicketController.TicketMenu;
 import escapeRoom.Controller.UserManager.UserMenu;
 import escapeRoom.Service.InputService.InputService;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class GeneralMenu {
@@ -16,14 +20,16 @@ public class GeneralMenu {
     private RewardController rewardController;
     private UserMenu userMenu;
     private NotificationMenu notificationMenu;
+    private CertificateMenu certificateMenu;
 
     public GeneralMenu(){
         this.inputService = new InputService(new Scanner(System.in));
-        this.ticketMenu = new TicketMenu(this.inputService,this);
-        this.gameMenu = new GameMenu(this.inputService, this);
+        this.ticketMenu = new TicketMenu(this.inputService);
+        this.gameMenu = new GameMenu(this.inputService);
         this.rewardController = new RewardController();
-        this.userMenu = new UserMenu(this.inputService,this);
-        this.notificationMenu = new NotificationMenu(this.inputService,this);
+        this.userMenu = new UserMenu(this.inputService);
+        this.notificationMenu = new NotificationMenu(this.inputService);
+        this.certificateMenu = new CertificateMenu(this.inputService);
     }
 
     public int principalGeneralMenu(){
@@ -36,11 +42,12 @@ public class GeneralMenu {
                 3. Rewards Inventory
                 4. User related operations
                 5. Notification Center
+                6. Certification Center
                 0. Exit.
                 ------""";
         return inputService.readInt(menu);
     }
-    public void startGeneralMenu(){
+    public void startGeneralMenu() {
         int option;
         do {
             option = principalGeneralMenu();
@@ -50,9 +57,19 @@ public class GeneralMenu {
                 case 3 -> rewardController.showAllRewards();
                 case 4 -> userMenu.startUserMenu();
                 case 5 -> notificationMenu.startNotificationMenu();
-                case 0 -> System.out.println("Bye bye!");
+                case 6 -> certificateMenu.startCertificationMenu();
+                case 0 -> {
+                    System.out.println("Bye bye!");
+                    try{
+                        Connection connection = ConnectionManager.getConnection();
+                        connection.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
                 default -> System.out.println("Invalid option. Please try again.");
             }
-        } while(option != 0);
+        } while(option !=0);
     }
 }

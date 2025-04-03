@@ -1,6 +1,10 @@
 package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
+import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
+import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
+import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.PropAndClueService.ClueService;

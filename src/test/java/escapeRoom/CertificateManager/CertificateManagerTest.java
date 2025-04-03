@@ -1,6 +1,7 @@
 package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.CertificateManager.CertificateManager;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
@@ -11,7 +12,6 @@ import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import escapeRoom.model.PeopleArea.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
