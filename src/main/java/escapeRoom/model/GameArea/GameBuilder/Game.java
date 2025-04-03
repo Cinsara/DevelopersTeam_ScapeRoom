@@ -124,6 +124,12 @@ public class Game {
         this.rewards_id = new ArrayList<>(rewards_id);
     }
 
+    public void selfDescribe(){
+        StringBuilder description = new StringBuilder();
+        description.append("Game number ").append(this.id).append(" //Date: ").append(this.date).append(" //Room: ").append(this.room_id).append(" // Booking Status: ").append(this.captain_id==0? "available":"booked");
+        System.out.println(description);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
