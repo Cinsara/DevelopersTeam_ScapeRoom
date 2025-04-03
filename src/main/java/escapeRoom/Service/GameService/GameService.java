@@ -4,7 +4,6 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.CheckExistenceService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.Service.CrudeService;
 import escapeRoom.Service.GetAllService;
 
 
@@ -48,10 +47,10 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             preparedStatement.setBoolean(2,entity.isSuccess());
             preparedStatement.setInt(3,entity.getEllapsedTimeInSeconds());
             preparedStatement.setInt(4,entity.getRoom_id());
-            if (entity.getCaptain_id() == null){
+            if (entity.getCaptainId() == null){
                 preparedStatement.setNull(5,java.sql.Types.INTEGER);
             }else{
-                preparedStatement.setInt(5,entity.getCaptain_id());
+                preparedStatement.setInt(5,entity.getCaptainId());
             }
             preparedStatement.executeUpdate();
             try {
@@ -85,10 +84,10 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             preparedStatement.setBoolean(2, entity.isSuccess());
             preparedStatement.setInt(3, entity.getEllapsedTimeInSeconds());
             preparedStatement.setInt(4, entity.getRoom_id());
-            if (entity.getCaptain_id() == null) {
+            if (entity.getCaptainId() == null) {
                 preparedStatement.setNull(5, java.sql.Types.INTEGER);
             } else {
-                preparedStatement.setInt(5, entity.getCaptain_id());
+                preparedStatement.setInt(5, entity.getCaptainId());
             }
             preparedStatement.setInt(6,entity.getId());
             preparedStatement.executeUpdate();

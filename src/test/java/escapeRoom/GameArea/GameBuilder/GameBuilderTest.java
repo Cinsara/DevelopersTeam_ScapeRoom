@@ -31,6 +31,6 @@ class GameBuilderTest {
         newGame.addPlayer(11);
         newGame.addPlayer(12);
         newGame.setCaptain(11);
-        System.out.println(newGame.getCaptain_id());
+        System.out.println(newGame.getCaptainId());
     }
 }

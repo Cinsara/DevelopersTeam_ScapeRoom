@@ -59,7 +59,7 @@ class GameManagerTest {
 
     void loadGames(){
         gameManager.getGames().forEach(game -> {
-            System.out.println("players: "+game.getPlayers_id().toString()+", clues: "+ game.getUsed_clues_id()+", rewards: "+game.getRewards_id());
+            System.out.println("players: "+game.getPlayers().toString()+", clues: "+ game.getUsed_clues_id()+", rewards: "+game.getRewards_id());
         });
     }
 
@@ -74,7 +74,7 @@ class GameManagerTest {
         Game newGame = gameManager.createGame(dateGame,1);
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
-        users.forEach(user -> newGame.addPlayer(user.getId()));
+        users.forEach(newGame::addPlayer);
         Game playedGame = gameManager.playGame(dateGame,1);
         System.out.println(playedGame.toString());
         GameService gameService = new GameService();

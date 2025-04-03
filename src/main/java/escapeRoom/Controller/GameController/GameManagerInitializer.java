@@ -6,11 +6,13 @@ import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
+import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -24,6 +26,7 @@ public class GameManagerInitializer {
         gameManager.setGameService(gameService);
         GameHasUserService gameHasUserService = new GameHasUserService();
         GameUsesClueService gameUsesClueService = new GameUsesClueService();
+        UserService userService = new UserService();
         RewardService rewardService = new RewardService();
         gameManager.setGames(new HashSet<>(gameService.getAllEntities(ConnectionManager.getConnection())));
         RoomService roomService = new RoomService();
@@ -40,7 +43,9 @@ public class GameManagerInitializer {
             };
         }
         for (Game game : gameManager.getGames()) {
-            game.setPlayers(gameHasUserService.getMatches(game.getId()));
+            game.setPlayers(gameHasUserService.getMatches(game.getId()).stream().map(playerId->{
+                   User newPlayer = userService.read(playerId)
+            }));
             game.setUsed_clues_id(gameUsesClueService.getMatches(game.getId()));
             game.setRewards_id(rewardService.getAllEntities(ConnectionManager.getConnection()).stream()
                     .filter(reward -> reward.getGame_id()== game.getId())

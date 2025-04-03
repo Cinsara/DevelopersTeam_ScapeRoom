@@ -1,5 +1,7 @@
 package escapeRoom.model.GameArea.GameBuilder;
 
+import escapeRoom.model.PeopleArea.User;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ public class GameBuilder {
     private int _id;
     private final int room_id;
     private final LocalDate date;
-    private List<Integer> players_id = new ArrayList<>();
+    private List<User> players = new ArrayList<>();
     private Integer captain_id;
     private boolean success;
     private List<Integer> used_clues_id = new ArrayList<>();;
@@ -26,13 +28,13 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder setPlayers_id(List<Integer> players_id) {
-        this.players_id = players_id;
+    public GameBuilder setPlayers(List<User> players) {
+        this.players = players;
         return this;
     }
 
-    public GameBuilder addPlayer(Integer player_id) {
-        this.players_id.add(player_id);
+    public GameBuilder addPlayer(User player) {
+        this.players.add(player);
         return this;
     }
 
@@ -66,7 +68,7 @@ public class GameBuilder {
         return this;
     }
     public Game build(){
-        return new Game(this._id,this.room_id,this.date,this.players_id,this.captain_id,this.success,this.used_clues_id,this.ellapsedTimeInSeconds,this.rewards_id);
+        return new Game(this._id,this.room_id,this.date,this.players,this.captain_id,this.success,this.used_clues_id,this.ellapsedTimeInSeconds,this.rewards_id);
     }
 
 }

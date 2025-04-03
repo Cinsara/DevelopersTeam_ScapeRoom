@@ -18,6 +18,7 @@ import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 import escapeRoom.model.GameArea.CluePropFactory.Clue;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -49,48 +50,48 @@ public class GameManager {
     }
 
     public List<Game> showBookedGames(){
-        return this.games.stream().filter(game->game.getCaptain_id()!=0).toList();
+        return this.games.stream().filter(game->game.getCaptainId()!=0).toList();
     }
     public List<Game> showBookedGames(LocalDate dateGame){
         return this.games.stream()
-                .filter(game->game.getCaptain_id()!=0)
+                .filter(game->game.getCaptainId()!=0)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
 
     }
     public List<Game> showBookedGames(int roomId){
         return this.games.stream()
-                .filter(game->game.getCaptain_id()!=0)
+                .filter(game->game.getCaptainId()!=0)
                 .filter(game -> game.getRoom_id() == roomId)
                 .toList();
     }
     public List<Game> showAvailableGames(){
-        return this.games.stream().filter(game -> game.getCaptain_id()==0).toList();
+        return this.games.stream().filter(game -> game.getCaptainId()==0).toList();
     }
     public List<Game> showAvailableGames(LocalDate dateGame){
         return this.games.stream()
-                .filter(game->game.getCaptain_id()==0)
+                .filter(game->game.getCaptainId()==0)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
 
     }
     public List<Game> showAvailableGames(int roomId){
         return this.games.stream()
-                .filter(game->game.getCaptain_id()==0)
+                .filter(game->game.getCaptainId()==0)
                 .filter(game -> game.getRoom_id() == roomId)
                 .toList();
     }
 
-    public boolean bookGame(LocalDate dateGame,int roomId,int captainId){
+    public boolean bookGame(LocalDate dateGame,int roomId,User captain){
 
         try {
             TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
             Game bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
             AssetFactory ticketFactory = new AssetFactory();
-            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captainId,bookableGame.getId(),20.0F);
+            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captain.getId(),bookableGame.getId(),20.0F);
             ticketService.create(newTicket);
-            bookableGame.setCaptain(captainId);
+            bookableGame.setCaptain(captain);
             gameService.update(bookableGame);
             return true;
         } catch (GameNotAvailableException | SQLException e ) {
@@ -103,7 +104,7 @@ public class GameManager {
         try{
             TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
-            if (targetGame.getCaptain_id()==0) {
+            if (targetGame.getCaptainId()==0) {
                 throw new GameNotBookedException(targetGame);
             }
             if (targetGame.getEllapsedTimeInSeconds()>0){
@@ -115,8 +116,8 @@ public class GameManager {
                 throw new NoTicketException(targetGame);
             }
             ticketService.delete(targetTicket.getId());
-            targetGame.setCaptain(0);
-            targetGame.getPlayers_id().clear();
+            targetGame.setCaptain(null);
+            targetGame.getPlayers().clear();
             return true;
         } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());
@@ -124,12 +125,12 @@ public class GameManager {
         }
     }
 
-    public boolean addPlayerToGame(LocalDate dateGame,int roomId, int userId){
+    public boolean addPlayerToGame(LocalDate dateGame,int roomId, User player){
        try {
            Game targetGame = selectGame(dateGame,roomId);
            GameHasUserService gameHasUserService = new GameHasUserService();
-           gameHasUserService.createMatch(targetGame.getId(),userId);
-           targetGame.addPlayer(userId);
+           gameHasUserService.createMatch(targetGame.getId(),player.getId());
+           targetGame.addPlayer(player);
            return true;
        } catch (GameNotAvailableException | SQLException e) {
            System.out.println("Error: " + e.getMessage());
@@ -137,12 +138,12 @@ public class GameManager {
        }
     }
 
-    public boolean removePlayerFromGame(LocalDate dateGame,int roomId, int userId){
+    public boolean removePlayerFromGame(LocalDate dateGame,int roomId, User player){
         try {
             Game targetGame = selectGame(dateGame,roomId);
             GameHasUserService gameHasUserService = new GameHasUserService();
-            gameHasUserService.deleteMatch(targetGame.getId(),userId);
-            targetGame.removePlayer(userId);
+            gameHasUserService.deleteMatch(targetGame.getId(),player.getId());
+            targetGame.removePlayer(player);
             return true;
         } catch (GameNotAvailableException | SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -185,7 +186,7 @@ public class GameManager {
     }
 
     private Game checkGameAvailable(Game game, LocalDate dateGame, int roomId) throws GameNotAvailableException {
-        if (game.getCaptain_id()!=0){
+        if (game.getCaptainId()!=0){
             throw new GameNotAvailableException(dateGame,roomId);
         }
         return game;
