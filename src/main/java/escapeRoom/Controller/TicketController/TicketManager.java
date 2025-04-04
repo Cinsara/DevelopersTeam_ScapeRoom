@@ -2,6 +2,7 @@ package escapeRoom.Controller.TicketController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
 import escapeRoom.model.GameArea.GameBuilder.Game;
@@ -37,7 +38,7 @@ public class TicketManager {
             float totalSale = listTickets.stream().map(Ticket::getPrice).reduce(0F, Float::sum);
             listTickets.forEach(ticket -> System.out.println("Ticket number " + ticket.getId()+ " for game number " + ticket.getGame_id() + " held by user number " + ticket.getUser_id()));
             System.out.println("\n---------------------------\nTotal Sales for year "+ year +"\n" + totalSale);
-        } catch (SQLException e) {
+        } catch (SQLException | AbsentEntityException e) {
             System.out.println("Error" + e.getMessage());
         }
     }

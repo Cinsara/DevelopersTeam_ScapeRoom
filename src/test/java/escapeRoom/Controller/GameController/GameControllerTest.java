@@ -29,6 +29,19 @@ class GameControllerTest {
             System.setIn(originalIn);
         }
     }
+    @Test
+    void cancelBooking() {
+        String simulateInput = "2025 04 06\n3";
+        InputStream originalIn = System.in;
+        try{
+            ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
+            System.setIn(testIn);
+            gameController.cancelBooking();
+
+        }finally{
+            System.setIn(originalIn);
+        }
+    }
 
     @Test
     void showBookedGames() {

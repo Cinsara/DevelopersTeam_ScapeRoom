@@ -2,6 +2,8 @@ package escapeRoom.GameArea.GameBuilder;
 
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.model.PeopleArea.User;
+import escapeRoom.model.PeopleArea.UserBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -17,9 +19,9 @@ class GameBuilderTest {
         Game newGame = newGameBuilder.build();
         assertEquals(2,newGame.getRoom_id());
         assertEquals(2015,newGame.getDate().getYear());
-        newGame.addPlayer(10);
-        assertEquals(10, newGame.getPlayers_id().getFirst());
-        newGame.calculateResult(List.of(1,5,6));
+        User newPlayer = new UserBuilder("Aure","Dardar").setId(10).build();
+        newGame.addPlayer(newPlayer);
+        assertEquals(10, newGame.getPlayers().getFirst().getId());
         System.out.println(newGame.toString());
     }
 
@@ -27,10 +29,12 @@ class GameBuilderTest {
     void testGetCaptain(){
         GameBuilder newGameBuilder = new GameBuilder(2, LocalDate.of(2015,9,26));
         Game newGame = newGameBuilder.build();
-        newGame.addPlayer(10);
-        newGame.addPlayer(11);
-        newGame.addPlayer(12);
-        newGame.setCaptain(11);
+        newGame.addPlayer(new UserBuilder("Aure","Dardar").setId(10).build());
+        newGame.addPlayer(new UserBuilder("Aure","Dardar").setId(11).build());
+        newGame.addPlayer(new UserBuilder("Aure","Dardar").setId(12).build());
+        newGame.setCaptain(new UserBuilder("Aure","Dardar").setId(13).build());
         System.out.println(newGame.getCaptainId());
+        assertEquals(4, newGame.getPlayers().size());
+        assertTrue(newGame.getPlayers().stream().map(User::getId).toList().contains(13));
     }
 }

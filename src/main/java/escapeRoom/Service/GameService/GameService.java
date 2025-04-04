@@ -29,13 +29,17 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             LocalDate date =  resultSet.getObject("game_date", LocalDate.class);
             int lengthInSec = resultSet.getInt("game_lengthInSec");
             int room_id = resultSet.getInt("room_room_id");
-            int captain_id = resultSet.getInt("captain_customer_id");
+            Integer captainId = null;
+            int raw = resultSet.getInt("captain_customer_id");
+            if (!resultSet.wasNull()) {
+                captainId = raw;
+            }
             boolean success = resultSet.getBoolean("game_success");
             return new GameBuilder(room_id,date)
-                    .setCaptain_id(captain_id)
+                    .setCaptainId(captainId)
                     .setEllapsedTimeInSeconds(lengthInSec)
                     .setSuccess(success)
-                    .set_id(id)
+                    .setId(id)
                     .build();
     }
 

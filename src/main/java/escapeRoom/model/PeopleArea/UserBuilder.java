@@ -10,7 +10,7 @@ public class UserBuilder {
     private LocalDate dateRegistration;
     private boolean notificationStatus;
 
-    UserBuilder(String name, String lastname) {
+    public UserBuilder(String name, String lastname) {
         this.name = name;
         this.lastname = lastname;
     }
