@@ -1,5 +1,9 @@
 package escapeRoom.Service.OutPutService;
 
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
+import escapeRoom.model.GameArea.CluePropFactory.ClueType;
+import escapeRoom.model.GameArea.CluePropFactory.Prop;
 import escapeRoom.model.PeopleArea.User;
 
 import java.lang.reflect.*;
@@ -81,6 +85,9 @@ public class TablePrinter {
             for (Object elem : listVal) {
                 try {
                     if(elem instanceof User) result.add(((User) elem).getName() + " " + ((User) elem).getLastname()+"(ID:"+((User) elem).getId()+")");
+                    else if(elem instanceof Clue) result.add(((Clue) elem).getTypeName());
+                    else if (elem instanceof Prop) result.add(((Prop) elem).getTypeName());
+                    else if (elem instanceof Reward) result.add("ID recipient: " + (((Reward) elem).getUser_id()));
                 } catch (Exception e) {
                     result.add("<?>");
                 }

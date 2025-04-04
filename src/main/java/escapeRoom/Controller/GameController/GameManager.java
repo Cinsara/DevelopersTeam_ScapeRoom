@@ -51,34 +51,34 @@ public class GameManager {
     }
 
     public List<Game> showBookedGames(){
-        return this.games.stream().filter(game->game.getCaptainId()!=0).toList();
+        return this.games.stream().filter(game->game.getCaptainId()!=null).toList();
     }
     public List<Game> showBookedGames(LocalDate dateGame){
         return this.games.stream()
-                .filter(game->game.getCaptainId()!=0)
+                .filter(game->game.getCaptainId()!=null)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
 
     }
     public List<Game> showBookedGames(int roomId){
         return this.games.stream()
-                .filter(game->game.getCaptainId()!=0)
+                .filter(game->game.getCaptainId()!=null)
                 .filter(game -> game.getRoom_id() == roomId)
                 .toList();
     }
     public List<Game> showAvailableGames(){
-        return this.games.stream().filter(game -> game.getCaptainId()==0).toList();
+        return this.games.stream().filter(game -> game.getCaptainId()==null).toList();
     }
     public List<Game> showAvailableGames(LocalDate dateGame){
         return this.games.stream()
-                .filter(game->game.getCaptainId()==0)
+                .filter(game->game.getCaptainId()==null)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
 
     }
     public List<Game> showAvailableGames(int roomId){
         return this.games.stream()
-                .filter(game->game.getCaptainId()==0)
+                .filter(game->game.getCaptainId()==null)
                 .filter(game -> game.getRoom_id() == roomId)
                 .toList();
     }

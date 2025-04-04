@@ -2,6 +2,7 @@ package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.RoomService.RoomService;
 
 import java.sql.SQLException;
@@ -43,7 +44,7 @@ public class RoomMenu {
             option = principalRoomMenu();
             switch(option){
                 case 1 -> roomManager.createRoom();
-                case 2 -> new InventoryController().showInventory();
+                case 2 -> System.out.println(TablePrinter.buildTable(roomManager.getAllRooms()));
                 case 3 -> roomManager.updateRoom();
                 case 4 -> roomManager.deleteRoom();
                 case 0 -> {
