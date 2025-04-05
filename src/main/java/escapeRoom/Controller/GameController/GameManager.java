@@ -105,7 +105,7 @@ public class GameManager {
         try{
             TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
-            if (targetGame.getCaptainId()==0) {
+            if (targetGame.getCaptainId()==null) {
                 throw new GameNotBookedException(targetGame);
             }
             if (targetGame.getEllapsedTimeInSeconds()>0){
@@ -192,7 +192,7 @@ public class GameManager {
     }
 
     private Game checkGameAvailable(Game game, LocalDate dateGame, int roomId) throws GameNotAvailableException {
-        if (game.getCaptainId()!=0){
+        if (game.getCaptainId()!=null){
             throw new GameNotAvailableException(dateGame,roomId);
         }
         return game;
