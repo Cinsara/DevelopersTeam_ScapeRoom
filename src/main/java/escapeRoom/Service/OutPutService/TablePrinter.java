@@ -2,7 +2,6 @@ package escapeRoom.Service.OutPutService;
 
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.CluePropFactory.ClueType;
 import escapeRoom.model.GameArea.CluePropFactory.Prop;
 import escapeRoom.model.PeopleArea.User;
 

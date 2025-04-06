@@ -45,10 +45,7 @@ class GameControllerTest {
 
     @Test
     void showBookedGames() {
-        String simulateInput = """
-        2
-        2025 04 06
-        """;
+        String simulateInput = "2\n2025 04 06";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
@@ -62,7 +59,7 @@ class GameControllerTest {
 
     @Test
     void showAvailabeGames() {
-        String simulateInput = "1";
+        String simulateInput = "2\n2025 04 06";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
