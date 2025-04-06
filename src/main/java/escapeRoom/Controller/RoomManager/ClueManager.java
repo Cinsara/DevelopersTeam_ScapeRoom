@@ -90,9 +90,10 @@ public class ClueManager{
         return null;
     }
 
-    public Clue addCluesToRoom(int roomId) throws SQLException{
+    public List<Clue> addCluesToRoom(int roomId) throws SQLException{
 
-        String opc = "yes";
+        List<Clue> clues = new ArrayList<>();
+        String opc;
         do {
             try {
 
@@ -107,8 +108,8 @@ public class ClueManager{
                 }
 
                 Clue newClue = (Clue) clueFactory.createGameElement(typeEnum, roomId);
-
                 clueService.create(newClue);
+                clues.add((newClue));
 
                 System.out.println("New Clue created -> ID: " + newClue.getId() +
                         ", Type: " + newClue.getType() +
@@ -118,11 +119,11 @@ public class ClueManager{
                 System.out.println("Error creating Clue: " + e.getMessage());
             }
 
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
         } while (!opc.equals("no"));
 
-        return null;
+        return clues;
     }
 
     public void read(int id) throws SQLException {
@@ -156,7 +157,7 @@ public class ClueManager{
 
         getAllClues();
 
-        int clueId = inputService.readInt("Which Clue do you want to update?");
+        int clueId = inputService.readInt("Which Clue do you want to update? (Enter the ID)");
 
         try {
             Optional<Clue> clueOpt = clueService.read(clueId);
@@ -208,7 +209,7 @@ public class ClueManager{
 
         getAllClues();
 
-        int clueId = inputService.readInt("Which Clue do you want to update?");
+        int clueId = inputService.readInt("Which Clue do you want to update? (Enter the ID)");
 
         try {
             Optional<Clue> clueOpt = clueService.read(clueId);
@@ -227,7 +228,7 @@ public class ClueManager{
 
         RoomService roomService = new RoomService();
 
-        String opc = "yes";
+        String opc;
         do {
             try {
                 Optional<Room> optRoom = null;
@@ -245,7 +246,7 @@ public class ClueManager{
                     read(clue);
                 }
 
-                int clueIdToRemove = inputService.readInt("Which one do you want to remove?");
+                int clueIdToRemove = inputService.readInt("Which one do you want to remove? (Enter the ID)");
 
                 clueService.delete(clueIdToRemove);
 
@@ -255,7 +256,7 @@ public class ClueManager{
             } catch (SQLException e) {
                 System.out.println("Error removing Clue: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to remove another one? y/n");
+            opc = inputService.readString("Do you want to remove another one? yes/no");
 
         } while (!opc.equals("no"));
 

@@ -69,7 +69,7 @@ public class PropManager {
             } catch (SQLException e) {
                 System.out.println("Error creating Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
         } while (!opc.equals("no"));
 
@@ -91,14 +91,20 @@ public class PropManager {
         return null;
     }
 
-    public Prop addPropsToRoom(int roomId) throws SQLException{
+    public List<Prop> addPropsToRoom(int roomId) throws SQLException{
 
-        String opc = "yes";
+        List<Prop> props = new ArrayList<>();
+        String opc;
         do {
             try {
                 GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
 
                 String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
+
+                while (!type.equals("CLOSET") && !type.equals("SPADE") && !type.equals("MOUNTAIN")) {
+                    type = (inputService.readString(("Please, enter only CLOSET, SPADE or MOUNTAIN: "))).toUpperCase();
+                }
+
                 PropType typeEnum = null;
 
                 switch (type) {
@@ -108,19 +114,17 @@ public class PropManager {
                 }
 
                 Prop newProp = (Prop) propFactory.createGameElement(typeEnum, roomId);
-
                 propService.create(newProp);
-
-                return newProp;
+                props.add(newProp);
 
             } catch (SQLException e) {
                 System.out.println("Error creating Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
-        } while (!opc.equals("no"));
+        } while (!opc.equalsIgnoreCase("no"));
 
-        return null;
+        return props;
     }
 
     public List<Prop> getAllProps() throws SQLException {
@@ -154,7 +158,7 @@ public class PropManager {
 
         getAllProps();
 
-        int propId = inputService.readInt("Which Prop do you want to update?");
+        int propId = inputService.readInt("Which Prop do you want to update? (Enter the ID)");
 
         try {
             Optional<Prop> propOpt = propService.read(propId);
@@ -208,7 +212,7 @@ public class PropManager {
 
         getAllProps();
 
-        int propId = inputService.readInt("Which Prop do you want to update?");
+        int propId = inputService.readInt("Which Prop do you want to update? (Enter the ID)");
 
         try {
             Optional<Prop> propOpt = propService.read(propId);
@@ -227,7 +231,7 @@ public class PropManager {
 
         RoomService roomService = new RoomService();
 
-        String opc = "yes";
+        String opc;
         do {
             try {
                 Optional<Room> optRoom = null;
@@ -245,7 +249,7 @@ public class PropManager {
                     read(prop);
                 }
 
-                int propIdToRemove = inputService.readInt("Which one do you want to remove?");
+                int propIdToRemove = inputService.readInt("Which one do you want to remove? (Enter the ID)");
 
                 propService.delete(propIdToRemove);
 
@@ -255,7 +259,7 @@ public class PropManager {
             } catch (SQLException e) {
                 System.out.println("Error removing Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to remove another one? y/n");
+            opc = inputService.readString("Do you want to remove another one? yes/no");
 
         } while (!opc.equals("no"));
 

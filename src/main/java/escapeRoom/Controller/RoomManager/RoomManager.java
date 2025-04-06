@@ -156,7 +156,7 @@ public class RoomManager {
             System.out.println("Error retrieving all the rooms available: " + e.getMessage());
         }
 
-        int roomId = inputService.readInt("Which room do you want to update?");
+        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)");
 
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
@@ -202,16 +202,17 @@ public class RoomManager {
             List<Integer> newCluesId = null;
             if (addClues) {
                 newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
-                newCluesId.add(clueManager.addCluesToRoom(roomId).getId());
+
+                for (Clue clue : clueManager.addCluesToRoom(roomId)) {
+                    newCluesId.add(clue.getId());
+                }
             }
 
             System.out.println();
 
             boolean removeClues = inputService.readBoolean("Do you want to remove Clues? yes/no");
 
-//            List<Integer> newCluesId = null;
             if (removeClues) {
-//                newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
                   clueManager.removeClueFromRoom(roomId);
             }
 
@@ -230,16 +231,16 @@ public class RoomManager {
 
             if (addProps) {
                 newPropsId = new ArrayList<>(roomOpt.get().getProps_id());
-                newPropsId.add(propManager.addPropsToRoom(roomId).getId());
+                for (Prop prop : propManager.addPropsToRoom(roomId)) {
+                    newPropsId.add(prop.getId());
+                }
             }
 
             System.out.println();
 
             boolean removeProps = inputService.readBoolean("Do you want to remove Props? yes/no");
 
-//            List<Integer> newCluesId = null;
             if (removeProps) {
-//                newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
                 propManager.removePropFromRoom(roomId);
             }
 
@@ -273,7 +274,7 @@ public class RoomManager {
 
         getAllRooms();
 
-        int roomId = inputService.readInt("Which room do you want to delete?");
+        int roomId = inputService.readInt("Which room do you want to delete? (Enter the ID)");
 
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
