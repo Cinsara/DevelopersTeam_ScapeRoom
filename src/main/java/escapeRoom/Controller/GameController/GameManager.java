@@ -105,23 +105,19 @@ public class GameManager {
         try{
             TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
-            isGameCancellable(targetGame);
+            validateGameCancellable(targetGame);
             targetGame.setCaptain(null);
             targetGame.getPlayers().clear();
             gameService.update(targetGame);
-            try{
-                Ticket targetTicket = hasGameTicket(targetGame,ticketService);
-                ticketService.delete(targetTicket.getId());
-                return true;
-            } catch (NoTicketException e) {
-                throw new NoTicketException(targetGame);
-            }
+            Ticket targetTicket = getGameTicket(targetGame,ticketService);
+            ticketService.delete(targetTicket.getId());
+            return true;
         } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
     }
-    private void isGameCancellable(Game game) throws GameNotBookedException, GameAlreadyPlayed {
+    private void validateGameCancellable(Game game) throws GameNotBookedException, GameAlreadyPlayed {
         if (game.getCaptainId()==null) {
             throw new GameNotBookedException(game);
         }
@@ -129,7 +125,7 @@ public class GameManager {
             throw new GameAlreadyPlayed(game.getDate(),game.getRoom_id());
         }
     }
-    private Ticket hasGameTicket(Game game, TicketService ticketService) throws SQLException, NoTicketException {
+    private Ticket getGameTicket(Game game, TicketService ticketService) throws SQLException, NoTicketException {
         List<Ticket> allTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
         Ticket targetTicket = allTickets.stream().filter(ticket -> ticket.getGame_id() == game.getId()).findFirst().orElse(null);
         if (targetTicket == null){
