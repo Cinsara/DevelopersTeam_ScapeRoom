@@ -3,6 +3,7 @@ package escapeRoom.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.UserManager.UserManager;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.PeopleArea.User;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +38,7 @@ class UserManagerTest {
         connection = ConnectionManager.getConnection();
         userService = new UserService();
 
-        inputService = new InputService(new Scanner(System.in));
+        inputService = InputServiceManager.getInputService();
         userManager = new UserManager(userService, inputService);
     }
 
@@ -50,7 +51,7 @@ class UserManagerTest {
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
-        inputService = new InputService(new Scanner(System.in));
+        inputService = InputServiceManager.getInputService();;
         userManager = new UserManager(userService, inputService);
     }
 

@@ -1,15 +1,15 @@
 package escapeRoom.Controller.TicketController;
 
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 
-import java.util.Scanner;
 
 public class TicketController {
     private TicketManager ticketManager;
     private InputService inputService;
     public  TicketController(){
         this.ticketManager = new TicketManager();
-        this.inputService = new InputService(new Scanner(System.in));
+        this.inputService = InputServiceManager.getInputService();;
     }
     public void showSalesInventory(){
         ticketManager.showSalesInventory();

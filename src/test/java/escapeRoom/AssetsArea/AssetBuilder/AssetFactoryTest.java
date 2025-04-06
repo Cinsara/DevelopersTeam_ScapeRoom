@@ -1,6 +1,9 @@
 package escapeRoom.AssetsArea.AssetBuilder;
 
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
+import escapeRoom.model.GameArea.CluePropFactory.ClueFactory;
+import escapeRoom.model.GameArea.CluePropFactory.ClueType;
 import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Theme;
 import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
@@ -13,6 +16,7 @@ import escapeRoom.model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.lang.annotation.ElementType;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,7 +34,8 @@ class AssetFactoryTest {
         Room newRoom = new Room(1,"Rock", Theme.FANTASTIC.getDisplayName(), Difficulty.HARD, List.of(1),List.of(2));
         newCertificate.expressAsset(newUser,newRoom,LocalDate.now());
         Reward newReward = (Reward) factory.createAsset(AssetType.REWARD,1,1);
-        Game newGame = new Game(1,1,LocalDate.of(2021,10,27),List.of(new User("ariel","sharon","lolo@gmail.com","0033", LocalDate.of(1983,11,26),false)),3,true,null,100,List.of(newReward));
+        Clue newClue = (Clue) new ClueFactory().createGameElement(ClueType.ENIGMA,1);
+        Game newGame = new Game(1,1,LocalDate.of(2021,10,27),List.of(new User("ariel","sharon","lolo@gmail.com","0033", LocalDate.of(1983,11,26),false)),3,true,List.of(newClue),100,List.of(newReward));
         newReward.expressAsset(newUser,newGame,newGame.getDate());
         Asset newTicket = factory.createAsset(AssetType.TICKET,1,1);
         System.out.println(newTicket.getId());

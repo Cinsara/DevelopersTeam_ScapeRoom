@@ -3,6 +3,7 @@ package escapeRoom.Controller.GameController;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
@@ -143,7 +144,7 @@ public class GameController {
         }
     }
     private int chooseGamesClassification(String bookedOrAvailable){
-        InputService inputService = new InputService(new Scanner(System.in));
+        InputService inputService = InputServiceManager.getInputService();
         String menuBasis = " ----\n Do you want to see \n ---- \n";
         StringBuilder listOptions = new StringBuilder();
         listOptions.append("1. All the ").append(bookedOrAvailable).append(" games\n").append("2. Only the ").append(bookedOrAvailable).append(" games on a given date\n").append("3. Only the ").append(bookedOrAvailable).append(" games in a given room.\n").append("4. Take me back!");

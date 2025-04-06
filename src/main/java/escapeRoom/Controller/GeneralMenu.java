@@ -10,6 +10,7 @@ import escapeRoom.Controller.RoomManager.RoomMenu;
 import escapeRoom.Controller.TicketController.TicketMenu;
 import escapeRoom.Controller.UserManager.UserMenu;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class GeneralMenu {
     private RoomMenu roomMenu;
 
     public GeneralMenu(){
-        this.inputService = new InputService(new Scanner(System.in));
+        this.inputService = InputServiceManager.getInputService();
         this.ticketMenu = new TicketMenu(this.inputService);
         this.gameMenu = new GameMenu(this.inputService);
         this.rewardController = new RewardController();
