@@ -28,7 +28,7 @@ public class CertificateMenu {
         int option;
         do {
             principalCertificateMenu();
-            option = certificateManager.selectOptionMenu();
+            option = inputService.readInt("Select an option:");
 
             switch(option){
                 case 1 -> certificateManager.inputsCertificationCreation();

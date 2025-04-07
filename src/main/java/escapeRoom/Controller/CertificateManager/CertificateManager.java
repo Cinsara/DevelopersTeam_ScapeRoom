@@ -1,6 +1,5 @@
 package escapeRoom.Controller.CertificateManager;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputCollector;
@@ -8,16 +7,15 @@ import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,12 +25,10 @@ public class CertificateManager {
     private final UserService userService;
     private final GameService gameService;
     private final RoomService roomService;
-    private final InputService inputService;
     private final GameHasUserService gameHasUserService;
     private final InputCollector inputCollector;
 
-    public CertificateManager(InputService inputService,CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService, InputCollector inputCollector) throws SQLException {
-        this.inputService = inputService;
+    public CertificateManager(CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService, InputCollector inputCollector) throws SQLException {
         this.certificateService = certificateService;
         this.userService = userService;
         this.gameService = gameService;
@@ -41,9 +37,6 @@ public class CertificateManager {
         this.inputCollector = inputCollector;
     }
 
-    public int selectOptionMenu(){
-        return inputService.readInt("Select an option:");
-    }
 
     public void inputsCertificationCreation(){
         try {
