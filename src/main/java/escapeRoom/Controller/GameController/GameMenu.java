@@ -1,14 +1,13 @@
 package escapeRoom.Controller.GameController;
 
-import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 
 public class GameMenu {
     private GameController gameController;
     private InputService inputService;
 
-    public GameMenu(InputService inputService){
-        this.gameController = new GameController();
+    public GameMenu(InputService inputService, GameController gameController){
+        this.gameController = gameController;
         this.inputService = inputService;
 
     }

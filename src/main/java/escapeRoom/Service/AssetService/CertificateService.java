@@ -3,11 +3,13 @@ package escapeRoom.Service.AssetService;
 import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
 
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CertificateService extends AssetService<Certificate> {
-    public CertificateService() throws SQLException {
+    public CertificateService(Connection connection) throws SQLException {
+        super(connection);
     }
     @Override
     public Certificate mapResultSetToEntity(ResultSet resultSet) throws SQLException {

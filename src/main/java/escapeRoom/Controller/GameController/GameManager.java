@@ -8,10 +8,12 @@ import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
+import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
+import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
 import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
@@ -21,21 +23,32 @@ import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.model.PeopleArea.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
 public class GameManager {
     private GameService gameService;
-
+    private TicketService ticketService;
+    private RewardService rewardService;
+    private GameHasUserService gameHasUserService;
+    private GameUsesClueService gameUsesClueService;
+    private UserService userService;
     private Set<Game> games;
 
     public Set<Game> getGames() {
         return games;
     }
 
-    public GameManager() throws SQLException, AbsentEntityException {
-        GameManagerInitializer.initialize(this);
+    public GameManager(GameService gameService, RoomService roomService, TicketService ticketService, RewardService rewardService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService) throws SQLException {
+        this.ticketService = ticketService;
+        this.rewardService = rewardService;
+        this.gameHasUserService = gameHasUserService;
+        this.gameUsesClueService = gameUsesClueService;
+
+        GameManagerInitializer.initialize(this,gameService,roomService,userService,gameHasUserService,gameUsesClueService,rewardService);
+
     }
 
     public Game createGame(LocalDate dateGame, int roomId){
@@ -86,7 +99,6 @@ public class GameManager {
     public boolean bookGame(LocalDate dateGame,int roomId,User captain){
 
         try {
-            TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
             Game bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
             AssetFactory ticketFactory = new AssetFactory();
@@ -103,7 +115,6 @@ public class GameManager {
 
     public boolean cancelBooking(LocalDate dateGame,int roomId){
         try{
-            TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
             validateGameCancellable(targetGame);
             targetGame.setCaptain(null);
@@ -137,7 +148,6 @@ public class GameManager {
     public boolean addPlayerToGame(LocalDate dateGame,int roomId, User player){
        try {
            Game targetGame = selectGame(dateGame,roomId);
-           GameHasUserService gameHasUserService = new GameHasUserService();
            gameHasUserService.createMatch(targetGame.getId(),player.getId());
            targetGame.addPlayer(player);
            return true;
@@ -150,7 +160,6 @@ public class GameManager {
     public boolean removePlayerFromGame(LocalDate dateGame,int roomId, User player){
         try {
             Game targetGame = selectGame(dateGame,roomId);
-            GameHasUserService gameHasUserService = new GameHasUserService();
             if(gameHasUserService.deleteMatch(targetGame.getId(),player.getId())){
                 targetGame.removePlayer(player);
                 return true;
@@ -173,7 +182,7 @@ public class GameManager {
             }
             List<Clue> availableClues = getAvailableClues(targetGame);
             targetGame.calculateResult(availableClues);
-            GameUsesClueService gameUsesClueService = new GameUsesClueService();
+
             for (Clue clue: targetGame.getUsedClues()){
                 gameUsesClueService.createMatch(targetGame.getId(),clue.getId());
             }
@@ -214,7 +223,6 @@ public class GameManager {
     }
     private List<Reward> saveRewards(Game game) throws SQLException {
         List<Reward> rewardsWithId = new ArrayList<>();
-        RewardService rewardService = new RewardService();
         for (Reward reward : game.getRewardsGiven()) {
             Reward createdReward = rewardService.create(reward);  // may throw SQLException
             rewardsWithId.add(createdReward);

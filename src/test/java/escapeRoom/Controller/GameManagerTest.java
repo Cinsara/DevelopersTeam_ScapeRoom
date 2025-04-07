@@ -4,15 +4,20 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.GameManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Service.AbsentEntityException;
+import escapeRoom.Service.AssetService.RewardService;
+import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
+import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
+import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.PeopleArea.User;
 import escapeRoom.model.PeopleArea.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,10 +28,12 @@ class GameManagerTest {
     static private GameManager gameManager;
     static private User existUser;
     static private User nonexistUser;
+    static private Connection connection;
 
     @BeforeAll
     static void setUp() throws SQLException, AbsentEntityException {
-        gameManager = new GameManager();
+        connection = ConnectionManager.getConnection();
+        gameManager = new GameManager(new GameService(connection),new RoomService(connection),new TicketService(connection),new RewardService(connection), new UserService(connection), new GameHasUserService(connection), new GameUsesClueService(connection));
         existUser = new UserBuilder("Bob","Smith").setDob(LocalDate.of(1985, 9,23)).setId(2).build();
         nonexistUser = new UserBuilder("Barbar","Lolipop").setId(20).build();
 
@@ -51,13 +58,13 @@ class GameManagerTest {
 
     @Test
     void addPlayerToGame() throws SQLException, GameNotAvailableException {
-        UserService userService = new UserService();
+        UserService userService = new UserService(connection);
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         for (User user : users){
             gameManager.addPlayerToGame(LocalDate.now(),2,user);
             if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user);
         }
-        GameHasUserService gameHasUserService = new GameHasUserService();
+        GameHasUserService gameHasUserService = new GameHasUserService(connection);
         List<Integer> usersFirstGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),2).getId());
         List<Integer> usersSecondGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),3).getId());
         System.out.println(usersFirstGame.toString());
@@ -81,12 +88,12 @@ class GameManagerTest {
     void playGame() throws SQLException {
         LocalDate dateGame = LocalDate.of(2026,1,1);
         Game newGame = gameManager.createGame(dateGame,1);
-        UserService userService = new UserService();
+        UserService userService = new UserService(connection);
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         users.forEach(newGame::addPlayer);
         Game playedGame = gameManager.playGame(dateGame,1);
         System.out.println(playedGame.toString());
-        GameService gameService = new GameService();
+        GameService gameService = new GameService(connection);
         gameService.delete(newGame.getId());
     }
 }

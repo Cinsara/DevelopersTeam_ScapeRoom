@@ -1,6 +1,5 @@
 package escapeRoom.Service.GameService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.Service.GetAllService;
@@ -12,9 +11,10 @@ import java.util.Optional;
 
 public class GameService implements GetAllService<Game> {
 
-    private final Connection connection = ConnectionManager.getConnection();
+    private final Connection connection;
 
-    public GameService() throws SQLException {
+    public GameService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

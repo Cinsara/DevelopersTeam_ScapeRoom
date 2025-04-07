@@ -30,13 +30,13 @@ public class CertificateManager {
     private final InputService inputService;
     private final GameHasUserService gameHasUserService;
 
-    public CertificateManager(InputService inputService) throws SQLException {
+    public CertificateManager(InputService inputService,CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService) throws SQLException {
         this.inputService = inputService;
-        this.certificateService = new CertificateService();
-        this.userService = new UserService();
-        this.gameService = new GameService();
-        this.roomService = new RoomService();
-        this.gameHasUserService = new GameHasUserService();
+        this.certificateService = certificateService;
+        this.userService = userService;
+        this.gameService = gameService;
+        this.roomService = roomService;
+        this.gameHasUserService = gameHasUserService;
     }
 
     public int selectOptionMenu(){

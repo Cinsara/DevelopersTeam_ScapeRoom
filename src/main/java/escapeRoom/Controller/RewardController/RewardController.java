@@ -14,14 +14,19 @@ import java.util.List;
 import java.util.Optional;
 
 public class RewardController {
+    private RewardService rewardService;
+    private GameService gameService;
+    private UserService userService;
 
+    public RewardController(RewardService rewardService, GameService gameService, UserService userService){
+        this.rewardService = rewardService;
+        this.gameService = gameService;
+        this.userService = userService;
+    }
 
     public void showAllRewards(){
         try{
-            RewardService rewardService = new RewardService();
             List<Reward> rewardList = rewardService.getAllEntities(ConnectionManager.getConnection());
-            GameService gameService = new GameService();
-            UserService userService = new UserService();
             for (Reward reward : rewardList){
                 Optional<User> potentialUser = userService.read(reward.getUser_id());
                 if (potentialUser.isEmpty()) throw new AbsentEntityException(reward.getUser_id(),User.class);

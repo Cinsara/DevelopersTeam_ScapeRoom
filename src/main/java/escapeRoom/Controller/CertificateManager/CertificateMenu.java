@@ -1,19 +1,16 @@
 package escapeRoom.Controller.CertificateManager;
 
-import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 
 import java.sql.SQLException;
 
 public class CertificateMenu {
     private CertificateManager certificateManager;
+    private InputService inputService;
 
-    public CertificateMenu(InputService inputService) {
-        try{
-            this.certificateManager = new CertificateManager(inputService);
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public CertificateMenu(InputService inputService, CertificateManager certificateManager) {
+        this.inputService = inputService;
+        this.certificateManager = certificateManager;
     }
 
     public void principalCertificateMenu(){

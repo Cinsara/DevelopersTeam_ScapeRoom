@@ -2,11 +2,13 @@ package escapeRoom.Service.AssetService;
 
 import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RewardService extends AssetService<Reward> {
-    public RewardService() throws SQLException {
+    public RewardService(Connection connection) throws SQLException {
+        super(connection);
     }
     @Override
     public Reward mapResultSetToEntity(ResultSet resultSet) throws SQLException {

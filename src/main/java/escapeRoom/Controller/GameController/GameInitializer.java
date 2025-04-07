@@ -19,9 +19,8 @@ import java.util.stream.Collectors;
 
 public class GameInitializer {
 
-    static protected void setGamePlayers(Game game) throws SQLException {
-        GameHasUserService gameHasUserService = new GameHasUserService();
-        UserService userService = new UserService();
+    static protected void setGamePlayers(Game game, UserService userService,GameHasUserService gameHasUserService) throws SQLException {
+
         game.setPlayers(gameHasUserService.getMatches(game.getId()).stream().map(playerId->{
             try{
                 Optional<User> potentialPlayer = userService.read(playerId);
@@ -34,9 +33,8 @@ public class GameInitializer {
         }).collect(Collectors.toList()));
     }
 
-    static protected void addCaptainToPlayersIfNeeded(GameManager gameManager, Game game) {
+    static protected void addCaptainToPlayersIfNeeded(GameManager gameManager, Game game,UserService userService) {
         try{
-            UserService userService = new UserService();
             if (isCaptainMissingFromPlayerList(game)){
                 Optional<User> potentialCaptain = userService.read(game.getCaptainId());
                 if (potentialCaptain.isPresent()){
@@ -54,13 +52,12 @@ public class GameInitializer {
     static protected boolean isCaptainMissingFromPlayerList(Game game){
         return game.getCaptainId()!=null && !game.getPlayers().stream().map(User::getId).toList().contains(game.getCaptainId()) ;
     }
-    static protected List<Clue> retrieveUsedClues(Game game) throws SQLException {
-        GameUsesClueService gameUsesClueService = new GameUsesClueService();
+    static protected List<Clue> retrieveUsedClues(Game game,GameUsesClueService gameUsesClueService) throws SQLException {
+
         return gameUsesClueService.getMatches(game.getId()).stream().map(GameInitializer::getClueFromId).collect(Collectors.toList());
     }
 
-    static protected List<Reward> retrieveRewardsGiven(Game game) throws SQLException {
-        RewardService rewardService = new RewardService();
+    static protected List<Reward> retrieveRewardsGiven(Game game, RewardService rewardService) throws SQLException {
         return rewardService.getAllEntities(ConnectionManager.getConnection()).stream()
                 .filter(reward -> reward.getGame_id()== game.getId())
                 .toList();

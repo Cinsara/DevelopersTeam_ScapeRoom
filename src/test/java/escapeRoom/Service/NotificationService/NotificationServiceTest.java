@@ -1,9 +1,11 @@
 package escapeRoom.Service.NotificationService;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.Notification.Notification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -14,7 +16,8 @@ class NotificationServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        service = new NotificationService();
+        Connection connection = ConnectionManager.getConnection();
+        service = new NotificationService(connection);
     }
     @Test
     void create() throws SQLException {

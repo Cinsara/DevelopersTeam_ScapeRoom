@@ -7,9 +7,9 @@ import escapeRoom.Service.InputService.InputServiceManager;
 public class TicketController {
     private TicketManager ticketManager;
     private InputService inputService;
-    public  TicketController(){
-        this.ticketManager = new TicketManager();
-        this.inputService = InputServiceManager.getInputService();;
+    public  TicketController(InputService inputService,TicketManager ticketManager){
+        this.ticketManager = ticketManager;
+        this.inputService = inputService;
     }
     public void showSalesInventory(){
         ticketManager.showSalesInventory();

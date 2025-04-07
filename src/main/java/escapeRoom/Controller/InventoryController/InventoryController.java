@@ -15,7 +15,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class InventoryController {
+    private RoomService roomService;
+    private PropService propService;
+    private ClueService clueService;
 
+    public InventoryController(RoomService roomService,PropService propService,ClueService clueService){
+        this.roomService = roomService;
+        this.propService = propService;
+        this.clueService = clueService;
+    }
     private class RoomWrapper{
         List<Prop> props;
         List<Clue> clues;
@@ -39,29 +47,34 @@ public class InventoryController {
 
     public void showInventory(){
         try{
-            List<Room> rooms = new RoomService().getAllEntities(ConnectionManager.getConnection());
-            List<Prop> props = new PropService(ConnectionManager.getConnection()).getAllEntities(ConnectionManager.getConnection());
-            List<Clue> clues = new ClueService(ConnectionManager.getConnection()).getAllEntities(ConnectionManager.getConnection());
-            StringBuilder header = new StringBuilder();
-            header.append("There are ").append(rooms.size()).append(" rooms in your escape room.\n")
-                    .append("Taking into account all your assets, the value of your escape room is : ").append(props.stream().map(Prop::getValue).reduce(0, Integer::sum))
-                    .append("\n********************* ROOM LIST ********************\n");
-            System.out.print(header);
-            List<RoomWrapper> roomWrappers = new ArrayList<>();
-            rooms.forEach(room -> {
-                RoomWrapper roomWrapper = new RoomWrapper();
-                roomWrapper.room = room;
-                roomWrapper.props = props.stream().filter(prop -> prop.getRoomId()==room.getId()).toList();
-                roomWrapper.clues = clues.stream().filter(clue -> clue.getRoomId()==room.getId()).toList();
-                roomWrappers.add(roomWrapper);
-            });
+            List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
+            List<Prop> props = propService.getAllEntities(ConnectionManager.getConnection());
+            List<Clue> clues = clueService.getAllEntities(ConnectionManager.getConnection());
+            printInventoryHeader(rooms,props);
+            List<RoomWrapper> roomWrappers = wrapRooms(rooms,props,clues);
             roomWrappers.forEach(RoomWrapper::describeRoom);
-
-
-
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    private List<RoomWrapper> wrapRooms(List<Room> rooms, List<Prop> props, List<Clue> clues){
+        List<RoomWrapper> roomWrappers = new ArrayList<>();
+        rooms.forEach(room -> {
+            RoomWrapper roomWrapper = new RoomWrapper();
+            roomWrapper.room = room;
+            roomWrapper.props = props.stream().filter(prop -> prop.getRoomId()==room.getId()).toList();
+            roomWrapper.clues = clues.stream().filter(clue -> clue.getRoomId()==room.getId()).toList();
+            roomWrappers.add(roomWrapper);
+        });
+        return roomWrappers;
+    }
+    private void printInventoryHeader(List<Room> rooms, List<Prop> props){
+        StringBuilder header = new StringBuilder();
+        header.append("There are ").append(rooms.size()).append(" rooms in your escape room.\n")
+                .append("Taking into account all your assets, the value of your escape room is : ").append(props.stream().map(Prop::getValue).reduce(0, Integer::sum))
+                .append("\n********************* ROOM LIST ********************\n");
+        System.out.print(header);
     }
 
 }

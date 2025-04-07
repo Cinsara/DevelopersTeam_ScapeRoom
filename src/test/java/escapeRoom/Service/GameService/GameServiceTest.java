@@ -1,5 +1,6 @@
 package escapeRoom.Service.GameService;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +19,7 @@ class GameServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        service = new GameService();
+        service = new GameService(ConnectionManager.getConnection());
 //        gameMaker = new GameMaker();
     }
     @Test

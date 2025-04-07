@@ -9,34 +9,18 @@ import escapeRoom.Controller.RewardController.RewardController;
 import escapeRoom.Controller.RoomManager.RoomMenu;
 import escapeRoom.Controller.TicketController.TicketMenu;
 import escapeRoom.Controller.UserManager.UserMenu;
+import escapeRoom.EscapeRoomInitializer;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
-public class GeneralMenu {
-    private InputService inputService;
-    private TicketMenu ticketMenu;
-    private GameMenu  gameMenu;
-    private RewardController rewardController;
-    private UserMenu userMenu;
-    private NotificationMenu notificationMenu;
-    private CertificateMenu certificateMenu;
-    private InventoryController inventoryController;
-    private RoomMenu roomMenu;
+public class EscapeRoom {
+    private EscapeRoomInitializer initializer;
 
-    public GeneralMenu(){
-        this.inputService = InputServiceManager.getInputService();
-        this.ticketMenu = new TicketMenu(this.inputService);
-        this.gameMenu = new GameMenu(this.inputService);
-        this.rewardController = new RewardController();
-        this.userMenu = new UserMenu(this.inputService);
-        this.notificationMenu = new NotificationMenu(this.inputService);
-        this.certificateMenu = new CertificateMenu(this.inputService);
-        this.inventoryController = new InventoryController();
-        this.roomMenu = new RoomMenu(this.inputService);
+    public EscapeRoom(EscapeRoomInitializer initializer) {
+        this.initializer = initializer;
     }
 
     public int principalGeneralMenu(){
@@ -54,21 +38,21 @@ public class GeneralMenu {
                 8. Inventory
                 0. Exit.
                 ------""";
-        return inputService.readInt(menu);
+        return initializer.getInputService().readInt(menu);
     }
-    public void startGeneralMenu() {
+    public void startEscapeRoom() {
         int option;
         do {
             option = principalGeneralMenu();
             switch(option){
-                case 1 -> gameMenu.startGameMenu();
-                case 2 -> ticketMenu.startticketMenu();
-                case 3 -> rewardController.showAllRewards();
-                case 4 -> userMenu.startUserMenu();
-                case 5 -> notificationMenu.startNotificationMenu();
-                case 6 -> certificateMenu.startCertificationMenu();
-                case 7 -> roomMenu.startRoomMenu();
-                case 8 -> inventoryController.showInventory();
+                case 1 -> initializer.getGameMenu().startGameMenu();
+                case 2 -> initializer.getTicketMenu().startticketMenu();
+                case 3 -> initializer.getRewardController().showAllRewards();
+                case 4 -> initializer.getUserMenu().startUserMenu();
+                case 5 -> initializer.getNotificationMenu().startNotificationMenu();
+                case 6 -> initializer.getCertificateMenu().startCertificationMenu();
+                case 7 -> initializer.getRoomMenu().startRoomMenu();
+                case 8 -> initializer.getInventoryController().showInventory();
                 case 0 -> {
                     System.out.println("Bye bye!");
                     try{

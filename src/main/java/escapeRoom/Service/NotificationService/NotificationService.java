@@ -11,9 +11,10 @@ import java.util.Optional;
 
 public class NotificationService implements GetAllService<Notification> {
 
-    private final Connection connection = ConnectionManager.getConnection();
+    private final Connection connection;
 
-    public NotificationService() throws SQLException {
+    public NotificationService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

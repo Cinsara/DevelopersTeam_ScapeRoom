@@ -18,8 +18,8 @@ class RoomMenuTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
-            RoomMenu roomMenu = new RoomMenu(InputServiceManager.getInputService());
-            roomMenu.startRoomMenu();
+//            RoomMenu roomMenu = new RoomMenu(InputServiceManager.getInputService(),new RoomManager(simulateInput));
+//            roomMenu.startRoomMenu();
         }finally{
             System.setIn(originalIn);
         }

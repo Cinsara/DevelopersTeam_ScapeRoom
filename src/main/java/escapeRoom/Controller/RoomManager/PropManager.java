@@ -19,11 +19,13 @@ public class PropManager {
     private PropService propService;
     private InputService inputService;
     private GameElementFactory elementFactory;
+    private RoomService roomService;
 
 
-    public PropManager(InputService inputService) throws SQLException {
-        this.propService = new PropService(ConnectionManager.getConnection());
+    public PropManager(InputService inputService, PropService propService,RoomService roomService) throws SQLException {
+        this.propService = propService;
         this.inputService = inputService;
+        this.roomService = roomService;
         this.elementFactory = new PropFactory();
     }
 
@@ -31,7 +33,6 @@ public class PropManager {
 
     public Prop create() throws SQLException{
 
-        RoomService roomService = new RoomService();
 
         String opc = "yes";
         do {
@@ -150,7 +151,6 @@ public class PropManager {
 
     public void update() throws SQLException {
 
-        RoomService roomService = new RoomService();
 
         getAllProps();
 
@@ -224,8 +224,6 @@ public class PropManager {
     }
 
     public void removePropFromRoom(int roomId) throws SQLException {
-
-        RoomService roomService = new RoomService();
 
         String opc = "yes";
         do {

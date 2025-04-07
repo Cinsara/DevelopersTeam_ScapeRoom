@@ -1,7 +1,6 @@
 package escapeRoom.Service.PeopleService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.CheckExistenceService;
 import escapeRoom.model.PeopleArea.User;
 import escapeRoom.Service.GetAllService;
 
@@ -10,13 +9,14 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class UserService implements GetAllService<User>{
-    private final Connection connection = ConnectionManager.getConnection();
+    private final Connection connection;
 
     public Connection getConnection() {
         return connection;
     }
 
-    public UserService() throws SQLException {
+    public UserService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

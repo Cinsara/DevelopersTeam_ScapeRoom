@@ -1,20 +1,17 @@
 package escapeRoom.Controller.UserManager;
 
-import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
 
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class UserMenu {
     private UserManager userManager;
-    public UserMenu(InputService inputService){
-        try {
-            this.userManager = new UserManager(new UserService(),inputService);
-        } catch (SQLException e) {
-            System.out.println("Error:"+ e.getMessage());
-        }
+    private InputService inputService;
+    
+    public UserMenu(InputService inputService, UserManager userManager){
+        this.inputService = inputService;
+        this.userManager = userManager;
     }
 
     public void principalUserMenu(){

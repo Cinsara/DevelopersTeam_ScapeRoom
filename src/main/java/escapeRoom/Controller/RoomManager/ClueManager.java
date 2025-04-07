@@ -19,11 +19,14 @@ public class ClueManager{
     private ClueService clueService;
     private InputService inputService;
     private GameElementFactory elementFactory;
+    private RoomService roomService;
 
-    public ClueManager(InputService inputService) throws SQLException {
-        this.clueService = new ClueService(ConnectionManager.getConnection());
+    public ClueManager(InputService inputService, ClueService clueService, RoomService roomService) throws SQLException {
+        this.clueService = clueService;
         this.inputService = inputService;
+        this.roomService = roomService;
         this.elementFactory = new ClueFactory();
+
     }
 
     public ClueManager() throws SQLException {
@@ -32,7 +35,6 @@ public class ClueManager{
 
     public Clue create() throws SQLException{
 
-        RoomService roomService = new RoomService();
 
         String opc = "yes";
         do {
@@ -152,8 +154,6 @@ public class ClueManager{
 
     public void update() throws SQLException {
 
-        RoomService roomService = new RoomService();
-
         getAllClues();
 
         int clueId = inputService.readInt("Which Clue do you want to update?");
@@ -224,8 +224,6 @@ public class ClueManager{
     }
 
     public void removeClueFromRoom(int roomId) throws SQLException {
-
-        RoomService roomService = new RoomService();
 
         String opc = "yes";
         do {

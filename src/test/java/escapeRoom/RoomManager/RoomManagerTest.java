@@ -47,13 +47,13 @@ class RoomManagerTest {
        GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
 
-        roomManager = new RoomManager(testInputService);
+        roomManager = new RoomManager(testInputService,new RoomService(ConnectionManager.getConnection()));
 
     }
 
     static {
         try {
-            roomService = new RoomService();
+            roomService = new RoomService(ConnectionManager.getConnection());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -47,20 +47,20 @@ class CertificateManagerTest {
         System.setOut(new PrintStream(outputStream));
 
         connection = ConnectionManager.getConnection();
-        certificateService = new CertificateService();
+        certificateService = new CertificateService(connection);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(inputService);
-        gameService = new GameService();
-        userService = new UserService();
-        roomService = new RoomService();
-        gameHasUserService = new GameHasUserService();
+        gameService = new GameService(connection);
+        userService = new UserService(connection);
+        roomService = new RoomService(connection);
+        gameHasUserService = new GameHasUserService(connection);
+        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService);
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(inputService);
+        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService);
     }
 
     @Test

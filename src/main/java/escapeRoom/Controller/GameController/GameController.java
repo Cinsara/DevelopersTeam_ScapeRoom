@@ -18,12 +18,8 @@ import java.util.Scanner;
 
 public class GameController {
     private GameManager gameManager;
-    public GameController(){
-        try{
-            this.gameManager = new GameManager();
-        } catch (SQLException | AbsentEntityException e) {
-            System.out.println("Error:" +e.getMessage());
-        }
+    public GameController(GameManager gameManager){
+        this.gameManager = gameManager;
     }
 
     public void bookGame(){

@@ -31,8 +31,8 @@ class NotificationManagerTest {
 
         InputService inputService = InputServiceManager.getInputService();;
         Connection connection = ConnectionManager.getConnection();
-        NotificationService notificationService = new NotificationService();
-        UserService userService = new UserService();
+        NotificationService notificationService = new NotificationService(connection);
+        UserService userService = new UserService(connection);
         notificationManager = new NotificationManager(notificationService,connection,inputService,userService);
 
 

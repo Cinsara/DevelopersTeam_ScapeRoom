@@ -4,6 +4,7 @@ import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.RoomService.RoomService;
+import escapeRoom.model.GameArea.RoomBuilder.Room;
 
 import java.sql.SQLException;
 
@@ -13,14 +14,11 @@ public class RoomMenu {
     private InputService inputService;
 
 
-    public RoomMenu(InputService inputService)  {
-        this.inputService = inputService;
-        try{
-            this.roomManager = new RoomManager(this.inputService);
+    public RoomMenu(InputService inputService, RoomManager roomManager) {
 
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        this.inputService = inputService;
+        this.roomManager = roomManager;
+
 
     }
 

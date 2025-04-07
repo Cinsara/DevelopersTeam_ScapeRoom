@@ -1,14 +1,13 @@
 package escapeRoom.Controller.TicketController;
 
-import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 
 public class TicketMenu {
     private TicketController ticketController;
     private InputService inputService;
 
-    public TicketMenu(InputService inputService){
-        this.ticketController = new TicketController();
+    public TicketMenu(InputService inputService, TicketController ticketController){
+        this.ticketController = ticketController;
         this.inputService = inputService;
     }
 

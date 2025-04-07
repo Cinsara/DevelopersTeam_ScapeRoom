@@ -9,9 +9,10 @@ import java.sql.*;
 import java.util.Optional;
 
 abstract class AssetService <T extends Asset> implements GetAllService<T> {
-    protected final Connection connection = ConnectionManager.getConnection();
+    protected final Connection connection;
 
-    protected AssetService() throws SQLException {
+    protected AssetService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
 

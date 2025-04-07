@@ -1,7 +1,6 @@
 package escapeRoom.Controller.NotificationManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.GeneralMenu;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.PeopleService.UserService;
@@ -10,13 +9,11 @@ import java.sql.SQLException;
 
 public class NotificationMenu {
     private NotificationManager notificationManager;
+    private InputService inputService;
 
-    public NotificationMenu(InputService inputService) {
-        try{
-            this.notificationManager = new NotificationManager(new NotificationService(), ConnectionManager.getConnection(), inputService, new UserService());
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public NotificationMenu(InputService inputService, NotificationManager notificationManager) {
+        this.inputService = inputService;
+        this.notificationManager = notificationManager;
     }
 
     public void principalNotificationMenu(){
