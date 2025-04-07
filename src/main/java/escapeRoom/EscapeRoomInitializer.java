@@ -3,6 +3,7 @@ package escapeRoom;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
 import escapeRoom.Controller.CertificateManager.CertificateMenu;
+import escapeRoom.Controller.CertificateManager.CertificateValidation;
 import escapeRoom.Controller.GameController.GameController;
 import escapeRoom.Controller.GameController.GameManager;
 import escapeRoom.Controller.GameController.GameMenu;
@@ -71,6 +72,7 @@ public class EscapeRoomInitializer {
     private final GameUsesClueService gameUsesClueService;
     private final TicketManager ticketManager;
     private final TicketController ticketController;
+    private final CertificateValidation certificateValidation;
 
     public EscapeRoomInitializer() throws SQLException, AbsentEntityException {
         //connection
@@ -93,7 +95,8 @@ public class EscapeRoomInitializer {
 
         //managers
         this.gameManager = new GameManager(gameService,roomService,ticketService,rewardService,userService,gameHasUserService,gameUsesClueService);
-        this.certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, inputCollector);
+        this.certificateValidation= new CertificateValidation(userService,gameService,roomService,gameHasUserService);
+        this.certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, inputCollector,certificateValidation);
         this.userManager = new UserManager(userService,inputService);
         this.clueManager = new ClueManager(inputService, clueService, roomService);
         this.propManager = new PropManager(inputService, propService,roomService);

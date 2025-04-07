@@ -2,6 +2,7 @@ package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.Controller.CertificateManager.CertificateValidation;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputCollector;
@@ -41,6 +42,7 @@ class CertificateManagerTest {
     private static UserService userService;
     private static RoomService roomService;
     private static GameHasUserService gameHasUserService;
+    private static CertificateValidation certificateValidation;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -54,14 +56,16 @@ class CertificateManagerTest {
         userService = new UserService(connection);
         roomService = new RoomService(connection);
         gameHasUserService = new GameHasUserService(connection);
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, new InputCollector(inputService,roomService,userService));
+        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,
+                gameHasUserService, new InputCollector(inputService,roomService,userService),certificateValidation);
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService,new InputCollector(inputService,roomService,userService));
+        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,
+                roomService,gameHasUserService,new InputCollector(inputService,roomService,userService),certificateValidation);
     }
 
     @Test
@@ -81,7 +85,7 @@ class CertificateManagerTest {
         int invalidGameId = -1;
         int userId = 1;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            certificateManager.validateCertificate(invalidGameId, userId);
+            certificateValidation.validateCertificate(invalidGameId, userId);
         });
         assertTrue(exception.getMessage().contains("Game not found"));
     }
@@ -91,7 +95,7 @@ class CertificateManagerTest {
         int gameId = 1;
         int invalidUserId = -1;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            certificateManager.validateCertificate(gameId, invalidUserId);
+            certificateValidation.validateCertificate(gameId, invalidUserId);
         });
         assertTrue(exception.getMessage().contains("User not found"));
     }
