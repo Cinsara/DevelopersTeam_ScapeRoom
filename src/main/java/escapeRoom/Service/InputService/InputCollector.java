@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InputCollector {
-    static InputService inputService = new InputService(new Scanner(System.in));
+    static InputService inputService = InputServiceManager.getInputService();
 
     static public LocalDate getDate() {
         return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");

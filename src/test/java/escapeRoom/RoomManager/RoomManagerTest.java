@@ -5,6 +5,7 @@ import escapeRoom.Controller.RoomManager.ClueManager;
 import escapeRoom.Controller.RoomManager.PropManager;
 import escapeRoom.Controller.RoomManager.RoomManager;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
@@ -38,7 +39,7 @@ class RoomManagerTest {
         1
         """;
     Scanner mockScanner = new Scanner(simulatedInput);
-    InputService testInputService = new InputService(mockScanner);
+    InputService testInputService = InputServiceManager.getInputService();
 
     @BeforeEach
     void setup() throws SQLException {

@@ -3,6 +3,7 @@ package escapeRoom.NotificationManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.NotificationManager.NotificationManager;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +29,7 @@ class NotificationManagerTest {
         InputStream simulatedIn = new ByteArrayInputStream("10\n".getBytes());
         System.setIn(simulatedIn);
 
-        InputService inputService = new InputService(new Scanner(System.in));
+        InputService inputService = InputServiceManager.getInputService();;
         Connection connection = ConnectionManager.getConnection();
         NotificationService notificationService = new NotificationService();
         UserService userService = new UserService();

@@ -105,25 +105,33 @@ public class GameManager {
         try{
             TicketService ticketService = new TicketService();
             Game targetGame = selectGame(dateGame,roomId);
-            if (targetGame.getCaptainId()==null) {
-                throw new GameNotBookedException(targetGame);
-            }
-            if (targetGame.getEllapsedTimeInSeconds()>0){
-                throw new GameAlreadyPlayed(targetGame.getDate(),targetGame.getRoom_id());
-            }
-            List<Ticket> allTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
-            Ticket targetTicket = allTickets.stream().filter(ticket -> ticket.getGame_id() == targetGame.getId()).findFirst().orElse(null);
-            if (targetTicket == null){
-                throw new NoTicketException(targetGame);
-            }
-            ticketService.delete(targetTicket.getId());
+            validateGameCancellable(targetGame);
             targetGame.setCaptain(null);
             targetGame.getPlayers().clear();
+            gameService.update(targetGame);
+            Ticket targetTicket = getGameTicket(targetGame,ticketService);
+            ticketService.delete(targetTicket.getId());
             return true;
         } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
+    }
+    private void validateGameCancellable(Game game) throws GameNotBookedException, GameAlreadyPlayed {
+        if (game.getCaptainId()==null) {
+            throw new GameNotBookedException(game);
+        }
+        if (game.getEllapsedTimeInSeconds()>0){
+            throw new GameAlreadyPlayed(game.getDate(),game.getRoom_id());
+        }
+    }
+    private Ticket getGameTicket(Game game, TicketService ticketService) throws SQLException, NoTicketException {
+        List<Ticket> allTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
+        Ticket targetTicket = allTickets.stream().filter(ticket -> ticket.getGame_id() == game.getId()).findFirst().orElse(null);
+        if (targetTicket == null){
+            throw new NoTicketException(game);
+        }
+        return targetTicket;
     }
 
     public boolean addPlayerToGame(LocalDate dateGame,int roomId, User player){

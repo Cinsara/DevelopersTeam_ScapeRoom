@@ -5,6 +5,7 @@ import escapeRoom.Controller.CertificateManager.CertificateManager;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -47,7 +48,7 @@ class CertificateManagerTest {
 
         connection = ConnectionManager.getConnection();
         certificateService = new CertificateService();
-        inputService = new InputService(new Scanner(System.in));
+        inputService = InputServiceManager.getInputService();
         certificateManager = new CertificateManager(inputService);
         gameService = new GameService();
         userService = new UserService();
@@ -58,7 +59,7 @@ class CertificateManagerTest {
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
-        inputService = new InputService(new Scanner(System.in));
+        inputService = InputServiceManager.getInputService();
         certificateManager = new CertificateManager(inputService);
     }
 
