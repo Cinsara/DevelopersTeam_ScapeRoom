@@ -52,7 +52,7 @@ class GameServiceTest {
     @Test
     void update() throws SQLException {
         GameBuilder newBuilder = new GameBuilder(4,LocalDate.now());
-        Game newGame = newBuilder.set_id(4).setSuccess(true).setCaptain_id(2).setEllapsedTimeInSeconds(4800).build();
+        Game newGame = newBuilder.setId(4).setSuccess(true).setCaptainId(2).setEllapsedTimeInSeconds(4800).build();
         service.update(newGame);
     }
 

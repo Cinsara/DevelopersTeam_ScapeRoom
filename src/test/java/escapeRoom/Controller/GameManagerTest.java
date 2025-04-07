@@ -3,11 +3,13 @@ package escapeRoom.Controller;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.GameManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
+import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.PeopleArea.User;
+import escapeRoom.model.PeopleArea.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +17,18 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class GameManagerTest {
     static private GameManager gameManager;
+    static private User existUser;
+    static private User nonexistUser;
 
     @BeforeAll
-    static void setUp() throws SQLException {
+    static void setUp() throws SQLException, AbsentEntityException {
         gameManager = new GameManager();
+        existUser = new UserBuilder("Bob","Smith").setDob(LocalDate.of(1985, 9,23)).setId(2).build();
+        nonexistUser = new UserBuilder("Barbar","Lolipop").setId(20).build();
 
     }
 
@@ -36,9 +44,9 @@ class GameManagerTest {
 
     @Test
     void bookGame() {
-     gameManager.bookGame(LocalDate.now().plusDays(1),3,1);
-     gameManager.bookGame(LocalDate.now(),1,10);
-     gameManager.bookGame(LocalDate.now(),1,1);
+     gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);
+     gameManager.bookGame(LocalDate.now(),1,nonexistUser);
+     gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);
     }
 
     @Test
@@ -46,8 +54,8 @@ class GameManagerTest {
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         for (User user : users){
-            gameManager.addPlayerToGame(LocalDate.now(),2,user.getId());
-            if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user.getId());
+            gameManager.addPlayerToGame(LocalDate.now(),2,user);
+            if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user);
         }
         GameHasUserService gameHasUserService = new GameHasUserService();
         List<Integer> usersFirstGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),2).getId());
@@ -56,25 +64,26 @@ class GameManagerTest {
         System.out.println(usersSecondGame.toString());
     }
     @Test
-
     void loadGames(){
         gameManager.getGames().forEach(game -> {
-            System.out.println("players: "+game.getPlayers_id().toString()+", clues: "+ game.getUsed_clues_id()+", rewards: "+game.getRewards_id());
+            System.out.println("players: "+game.getPlayers().stream().map(User::getName).toList().toString() +", clues: "+ game.getUsedClues()+", rewards: "+game.getRewardsGiven());
+            assertTrue(game.getCaptainId()== 0 || game.getPlayers().stream().map(User::getId).toList().contains(game.getCaptainId()),"Game " + game.getId() + "has captain");
         });
     }
 
     @Test
     void removePlayerFromGame() {
-        gameManager.removePlayerFromGame(LocalDate.of(2024,3,19),4,2);
+        gameManager.removePlayerFromGame(LocalDate.now(),2,existUser);
+        gameManager.removePlayerFromGame(LocalDate.now(),3,existUser);
     }
 
     @Test
     void playGame() throws SQLException {
-        LocalDate dateGame = LocalDate.now().plusDays(1);
+        LocalDate dateGame = LocalDate.of(2026,1,1);
         Game newGame = gameManager.createGame(dateGame,1);
         UserService userService = new UserService();
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
-        users.forEach(user -> newGame.addPlayer(user.getId()));
+        users.forEach(newGame::addPlayer);
         Game playedGame = gameManager.playGame(dateGame,1);
         System.out.println(playedGame.toString());
         GameService gameService = new GameService();

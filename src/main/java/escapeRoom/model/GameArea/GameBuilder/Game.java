@@ -1,5 +1,11 @@
 package escapeRoom.model.GameArea.GameBuilder;
 
+import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
+import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
+import escapeRoom.model.PeopleArea.User;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +15,12 @@ public class Game {
     private int id;
     private final int room_id;
     private final LocalDate date;
-    private List<Integer> players_id = new ArrayList<>();
-    private Integer captain_id;
+    private List<User> players = new ArrayList<>();
+    private Integer captainId;
     private boolean success;
-    private List<Integer> used_clues_id = new ArrayList<>();;
+    private List<Clue> usedClues = new ArrayList<>();;
     private int ellapsedTimeInSeconds;
-    private List<Integer> rewards_id = new ArrayList<>();;
+    private List<Reward> rewardsGiven = new ArrayList<>();;
 
 
     public Game(int room_id, LocalDate date) {
@@ -22,37 +28,38 @@ public class Game {
         this.date = date;
     }
 
-    public Game(int id, int room_id, LocalDate date, List<Integer> players_id, Integer captain_id, boolean success, List<Integer> used_clues_id, int ellapsedTimeInSeconds, List<Integer> rewards_id) {
+    public Game(int id, int room_id, LocalDate date, List<User> players, Integer captainId, boolean success, List<Clue> usedClues, int ellapsedTimeInSeconds, List<Reward> rewardsGiven) {
         this.id = id;
         this.room_id = room_id;
         this.date = date;
-        this.players_id = new ArrayList<>(players_id);
-        this.captain_id = captain_id;
+        this.players = new ArrayList<>(players);
+        this.captainId = captainId;
         this.success = success;
-        this.used_clues_id = new ArrayList<>(used_clues_id);
+        this.usedClues = new ArrayList<>(usedClues);
         this.ellapsedTimeInSeconds = ellapsedTimeInSeconds;
-        this.rewards_id = new ArrayList<>(rewards_id);
+        this.rewardsGiven = new ArrayList<>(rewardsGiven);
     }
 
-    public void addPlayer(int player_id){
+    public void addPlayer(User player){
         // Does the player exist?
-        this.players_id.add(player_id);
+        this.players.add(player);
     }
-    public void removePlayer(int player_id){
-        this.players_id.remove((Object) player_id);
+    public void removePlayer(User player){
+        this.players.remove(player);
     }
 
-    public void calculateResult(List<Integer> available_clues){
+    public void calculateResult(List<Clue> availableClues){
+        AssetFactory factory = new AssetFactory();
         this.success = Math.random() > 0.5;
         this.ellapsedTimeInSeconds = (int) Math.floor(Math.random()*7200);
-        available_clues.forEach(clue-> {
+        availableClues.forEach(clue-> {
             if (Math.random()>0.66) {
-                this.used_clues_id.add(clue);
+                this.usedClues.add(clue);
             }
         });
-        this.players_id.forEach((player)-> {
+        this.players.forEach((player)-> {
             if (Math.random()>0.85) {
-                this.rewards_id.add(player);
+                this.rewardsGiven.add((Reward) factory.createAsset(AssetType.REWARD,player.getId(),this.id));
             }
         });
     }
@@ -61,14 +68,15 @@ public class Game {
         this.id = id;
     }
 
-    public void setPlayers(List<Integer> players_id) {
-        this.players_id = new ArrayList<>(players_id);
+    public void setPlayers(List<User> players) {
+        this.players = new ArrayList<>(players);
     }
 
-    public void setCaptain(int captain_id) {
-        this.captain_id = captain_id;
-        if (!this.players_id.contains(captain_id)){
-            this.addPlayer(captain_id);
+    public void setCaptain(User captain) {
+        if (captain != null) this.captainId = captain.getId();
+        else this.captainId = 0;
+        if (!this.players.contains(captain)){
+            this.addPlayer(captain);
         }
     }
 
@@ -76,12 +84,12 @@ public class Game {
         return id;
     }
 
-    public List<Integer> getPlayers_id() {
-        return players_id;
+    public List<User> getPlayers() {
+        return players;
     }
 
-    public Integer getCaptain_id() {
-        return captain_id;
+    public Integer getCaptainId() {
+        return captainId;
     }
 
     public int getRoom_id() {
@@ -96,16 +104,16 @@ public class Game {
         return success;
     }
 
-    public List<Integer> getUsed_clues_id() {
-        return used_clues_id;
+    public List<Clue> getUsedClues() {
+        return usedClues;
     }
 
     public int getEllapsedTimeInSeconds() {
         return ellapsedTimeInSeconds;
     }
 
-    public List<Integer> getRewards_id() {
-        return rewards_id;
+    public List<Reward> getRewardsGiven() {
+        return rewardsGiven;
     }
 
     public void setEllapsedTimeInSeconds(int ellapsedTimeInSeconds) {
@@ -116,12 +124,12 @@ public class Game {
         this.success = success;
     }
 
-    public void setUsed_clues_id(List<Integer> used_clues_id) {
-        this.used_clues_id = new ArrayList<>(used_clues_id);
+    public void setUsedClues(List<Clue> usedClues) {
+        this.usedClues = new ArrayList<>(usedClues);
     }
 
-    public void setRewards_id(List<Integer> rewards_id) {
-        this.rewards_id = new ArrayList<>(rewards_id);
+    public void setRewardsGiven(List<Reward> rewardsGiven) {
+        this.rewardsGiven = new ArrayList<>(rewardsGiven);
     }
 
     public void selfDescribe(){
@@ -129,11 +137,11 @@ public class Game {
         description.append("Game number ").append(this.id)
                 .append(" //Date: ").append(this.date)
                 .append(" //Room: ").append(this.room_id)
-                .append(" // Booking Status: ").append(this.captain_id==0? "available":"booked")
+                .append(" // Booking Status: ").append(this.captainId ==0? "available":"booked")
                 .append(" // Result: ").append(this.isSuccess()? "success":"failure")
-                .append(" // Clues used: ").append(this.used_clues_id.size())
-                .append(" // Rewards given: ").append(this.rewards_id.size())
-                .append(" // Size team: ").append(this.players_id.size());
+                .append(" // Clues used: ").append(this.usedClues.size())
+                .append(" // Rewards given: ").append(this.rewardsGiven.size())
+                .append(" // Size team: ").append(this.players.size());
         System.out.println(description);
     }
 
@@ -155,12 +163,12 @@ public class Game {
                 "_id=" + id +
                 ", room_id=" + room_id +
                 ", date=" + date +
-                ", players_id=" + players_id +
-                ", captain_id=" + captain_id +
+                ", players=" + players+
+                ", captainId=" + captainId +
                 ", success=" + success +
-                ", used_clues_id=" + used_clues_id +
+                ", used_clues_id=" + usedClues +
                 ", ellapsedTimeInSeconds=" + ellapsedTimeInSeconds +
-                ", rewards_id=" + rewards_id +
+                ", rewards_id=" + rewardsGiven +
                 '}';
     }
 }

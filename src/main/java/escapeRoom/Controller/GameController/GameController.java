@@ -1,7 +1,9 @@
 package escapeRoom.Controller.GameController;
 
+import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.model.GameArea.GameBuilder.Game;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import escapeRoom.model.PeopleArea.User;
@@ -18,7 +20,7 @@ public class GameController {
     public GameController(){
         try{
             this.gameManager = new GameManager();
-        } catch (SQLException e) {
+        } catch (SQLException | AbsentEntityException e) {
             System.out.println("Error:" +e.getMessage());
         }
     }
@@ -29,7 +31,7 @@ public class GameController {
             LocalDate gameDate = InputCollector.getDate();
             Room room = InputCollector.getRoom();
             User captain = InputCollector.getTargetCostumer();
-            if (gameManager.bookGame(gameDate, room.getId(), captain.getId())){
+            if (gameManager.bookGame(gameDate, room.getId(), captain)){
                 System.out.println("New game booked on the " + gameDate + " in room " + room.getName().toUpperCase() + " for customer " + captain.getName().toUpperCase() + " " + captain.getLastname().toUpperCase());
             }
         } catch (SQLException e) {
@@ -55,7 +57,7 @@ public class GameController {
             Room room = InputCollector.getRoom();
             User player = InputCollector.getTargetCostumer();
 
-            if (gameManager.addPlayerToGame(gameDate,room.getId(), player.getId())){
+            if (gameManager.addPlayerToGame(gameDate,room.getId(), player)){
                 System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" added to the game to be held on " + gameDate+ "in room " + room.getName().toUpperCase());
             }
         } catch (SQLException e) {
@@ -68,7 +70,7 @@ public class GameController {
             LocalDate gameDate = InputCollector.getDate();
             Room room = InputCollector.getRoom();
             User player = InputCollector.getTargetCostumer();
-            if (gameManager.removePlayerFromGame(gameDate,room.getId(),player.getId())){
+            if (gameManager.removePlayerFromGame(gameDate,room.getId(),player)){
                 System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" removed from the game to be held on " + gameDate + "in room " + room.getName().toUpperCase());
             }
         } catch (SQLException e) {
@@ -108,7 +110,8 @@ public class GameController {
             if (gamesToDisplay.isEmpty()) {
                 System.out.println("Nothing to display.");
             }else{
-             gamesToDisplay.forEach(Game::selfDescribe);
+                System.out.println("\nBooked Games\n");
+                System.out.println(TablePrinter.buildTable(gamesToDisplay));
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());
@@ -132,7 +135,8 @@ public class GameController {
             if (gamesToDisplay.isEmpty()) {
                 System.out.println("Nothing to display.");
             }else{
-                gamesToDisplay.forEach(Game::selfDescribe);
+                System.out.println("\nAvailable Games\n");
+                System.out.println(TablePrinter.buildTable(gamesToDisplay));
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());

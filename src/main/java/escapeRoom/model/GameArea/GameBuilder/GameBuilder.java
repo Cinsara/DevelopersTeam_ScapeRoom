@@ -1,53 +1,57 @@
 package escapeRoom.model.GameArea.GameBuilder;
 
+import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.model.GameArea.CluePropFactory.Clue;
+import escapeRoom.model.PeopleArea.User;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameBuilder {
 
-    private int _id;
-    private final int room_id;
+    private int id;
+    private final int roomId;
     private final LocalDate date;
-    private List<Integer> players_id = new ArrayList<>();
-    private Integer captain_id;
+    private List<User> players = new ArrayList<>();
+    private Integer captainId;
     private boolean success;
-    private List<Integer> used_clues_id = new ArrayList<>();;
+    private List<Clue> usedClues = new ArrayList<>();;
     private int ellapsedTimeInSeconds;
-    private List<Integer> rewards_id = new ArrayList<>();;
+    private List<Reward> rewards = new ArrayList<>();;
 
-    public GameBuilder(int room_id, LocalDate date) {
-        this.room_id = room_id;
+    public GameBuilder(int roomId, LocalDate date) {
+        this.roomId = roomId;
         this.date = date;
     }
 
-    public GameBuilder set_id(int _id) {
-        this._id = _id;
+    public GameBuilder setId(int id) {
+        this.id = id;
         return this;
     }
 
-    public GameBuilder setPlayers_id(List<Integer> players_id) {
-        this.players_id = players_id;
+    public GameBuilder setPlayers(List<User> players) {
+        this.players = players;
         return this;
     }
 
-    public GameBuilder addPlayer(Integer player_id) {
-        this.players_id.add(player_id);
+    public GameBuilder addPlayer(User player) {
+        this.players.add(player);
         return this;
     }
 
-    public GameBuilder setRewards_id(List<Integer> rewards_id) {
-        this.rewards_id = rewards_id;
+    public GameBuilder setRewards(List<Reward> rewards) {
+        this.rewards = rewards;
         return this;
     }
 
-    public GameBuilder addReward(Integer reward_id){
-        this.rewards_id.add(reward_id);
+    public GameBuilder addReward(Reward reward){
+        this.rewards.add(reward);
         return this;
     }
 
-    public GameBuilder setCaptain_id(Integer captain_id) {
-        this.captain_id = captain_id;
+    public GameBuilder setCaptainId(Integer captainId) {
+        this.captainId = captainId;
         return this;
     }
 
@@ -56,8 +60,8 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder setUsed_clues_id(List<Integer> used_clues_id) {
-        this.used_clues_id = used_clues_id;
+    public GameBuilder setUsedClues(List<Clue> usedClues) {
+        this.usedClues = usedClues;
         return this;
     }
 
@@ -66,7 +70,7 @@ public class GameBuilder {
         return this;
     }
     public Game build(){
-        return new Game(this._id,this.room_id,this.date,this.players_id,this.captain_id,this.success,this.used_clues_id,this.ellapsedTimeInSeconds,this.rewards_id);
+        return new Game(this.id,this.roomId,this.date,this.players,this.captainId,this.success,this.usedClues,this.ellapsedTimeInSeconds,this.rewards);
     }
 
 }
