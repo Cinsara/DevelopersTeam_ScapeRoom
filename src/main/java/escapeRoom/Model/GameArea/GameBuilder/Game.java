@@ -1,10 +1,10 @@
-package escapeRoom.model.GameArea.GameBuilder;
+package escapeRoom.Model.GameArea.GameBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetFactory;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

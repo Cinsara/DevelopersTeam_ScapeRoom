@@ -1,13 +1,9 @@
 package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.AssetService.RewardService;
-import escapeRoom.Service.AssetService.TicketService;
-import escapeRoom.Service.GameService.GameService;
+import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputServiceManager;
-import escapeRoom.Service.ManyToManyService.GameHasUserService;
-import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,27 +14,27 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameControllerTest {
-    static GameController gameController;
+    static RoomService roomService;
+    static GameManager gameManager;
+    static Connection connection;
 
     @BeforeAll
     static void setUp() throws SQLException {
-        Connection connection = ConnectionManager.getConnection();
-        RoomService roomService = new RoomService(connection);
-        GameManager gameManager = new GameManager(new GameService(connection),roomService,new TicketService(connection),new RewardService(connection),new UserService(connection), new GameHasUserService(connection), new GameUsesClueService(connection));
-        InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
-        gameController = new GameController(gameManager,inputCollector);
+         connection = ConnectionManager.getConnection();
+         roomService = new RoomService(connection);
+         gameManager = new GameManager(new EscapeRoomServices(connection).getPartialServices());
     }
 
     @Test
-    void bookGame() {
+    void bookGame() throws SQLException {
         String simulateInput = "2025 04 06\n3\n3";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.bookGame();
 
         }finally{
@@ -52,9 +48,13 @@ class GameControllerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.cancelBooking();
 
-        }finally{
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
             System.setIn(originalIn);
         }
     }
@@ -66,9 +66,13 @@ class GameControllerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.showBookedGames();
 
-        }finally{
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
             System.setIn(originalIn);
         }
     }
@@ -80,9 +84,13 @@ class GameControllerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.showAvailableGames();
 
-        }finally{
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
             System.setIn(originalIn);
         }
     }
@@ -94,9 +102,13 @@ class GameControllerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.addPlayerToGame();
 
-        }finally{
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
             System.setIn(originalIn);
         }
     }
@@ -106,13 +118,17 @@ class GameControllerTest {
 
         InputStream originalIn = System.in;
         try{
-            String simulateInput1 = "2025 04 06\n3\n1";
+            String simulateInput1 = "2025 04 06\n3\n1\n1";
             System.setIn(new ByteArrayInputStream(simulateInput1.getBytes()));
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
             gameController.removePlayerFromGame();
             String simulInput2 = "1";
             System.setIn(new ByteArrayInputStream(simulInput2.getBytes()));
             gameController.showBookedGames();
-        }finally{
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
             System.setIn(originalIn);
         }
     }

@@ -2,6 +2,7 @@ package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputCollector;
@@ -10,11 +11,11 @@ import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,14 +54,14 @@ class CertificateManagerTest {
         userService = new UserService(connection);
         roomService = new RoomService(connection);
         gameHasUserService = new GameHasUserService(connection);
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, new InputCollector(inputService,roomService,userService));
+        certificateManager = new CertificateManager(new InputCollector(inputService,roomService,userService),new EscapeRoomServices(connection).getPartialServices());
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService,new InputCollector(inputService,roomService,userService));
+        certificateManager = new CertificateManager(new InputCollector(inputService,roomService,userService),new EscapeRoomServices(connection).getPartialServices());
     }
 
     @Test

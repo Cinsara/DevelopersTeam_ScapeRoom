@@ -1,12 +1,7 @@
 package escapeRoom.Controller.RoomManager;
 
-import escapeRoom.Controller.InventoryController.InventoryController;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;
-import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-
-import java.sql.SQLException;
 
 public class RoomMenu {
 

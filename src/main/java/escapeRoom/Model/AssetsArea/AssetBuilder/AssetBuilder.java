@@ -1,4 +1,4 @@
-package escapeRoom.model.AssetsArea.AssetBuilder;
+package escapeRoom.Model.AssetsArea.AssetBuilder;
 
 public interface AssetBuilder<T extends Asset> {
     AssetBuilder<T> setUserId(int user_id);

@@ -3,17 +3,14 @@ package escapeRoom.Controller;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.GameManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
+import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AbsentEntityException;
-import escapeRoom.Service.AssetService.RewardService;
-import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
-import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.PeopleArea.UserBuilder;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +30,7 @@ class GameManagerTest {
     @BeforeAll
     static void setUp() throws SQLException, AbsentEntityException {
         connection = ConnectionManager.getConnection();
-        gameManager = new GameManager(new GameService(connection),new RoomService(connection),new TicketService(connection),new RewardService(connection), new UserService(connection), new GameHasUserService(connection), new GameUsesClueService(connection));
+        gameManager = new GameManager(new EscapeRoomServices(connection).getPartialServices());
         existUser = new UserBuilder("Bob","Smith").setDob(LocalDate.of(1985, 9,23)).setId(2).build();
         nonexistUser = new UserBuilder("Barbar","Lolipop").setId(20).build();
 
@@ -74,7 +71,7 @@ class GameManagerTest {
     void loadGames(){
         gameManager.getGames().forEach(game -> {
             System.out.println("players: "+game.getPlayers().stream().map(User::getName).toList().toString() +", clues: "+ game.getUsedClues()+", rewards: "+game.getRewardsGiven());
-            assertTrue(game.getCaptainId()== 0 || game.getPlayers().stream().map(User::getId).toList().contains(game.getCaptainId()),"Game " + game.getId() + "has captain");
+            assertTrue(game.getCaptainId()== null || game.getPlayers().stream().map(User::getId).toList().contains(game.getCaptainId()),"Game " + game.getId() + "has captain");
         });
     }
 

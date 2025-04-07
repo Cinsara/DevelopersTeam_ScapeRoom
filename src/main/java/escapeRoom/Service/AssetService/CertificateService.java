@@ -1,6 +1,6 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
 
 
 import java.sql.Connection;

@@ -2,7 +2,7 @@ package escapeRoom.Controller.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class UserManager {
     private final InputService inputService;
     private final Connection connection = ConnectionManager.getConnection();
 
-    public UserManager(UserService userService, InputService inputService) throws SQLException {
+    public UserManager(InputService inputService, UserService userService) throws SQLException {
         this.inputService = inputService;
         this.userService = userService;
     }

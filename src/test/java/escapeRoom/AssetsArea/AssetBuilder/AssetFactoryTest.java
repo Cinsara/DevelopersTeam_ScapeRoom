@@ -1,22 +1,21 @@
 package escapeRoom.AssetsArea.AssetBuilder;
 
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.CluePropFactory.ClueFactory;
-import escapeRoom.model.GameArea.CluePropFactory.ClueType;
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.GameArea.CluePropFactory.ClueFactory;
+import escapeRoom.Model.GameArea.CluePropFactory.ClueType;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Theme;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetFactory;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.lang.annotation.ElementType;
 import java.time.LocalDate;
 import java.util.List;
 

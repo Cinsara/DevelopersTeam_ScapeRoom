@@ -3,14 +3,13 @@ package escapeRoom.Service.InputService;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InputCollector {

@@ -1,11 +1,6 @@
 package escapeRoom.Controller.NotificationManager;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.NotificationService.NotificationService;
-import escapeRoom.Service.PeopleService.UserService;
-
-import java.sql.SQLException;
 
 public class NotificationMenu {
     private NotificationManager notificationManager;

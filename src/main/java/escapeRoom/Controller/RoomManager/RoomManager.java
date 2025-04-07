@@ -3,8 +3,8 @@ package escapeRoom.Controller.RoomManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.*;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.RoomBuilder.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;

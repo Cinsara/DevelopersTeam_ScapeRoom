@@ -9,8 +9,8 @@ import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

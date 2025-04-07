@@ -5,7 +5,7 @@ import escapeRoom.Controller.UserManager.UserManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +38,7 @@ class UserManagerTest {
         userService = new UserService(connection);
 
         inputService = InputServiceManager.getInputService();
-        userManager = new UserManager(userService, inputService);
+        userManager = new UserManager(inputService,userService);
     }
 
     @AfterEach
@@ -52,7 +51,7 @@ class UserManagerTest {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();;
-        userManager = new UserManager(userService, inputService);
+        userManager = new UserManager(inputService,userService);
     }
 
     @Test

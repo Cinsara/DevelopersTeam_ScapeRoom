@@ -1,8 +1,6 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.CrudeService;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;

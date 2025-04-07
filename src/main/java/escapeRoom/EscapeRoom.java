@@ -1,6 +1,7 @@
 package escapeRoom;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.SetUp.EscapeRoomInitializer;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,8 +1,8 @@
-package escapeRoom.model.AssetsArea.CertificateBuilder;
+package escapeRoom.Model.AssetsArea.CertificateBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 
 import java.time.LocalDate;
 

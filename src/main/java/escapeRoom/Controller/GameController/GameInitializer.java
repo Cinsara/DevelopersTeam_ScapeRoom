@@ -7,10 +7,10 @@ import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.PropAndClueService.ClueService;
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.util.List;

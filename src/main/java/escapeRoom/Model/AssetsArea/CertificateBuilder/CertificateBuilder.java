@@ -1,6 +1,6 @@
-package escapeRoom.model.AssetsArea.CertificateBuilder;
+package escapeRoom.Model.AssetsArea.CertificateBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetBuilder;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetBuilder;
 
 public class CertificateBuilder implements AssetBuilder<Certificate> {
     private int user_id;

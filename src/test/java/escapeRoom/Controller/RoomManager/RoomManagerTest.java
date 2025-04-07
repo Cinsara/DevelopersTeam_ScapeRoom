@@ -6,14 +6,13 @@ import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 class RoomManagerTest {
 
     @Test

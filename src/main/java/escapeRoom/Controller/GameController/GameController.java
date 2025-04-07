@@ -1,20 +1,18 @@
 package escapeRoom.Controller.GameController;
 
-import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.OutPutService.TablePrinter;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 
 public class GameController {
     private final GameManager gameManager;

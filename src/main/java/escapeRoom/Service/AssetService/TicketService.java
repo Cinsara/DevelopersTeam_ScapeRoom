@@ -2,7 +2,7 @@ package escapeRoom.Service.AssetService;
 
 
 
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
 
 import java.sql.*;
 import java.time.LocalDate;

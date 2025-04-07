@@ -1,6 +1,4 @@
-package escapeRoom.model.GameArea.RoomBuilder;
-
-import java.util.List;
+package escapeRoom.Model.GameArea.RoomBuilder;
 
 public interface Builder<T> {
 

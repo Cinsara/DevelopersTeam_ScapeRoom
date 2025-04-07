@@ -1,4 +1,4 @@
-package escapeRoom.model.PeopleArea;
+package escapeRoom.Model.PeopleArea;
 
 public class Captain extends User{
     private final int ticket_id;

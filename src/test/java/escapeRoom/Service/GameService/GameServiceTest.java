@@ -1,8 +1,8 @@
 package escapeRoom.Service.GameService;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

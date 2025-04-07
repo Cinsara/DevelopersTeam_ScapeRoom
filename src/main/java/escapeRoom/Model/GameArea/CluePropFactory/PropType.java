@@ -1,4 +1,4 @@
-package escapeRoom.model.GameArea.CluePropFactory;
+package escapeRoom.Model.GameArea.CluePropFactory;
 
 public enum PropType implements ElementType {
     SPADE(20),

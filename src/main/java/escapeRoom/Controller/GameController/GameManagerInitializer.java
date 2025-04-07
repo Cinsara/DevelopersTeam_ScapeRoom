@@ -1,6 +1,5 @@
 package escapeRoom.Controller.GameController;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.GameService.GameService;
@@ -8,11 +7,10 @@ import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashSet;

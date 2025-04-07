@@ -1,4 +1,4 @@
-package escapeRoom.model.GameArea.CluePropFactory;
+package escapeRoom.Model.GameArea.CluePropFactory;
 
 public class ElementsFactoryProducer {
     public static GameElementFactory getFactory(String factoryType) {

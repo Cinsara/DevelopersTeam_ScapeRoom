@@ -1,13 +1,12 @@
 package escapeRoom.GameArea.GameBuilder;
 
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.PeopleArea.UserBuilder;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.UserBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

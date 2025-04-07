@@ -1,7 +1,7 @@
-package escapeRoom.model.AssetsArea.RewardBuilder;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
+package escapeRoom.Model.AssetsArea.RewardBuilder;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
 
 
 import java.time.LocalDate;

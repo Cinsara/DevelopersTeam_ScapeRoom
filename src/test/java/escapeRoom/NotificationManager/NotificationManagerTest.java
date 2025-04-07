@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +32,7 @@ class NotificationManagerTest {
         Connection connection = ConnectionManager.getConnection();
         NotificationService notificationService = new NotificationService(connection);
         UserService userService = new UserService(connection);
-        notificationManager = new NotificationManager(notificationService,connection,inputService,userService);
+        notificationManager = new NotificationManager(inputService,notificationService,userService);
 
 
     }

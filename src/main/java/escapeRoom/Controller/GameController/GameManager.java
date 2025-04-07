@@ -5,7 +5,7 @@ import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
 import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
-import escapeRoom.Service.AbsentEntityException;
+import escapeRoom.SetUp.PartialEscapeRoomServices;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.PeopleService.UserService;
@@ -13,17 +13,15 @@ import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
-import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetFactory;
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetType;
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetFactory;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetType;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.Model.PeopleArea.User;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,13 +39,15 @@ public class GameManager {
         return games;
     }
 
-    public GameManager(GameService gameService, RoomService roomService, TicketService ticketService, RewardService rewardService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService) throws SQLException {
-        this.ticketService = ticketService;
-        this.rewardService = rewardService;
-        this.gameHasUserService = gameHasUserService;
-        this.gameUsesClueService = gameUsesClueService;
+    public GameManager(PartialEscapeRoomServices services) throws SQLException {
+        this.gameService = services.getGameService();
+        this.userService = services.getUserService();
+        this.ticketService = services.getTicketService();
+        this.rewardService = services.getRewardService();
+        this.gameHasUserService = services.getGameHasUserService();
+        this.gameUsesClueService = services.getGameUsesClueService();
 
-        GameManagerInitializer.initialize(this,gameService,roomService,userService,gameHasUserService,gameUsesClueService,rewardService);
+        GameManagerInitializer.initialize(this,gameService,services.getRoomService(),userService,gameHasUserService,gameUsesClueService,rewardService);
 
     }
 

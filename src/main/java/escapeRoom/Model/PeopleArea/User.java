@@ -1,7 +1,7 @@
-package escapeRoom.model.PeopleArea;
+package escapeRoom.Model.PeopleArea;
 
-import escapeRoom.model.Notification.Notification;
-import escapeRoom.model.Notification.Observer;
+import escapeRoom.Model.Notification.Notification;
+import escapeRoom.Model.Notification.Observer;
 
 import java.time.LocalDate;
 

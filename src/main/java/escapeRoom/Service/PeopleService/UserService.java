@@ -1,7 +1,6 @@
 package escapeRoom.Service.PeopleService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;

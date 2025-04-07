@@ -1,6 +1,6 @@
-package escapeRoom.model.AssetsArea.RewardBuilder;
+package escapeRoom.Model.AssetsArea.RewardBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetBuilder;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetBuilder;
 
 public class RewardBuilder implements AssetBuilder<Reward> {
     private int user_id;

@@ -1,8 +1,6 @@
 package escapeRoom.Service.NotificationService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.model.Notification.Notification;
-import escapeRoom.Service.CrudeService;
+import escapeRoom.Model.Notification.Notification;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;

@@ -1,8 +1,8 @@
-package escapeRoom.model.AssetsArea.AssetBuilder;
+package escapeRoom.Model.AssetsArea.AssetBuilder;
 
-import escapeRoom.model.AssetsArea.CertificateBuilder.CertificateBuilder;
-import escapeRoom.model.AssetsArea.RewardBuilder.RewardBuilder;
-import escapeRoom.model.AssetsArea.TicketBuilder.TicketBuilder;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.CertificateBuilder;
+import escapeRoom.Model.AssetsArea.RewardBuilder.RewardBuilder;
+import escapeRoom.Model.AssetsArea.TicketBuilder.TicketBuilder;
 
 public class AssetFactory {
 

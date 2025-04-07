@@ -1,6 +1,6 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

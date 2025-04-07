@@ -1,7 +1,7 @@
 package escapeRoom.Service.GameService;
 
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.Service.GetAllService;
 
 

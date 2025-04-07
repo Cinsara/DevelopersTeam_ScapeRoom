@@ -1,6 +1,6 @@
-package escapeRoom.model.AssetsArea.TicketBuilder;
+package escapeRoom.Model.AssetsArea.TicketBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.AssetBuilder;
+import escapeRoom.Model.AssetsArea.AssetBuilder.AssetBuilder;
 
 import java.time.LocalDate;
 

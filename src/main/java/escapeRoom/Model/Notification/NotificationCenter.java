@@ -1,4 +1,4 @@
-package escapeRoom.model.Notification;
+package escapeRoom.Model.Notification;
 
 import java.util.ArrayList;
 import java.util.List;

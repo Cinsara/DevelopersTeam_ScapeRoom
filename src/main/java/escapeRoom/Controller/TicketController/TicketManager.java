@@ -2,10 +2,9 @@ package escapeRoom.Controller.TicketController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.GameManager;
-import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.TicketService;
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
-import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
 
 import java.sql.SQLException;
 import java.util.List;

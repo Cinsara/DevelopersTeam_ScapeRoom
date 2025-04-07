@@ -1,8 +1,8 @@
-package escapeRoom.model.AssetsArea.TicketBuilder;
+package escapeRoom.Model.AssetsArea.TicketBuilder;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.model.PeopleArea.User;
-import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
+import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
 import java.time.LocalDate;
 
 public class Ticket implements Asset {

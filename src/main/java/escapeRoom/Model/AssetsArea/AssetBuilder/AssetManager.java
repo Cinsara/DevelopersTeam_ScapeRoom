@@ -1,8 +1,8 @@
-package escapeRoom.model.AssetsArea.AssetBuilder;
+package escapeRoom.Model.AssetsArea.AssetBuilder;
 
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
 
 import java.io.IOException;
 import java.nio.file.Files;

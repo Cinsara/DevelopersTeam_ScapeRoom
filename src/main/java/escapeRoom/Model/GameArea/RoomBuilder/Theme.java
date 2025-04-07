@@ -1,4 +1,4 @@
-package escapeRoom.model.GameArea.RoomBuilder;
+package escapeRoom.Model.GameArea.RoomBuilder;
 
 public enum Theme {
     LOVEAFFAIR("Love Affair"),

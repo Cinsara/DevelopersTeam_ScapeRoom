@@ -1,11 +1,9 @@
 package escapeRoom.Controller.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.AssetService.CertificateService;
-import escapeRoom.Service.GameService.GameService;
+import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputServiceManager;
-import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
 import org.junit.jupiter.api.Test;
@@ -14,8 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CertificateManagerTest {
 
@@ -30,14 +26,7 @@ class CertificateManagerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
-            CertificateManager certificateManager = new CertificateManager(
-                    InputServiceManager.getInputService(),
-                    new CertificateService(connection),
-                    userService,
-                    new GameService(connection),
-                    roomService,
-                    new GameHasUserService(connection),
-                    new InputCollector(InputServiceManager.getInputService(),roomService,userService));
+            CertificateManager certificateManager = new CertificateManager(new InputCollector(InputServiceManager.getInputService(),roomService,userService),new EscapeRoomServices(connection).getPartialServices());
             certificateManager.inputsCertificationCreation();
         }finally{
             System.setIn(originalIn);

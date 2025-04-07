@@ -1,9 +1,9 @@
 package escapeRoom.Service.OutPutService;
 
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.CluePropFactory.Prop;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.GameArea.CluePropFactory.Prop;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.lang.reflect.*;
 import java.util.*;

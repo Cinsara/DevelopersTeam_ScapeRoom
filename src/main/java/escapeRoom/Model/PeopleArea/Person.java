@@ -1,4 +1,4 @@
-package escapeRoom.model.PeopleArea;
+package escapeRoom.Model.PeopleArea;
 
 import java.time.LocalDate;
 

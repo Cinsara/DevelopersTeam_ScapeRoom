@@ -1,9 +1,9 @@
 package escapeRoom.Controller.CertificateManager;
 
+import escapeRoom.SetUp.PartialEscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputCollector;
-import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -28,12 +28,12 @@ public class CertificateManager {
     private final GameHasUserService gameHasUserService;
     private final InputCollector inputCollector;
 
-    public CertificateManager(CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService, InputCollector inputCollector) throws SQLException {
-        this.certificateService = certificateService;
-        this.userService = userService;
-        this.gameService = gameService;
-        this.roomService = roomService;
-        this.gameHasUserService = gameHasUserService;
+    public CertificateManager(InputCollector inputCollector, PartialEscapeRoomServices services) throws SQLException {
+        this.certificateService = services.getCertificateService();
+        this.userService = services.getUserService();
+        this.gameService = services.getGameService();
+        this.roomService = services.getRoomService();
+        this.gameHasUserService = services.getGameHasUserService();
         this.inputCollector = inputCollector;
     }
 

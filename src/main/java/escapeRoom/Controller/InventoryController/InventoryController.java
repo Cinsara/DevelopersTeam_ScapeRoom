@@ -4,15 +4,13 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.Clue;
-import escapeRoom.model.GameArea.CluePropFactory.Prop;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.CluePropFactory.Clue;
+import escapeRoom.Model.GameArea.CluePropFactory.Prop;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class InventoryController {
     private RoomService roomService;

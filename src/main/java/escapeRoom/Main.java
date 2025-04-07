@@ -1,6 +1,7 @@
 package escapeRoom;
 
 import escapeRoom.Service.AbsentEntityException;
+import escapeRoom.SetUp.EscapeRoomInitializer;
 
 import java.sql.SQLException;
 

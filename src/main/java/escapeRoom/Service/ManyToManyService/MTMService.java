@@ -1,7 +1,5 @@
 package escapeRoom.Service.ManyToManyService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

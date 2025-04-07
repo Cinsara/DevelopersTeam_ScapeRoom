@@ -1,4 +1,4 @@
-package escapeRoom.model.Notification;
+package escapeRoom.Model.Notification;
 
 public interface Observer {
     void update(Notification notification);

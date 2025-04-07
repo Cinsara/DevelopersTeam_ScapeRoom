@@ -3,8 +3,8 @@ package escapeRoom.Controller.NotificationManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.Notification.Notification;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.Notification.Notification;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,14 +13,11 @@ import java.util.List;
 
 public class NotificationManager {
     private final NotificationService notificationService;
-    private final Connection connection;
     private final InputService inputService;
     private final UserService userService;
 
-    public NotificationManager(NotificationService notificationService, Connection connection,
-                               InputService inputService, UserService userService) {
+    public NotificationManager(InputService inputService, NotificationService notificationService, UserService userService) {
         this.notificationService = notificationService;
-        this.connection = connection;
         this.inputService = inputService;
         this.userService = userService;
     }
@@ -30,7 +27,7 @@ public class NotificationManager {
     }
 
     public void sendNotifications() throws SQLException {
-        List<User> userGenericList = userService.getAllEntities(connection);
+        List<User> userGenericList = userService.getAllEntities(userService.getConnection());
         List<User> subscribedUsers = userGenericList.stream()
                 .filter(User::isNotificationStatus)
                 .toList();

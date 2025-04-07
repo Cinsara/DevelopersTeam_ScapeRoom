@@ -1,6 +1,6 @@
-package escapeRoom.model.AssetsArea.AssetBuilder;
+package escapeRoom.Model.AssetsArea.AssetBuilder;
 
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 
 
 import java.time.LocalDate;
