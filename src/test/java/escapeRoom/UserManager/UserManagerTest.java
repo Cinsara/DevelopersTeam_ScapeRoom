@@ -36,7 +36,7 @@ class UserManagerTest {
         System.setOut(new PrintStream(outputStream));
 
         connection = ConnectionManager.getConnection();
-        userService = new UserService();
+        userService = new UserService(connection);
 
         inputService = InputServiceManager.getInputService();
         userManager = new UserManager(userService, inputService);

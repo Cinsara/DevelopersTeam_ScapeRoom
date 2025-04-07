@@ -6,6 +6,8 @@ import escapeRoom.Controller.RoomManager.PropManager;
 import escapeRoom.Controller.RoomManager.RoomManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
+import escapeRoom.Service.PropAndClueService.ClueService;
+import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.CluePropFactory.*;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +49,11 @@ class RoomManagerTest {
 
        GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
+        Connection connection = ConnectionManager.getConnection();
+        InputService inputService = InputServiceManager.getInputService();
+        RoomService roomService = new RoomService(connection);
+        RoomManager roomManager = new RoomManager(inputService,roomService,new ClueManager(inputService,new ClueService(connection),roomService),new PropManager(inputService,new PropService(connection),roomService));
 
-        roomManager = new RoomManager(testInputService,new RoomService(ConnectionManager.getConnection()));
 
     }
 

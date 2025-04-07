@@ -24,6 +24,7 @@ import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.GameService.GameService;
+import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
@@ -48,6 +49,7 @@ public class EscapeRoomInitializer {
     private final InventoryController inventoryController;
     private final RoomMenu roomMenu;
     private final GameManager gameManager;
+    private final InputCollector inputCollector;
     private final GameController gameController;
     private final UserManager userManager;
     private final UserService userService;
@@ -85,22 +87,23 @@ public class EscapeRoomInitializer {
         this.notificationService = new NotificationService(connection);
         this.gameHasUserService = new GameHasUserService(connection);
         this.gameUsesClueService = new GameUsesClueService(connection);
-
         this.inputService = InputServiceManager.getInputService();
+        this.inputCollector = new InputCollector(inputService,roomService,userService);
+
 
         //managers
         this.gameManager = new GameManager(gameService,roomService,ticketService,rewardService,userService,gameHasUserService,gameUsesClueService);
-        this.certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService);
+        this.certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, inputCollector);
         this.userManager = new UserManager(userService,inputService);
-        this.roomManager = new RoomManager(inputService,roomService);
         this.clueManager = new ClueManager(inputService, clueService, roomService);
         this.propManager = new PropManager(inputService, propService,roomService);
+        this.roomManager = new RoomManager(inputService,roomService,clueManager,propManager);
         this.notificationManager = new NotificationManager(notificationService,connection,inputService,userService);
         this.ticketManager = new TicketManager(ticketService,gameManager);
 
         //controllers
         this.inventoryController = new InventoryController(roomService,propService,clueService);
-        this.gameController = new GameController(gameManager);
+        this.gameController = new GameController(gameManager,inputCollector);
         this.rewardController = new RewardController(rewardService,gameService,userService);
         this.ticketController = new TicketController(inputService,ticketManager);
 

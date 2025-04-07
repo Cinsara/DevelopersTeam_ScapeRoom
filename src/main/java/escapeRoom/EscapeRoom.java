@@ -1,17 +1,6 @@
-package escapeRoom.Controller;
+package escapeRoom;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.CertificateManager.CertificateMenu;
-import escapeRoom.Controller.GameController.GameMenu;
-import escapeRoom.Controller.InventoryController.InventoryController;
-import escapeRoom.Controller.NotificationManager.NotificationMenu;
-import escapeRoom.Controller.RewardController.RewardController;
-import escapeRoom.Controller.RoomManager.RoomMenu;
-import escapeRoom.Controller.TicketController.TicketMenu;
-import escapeRoom.Controller.UserManager.UserMenu;
-import escapeRoom.EscapeRoomInitializer;
-import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.InputService.InputServiceManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;

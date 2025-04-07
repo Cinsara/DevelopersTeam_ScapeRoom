@@ -17,17 +17,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameController {
-    private GameManager gameManager;
-    public GameController(GameManager gameManager){
+    private final GameManager gameManager;
+    private final InputCollector inputCollector;
+    public GameController(GameManager gameManager, InputCollector inputCollector){
+        this.inputCollector = inputCollector;
         this.gameManager = gameManager;
     }
 
     public void bookGame(){
 
         try{
-            LocalDate gameDate = InputCollector.getDate();
-            Room room = InputCollector.getRoom();
-            User captain = InputCollector.getTargetCostumer();
+            LocalDate gameDate = inputCollector.getDate();
+            Room room = inputCollector.getRoom();
+            User captain = inputCollector.getTargetCostumer();
             if (gameManager.bookGame(gameDate, room.getId(), captain)){
                 System.out.println("New game booked on the " + gameDate + " in room " + room.getName().toUpperCase() + " for customer " + captain.getName().toUpperCase() + " " + captain.getLastname().toUpperCase());
             }
@@ -38,8 +40,8 @@ public class GameController {
 
     public void cancelBooking(){
         try{
-            LocalDate gameDate = InputCollector.getDate();
-            Room room = InputCollector.getRoom();
+            LocalDate gameDate = inputCollector.getDate();
+            Room room = inputCollector.getRoom();
             if(gameManager.cancelBooking(gameDate,room.getId())){
                 System.out.println("Booking on the " + gameDate + " in room " + room.getName().toUpperCase() + " cancelled.");
             }
@@ -50,9 +52,9 @@ public class GameController {
 
     public void addPlayerToGame(){
         try {
-            LocalDate gameDate = InputCollector.getDate();
-            Room room = InputCollector.getRoom();
-            User player = InputCollector.getTargetCostumer();
+            LocalDate gameDate = inputCollector.getDate();
+            Room room = inputCollector.getRoom();
+            User player = inputCollector.getTargetCostumer();
 
             if (gameManager.addPlayerToGame(gameDate,room.getId(), player)){
                 System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" added to the game to be held on " + gameDate+ "in room " + room.getName().toUpperCase());
@@ -64,9 +66,9 @@ public class GameController {
     public void removePlayerFromGame(){
 
         try {
-            LocalDate gameDate = InputCollector.getDate();
-            Room room = InputCollector.getRoom();
-            User player = InputCollector.getTargetCostumer();
+            LocalDate gameDate = inputCollector.getDate();
+            Room room = inputCollector.getRoom();
+            User player = inputCollector.getTargetCostumer();
             if (gameManager.removePlayerFromGame(gameDate,room.getId(),player)){
                 System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" removed from the game to be held on " + gameDate + "in room " + room.getName().toUpperCase());
             }
@@ -78,8 +80,8 @@ public class GameController {
     public void playGame(){
 
         try{
-            LocalDate gameDate = InputCollector.getDate();
-            Room room = InputCollector.getRoom();
+            LocalDate gameDate = inputCollector.getDate();
+            Room room = inputCollector.getRoom();
             Game playedGame = gameManager.playGame(gameDate,room.getId());
             if (playedGame != null){
                 String result = playedGame.isSuccess() ? "success":"failure";
@@ -97,9 +99,9 @@ public class GameController {
                 case 1:
                     yield gameManager.showBookedGames();
                 case 2:
-                    yield gameManager.showBookedGames(InputCollector.getDate());
+                    yield gameManager.showBookedGames(inputCollector.getDate());
                 case 3:
-                    yield gameManager.showBookedGames(InputCollector.getRoom().getId());
+                    yield gameManager.showBookedGames(inputCollector.getRoom().getId());
                 default:
                     yield new ArrayList<>();
             };
@@ -122,9 +124,9 @@ public class GameController {
                 case 1:
                     yield gameManager.showAvailableGames();
                 case 2:
-                    yield gameManager.showAvailableGames(InputCollector.getDate());
+                    yield gameManager.showAvailableGames(inputCollector.getDate());
                 case 3:
-                    yield gameManager.showAvailableGames(InputCollector.getRoom().getId());
+                    yield gameManager.showAvailableGames(inputCollector.getRoom().getId());
                 default:
                     yield new ArrayList<>();
             };

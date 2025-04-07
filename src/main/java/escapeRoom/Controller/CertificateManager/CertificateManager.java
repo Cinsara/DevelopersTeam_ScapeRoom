@@ -29,14 +29,16 @@ public class CertificateManager {
     private final RoomService roomService;
     private final InputService inputService;
     private final GameHasUserService gameHasUserService;
+    private final InputCollector inputCollector;
 
-    public CertificateManager(InputService inputService,CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService) throws SQLException {
+    public CertificateManager(InputService inputService,CertificateService certificateService, UserService userService,GameService gameService,RoomService roomService,GameHasUserService gameHasUserService, InputCollector inputCollector) throws SQLException {
         this.inputService = inputService;
         this.certificateService = certificateService;
         this.userService = userService;
         this.gameService = gameService;
         this.roomService = roomService;
         this.gameHasUserService = gameHasUserService;
+        this.inputCollector = inputCollector;
     }
 
     public int selectOptionMenu(){
@@ -45,23 +47,21 @@ public class CertificateManager {
 
     public void inputsCertificationCreation(){
         try {
-            LocalDate gameDate = InputCollector.getDate();
-            int userId = InputCollector.getTargetCostumer().getId();
-            int gameId = getGameIdByDate(gameDate);
-
+            LocalDate gameDate = inputCollector.getDate();
+            int userId = inputCollector.getTargetCostumer().getId();
+            int roomId = inputCollector.getRoom().getId();
+            int gameId = getGameIdByDate(gameDate,roomId);
             validateCertificate(gameId,userId);
-
             Certificate certificate = new Certificate(userId, gameId);
             certificateService.create(certificate);
             String result = createCertificate(certificate);
             System.out.println(result);
-
+            System.out.println("\nCertificated saved!");
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
         } catch (IllegalArgumentException e){
             System.out.println("Validation error: " + e.getMessage());
         }
-        System.out.println("\nCertificated saved!");
     }
 
     public void validateCertificate(int gameId, int userId) throws SQLException {
@@ -77,7 +77,6 @@ public class CertificateManager {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         roomService.read(game.getRoom_id())
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
-
         if(!isUserParticipant(gameId,userId)){
             throw new IllegalArgumentException("Error. The user didn't participate in this game.");
         }
@@ -87,10 +86,10 @@ public class CertificateManager {
         return gameHasUserService.getMatches(gameId).contains(userId);
     }
 
-    public int getGameIdByDate(LocalDate gameDate) throws SQLException,IllegalArgumentException{
-        Connection connection = ConnectionManager.getConnection();
-        return gameService.getAllEntities(connection).stream()
+    public int getGameIdByDate(LocalDate gameDate, int roomId) throws SQLException,IllegalArgumentException{
+        return gameService.getAllEntities(gameService.getConnection()).stream()
                 .filter(g -> g.getDate().equals(gameDate))
+                .filter(g->g.getRoom_id() == roomId)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Date not valid."))
                 .getId();

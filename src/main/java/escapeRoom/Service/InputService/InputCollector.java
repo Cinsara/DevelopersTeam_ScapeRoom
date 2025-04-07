@@ -14,13 +14,20 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InputCollector {
-    static InputService inputService = InputServiceManager.getInputService();
+    private final InputService inputService;
+    private final RoomService roomService;
+    private final UserService userService;
 
-    static public LocalDate getDate() {
+    public InputCollector(InputService inputService,RoomService roomService, UserService userService){
+        this.inputService = inputService;
+        this.roomService = roomService;
+        this.userService = userService;
+    }
+
+    public LocalDate getDate() {
         return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
     }
-    static public Room getRoom() throws SQLException {
-        RoomService roomService = new RoomService();
+    public Room getRoom() throws SQLException {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listRooms = new StringBuilder();
         for (Room room: rooms){
@@ -34,8 +41,7 @@ public class InputCollector {
         return potentialRoom.get();
     }
 
-    static public User getTargetCostumer() throws SQLException {
-        UserService userService = new UserService();
+    public User getTargetCostumer() throws SQLException {
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listUsers = new StringBuilder();
         for (User user: users){

@@ -1,10 +1,22 @@
 package escapeRoom.Controller.GameController;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.AssetService.RewardService;
+import escapeRoom.Service.AssetService.TicketService;
+import escapeRoom.Service.GameService.GameService;
+import escapeRoom.Service.InputService.InputCollector;
+import escapeRoom.Service.InputService.InputServiceManager;
+import escapeRoom.Service.ManyToManyService.GameHasUserService;
+import escapeRoom.Service.ManyToManyService.GameUsesClueService;
+import escapeRoom.Service.PeopleService.UserService;
+import escapeRoom.Service.RoomService.RoomService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,8 +24,12 @@ class GameControllerTest {
     static GameController gameController;
 
     @BeforeAll
-    static void setUp(){
-        gameController = new GameController();
+    static void setUp() throws SQLException {
+        Connection connection = ConnectionManager.getConnection();
+        RoomService roomService = new RoomService(connection);
+        GameManager gameManager = new GameManager(new GameService(connection),roomService,new TicketService(connection),new RewardService(connection),new UserService(connection), new GameHasUserService(connection), new GameUsesClueService(connection));
+        InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+        gameController = new GameController(gameManager,inputCollector);
     }
 
     @Test

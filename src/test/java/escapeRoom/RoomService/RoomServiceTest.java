@@ -1,5 +1,6 @@
 package escapeRoom.RoomService;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import escapeRoom.model.GameArea.RoomBuilder.Theme;
@@ -19,7 +20,7 @@ public class RoomServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        roomService = new RoomService();
+        roomService = new RoomService(ConnectionManager.getConnection());
     }
 
     @Test

@@ -22,9 +22,11 @@ public class RoomManager {
     private ClueManager clueManager;
     private PropManager propManager;
 
-    public RoomManager(InputService inputService, RoomService roomService) throws SQLException {
+    public RoomManager(InputService inputService, RoomService roomService,ClueManager clueManager, PropManager propManager) throws SQLException {
         this.inputService = inputService;
         this.roomService = roomService;
+        this.clueManager = clueManager;
+        this.propManager = propManager;
         this.clueFactory = new ClueFactory();
         this.propFactory = new PropFactory();
     }
