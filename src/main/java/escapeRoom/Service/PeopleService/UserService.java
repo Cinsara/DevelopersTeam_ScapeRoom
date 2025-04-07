@@ -1,6 +1,5 @@
 package escapeRoom.Service.PeopleService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.model.PeopleArea.User;
 import escapeRoom.Service.GetAllService;
 

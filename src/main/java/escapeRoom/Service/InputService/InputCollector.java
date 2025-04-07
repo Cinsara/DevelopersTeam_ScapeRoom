@@ -6,6 +6,7 @@ import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.model.GameArea.RoomBuilder.Room;
 import escapeRoom.model.PeopleArea.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
