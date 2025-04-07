@@ -9,7 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class UserService implements GetAllService<User>, CheckExistenceService<User> {
+public class UserService implements GetAllService<User>{
     private final Connection connection = ConnectionManager.getConnection();
 
     public Connection getConnection() {

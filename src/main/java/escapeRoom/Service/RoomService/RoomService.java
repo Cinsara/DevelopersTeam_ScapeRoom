@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class RoomService implements GetAllService<Room>, CheckExistenceService<Room> {
+public class RoomService implements GetAllService<Room> {
     private final Connection connection = ConnectionManager.getConnection();
 
     public Connection getConnection() {

@@ -87,6 +87,7 @@ public class TablePrinter {
                     else if(elem instanceof Clue) result.add(((Clue) elem).getTypeName());
                     else if (elem instanceof Prop) result.add(((Prop) elem).getTypeName());
                     else if (elem instanceof Reward) result.add("ID recipient: " + (((Reward) elem).getUser_id()));
+                    else if (elem instanceof Integer) result.add(elem.toString());
                 } catch (Exception e) {
                     result.add("<?>");
                 }
