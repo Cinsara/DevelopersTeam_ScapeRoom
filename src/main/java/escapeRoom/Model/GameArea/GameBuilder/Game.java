@@ -74,7 +74,7 @@ public class Game {
 
     public void setCaptain(User captain) {
         if (captain != null) this.captainId = captain.getId();
-        else this.captainId = 0;
+        else this.captainId = null;
         if (!this.players.contains(captain)){
             this.addPlayer(captain);
         }

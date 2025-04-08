@@ -51,9 +51,8 @@ class RoomManagerTest {
         GameElementFactory propFactory = new PropFactory();
         Connection connection = ConnectionManager.getConnection();
         InputService inputService = InputServiceManager.getInputService();
-        RoomService roomService = new RoomService(connection);
-        RoomManager roomManager = new RoomManager(inputService,roomService,new ClueManager(inputService,new ClueService(connection),roomService),new PropManager(inputService,new PropService(connection),roomService));
-
+         roomService = new RoomService(connection);
+        roomManager = new RoomManager(inputService,roomService,new ClueManager(inputService,new ClueService(connection),roomService),new PropManager(inputService,new PropService(connection),roomService));
 
     }
 

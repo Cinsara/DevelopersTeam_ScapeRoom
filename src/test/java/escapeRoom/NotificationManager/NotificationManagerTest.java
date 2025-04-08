@@ -25,7 +25,7 @@ class NotificationManagerTest {
         outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        InputStream simulatedIn = new ByteArrayInputStream("10\n".getBytes());
+        InputStream simulatedIn = new ByteArrayInputStream("3\n".getBytes());
         System.setIn(simulatedIn);
 
         InputService inputService = InputServiceManager.getInputService();;
@@ -63,7 +63,7 @@ class NotificationManagerTest {
     void deleteNotification() throws SQLException{
         notificationManager.deleteNotification();
         String consoleOutput = outputStream.toString();
-        assertTrue(consoleOutput.contains("The notification with ID 10 was deleted successfully."),
+        assertTrue(consoleOutput.contains("The notification with ID 3 was deleted successfully."),
                 "The deletion message is not as expected.");
     }
 }
