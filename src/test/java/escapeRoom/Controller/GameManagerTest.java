@@ -30,7 +30,7 @@ class GameManagerTest {
     @BeforeAll
     static void setUp() throws SQLException, AbsentEntityException {
         connection = ConnectionManager.getConnection();
-        gameManager = new GameManager(new EscapeRoomServices(connection).getPartialServices());
+        gameManager = new GameManager(new EscapeRoomServices(connection).getServicesForGameManager());
         existUser = new UserBuilder("Bob","Smith").setDob(LocalDate.of(1985, 9,23)).setId(2).build();
         nonexistUser = new UserBuilder("Barbar","Lolipop").setId(20).build();
 

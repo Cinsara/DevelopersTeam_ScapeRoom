@@ -1,11 +1,12 @@
 package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
-import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
@@ -41,6 +42,7 @@ class CertificateManagerTest {
     private static UserService userService;
     private static RoomService roomService;
     private static GameHasUserService gameHasUserService;
+    private static CertificateController certificateController;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -54,14 +56,15 @@ class CertificateManagerTest {
         userService = new UserService(connection);
         roomService = new RoomService(connection);
         gameHasUserService = new GameHasUserService(connection);
-        certificateManager = new CertificateManager(new InputCollector(inputService,roomService,userService),new EscapeRoomServices(connection).getPartialServices());
+        certificateManager = new CertificateManager(new EscapeRoomServices(connection).getServicesForCertificateManager());
+        certificateController = new CertificateController(inputService,new InputCollector(inputService,roomService,userService),certificateManager);
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(new InputCollector(inputService,roomService,userService),new EscapeRoomServices(connection).getPartialServices());
+        certificateManager = new CertificateManager(new EscapeRoomServices(connection).getServicesForCertificateManager());
     }
 
     @Test
@@ -69,7 +72,7 @@ class CertificateManagerTest {
         String input = "1\n1\n";
         setSimulatedInput(input);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
 
         assertTrue(outputStream.toString().contains("Certificated saved to"));
         assertTrue(outputStream.toString().contains("Certificate_"));
@@ -146,7 +149,7 @@ class CertificateManagerTest {
         PrintStream printStream = new PrintStream(outputStream);
         System.setOut(printStream);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
         String output = outputStream.toString();
         assertTrue(output.contains("Certificated saved!"), "It should show success message");
 

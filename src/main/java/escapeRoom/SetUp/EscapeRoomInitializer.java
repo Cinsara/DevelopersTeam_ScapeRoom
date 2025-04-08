@@ -31,8 +31,8 @@ public class EscapeRoomInitializer {
         this.connection = ConnectionManager.getConnection();
         this.escapeRoomServices = new EscapeRoomServices(connection);
         this.inputService = InputServiceManager.getInputService();
-        this.inputCollector = new InputCollector(inputService,escapeRoomServices.getRoomService(),escapeRoomServices.getUserService());
-        this.escapeRoomManagers = new EscapeRoomManagers(inputService,inputCollector,escapeRoomServices);
+        this.inputCollector = new InputCollector(inputService,escapeRoomServices.roomService,escapeRoomServices.userService);
+        this.escapeRoomManagers = new EscapeRoomManagers(inputService,escapeRoomServices);
         this.escapeRoomControllers = new EscapeRoomControllers(inputService,inputCollector,escapeRoomServices,escapeRoomManagers);
         this.escapeRoomMenus = new EscapeRoomMenus(inputService,escapeRoomControllers,escapeRoomManagers);
 
@@ -43,34 +43,34 @@ public class EscapeRoomInitializer {
     }
 
     public TicketMenu getTicketMenu() {
-        return escapeRoomMenus.getTicketMenu();
+        return escapeRoomMenus.ticketMenu;
     }
 
     public GameMenu getGameMenu() {
-        return escapeRoomMenus.getGameMenu();
+        return escapeRoomMenus.gameMenu;
     }
 
     public RewardController getRewardController() {
-        return escapeRoomControllers.getRewardController();
+        return escapeRoomControllers.rewardController;
     }
 
     public UserMenu getUserMenu() {
-        return escapeRoomMenus.getUserMenu();
+        return escapeRoomMenus.userMenu;
     }
 
     public NotificationMenu getNotificationMenu() {
-        return escapeRoomMenus.getNotificationMenu();
+        return escapeRoomMenus.notificationMenu;
     }
 
     public CertificateMenu getCertificateMenu() {
-        return escapeRoomMenus.getCertificateMenu();
+        return escapeRoomMenus.certificateMenu;
     }
 
     public InventoryController getInventoryController() {
-        return escapeRoomControllers.getInventoryController();
+        return escapeRoomControllers.inventoryController;
     }
 
     public RoomMenu getRoomMenu() {
-        return escapeRoomMenus.getRoomMenu();
+        return escapeRoomMenus.roomMenu;
     }
 }

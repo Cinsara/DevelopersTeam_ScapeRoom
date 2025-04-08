@@ -5,7 +5,8 @@ import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
 import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
-import escapeRoom.SetUp.PartialEscapeRoomServices;
+import escapeRoom.SetUp.EscapeRoomServices;
+import escapeRoom.SetUp.EscapeRoomServices.ServicesForGameManager;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Service.PeopleService.UserService;
@@ -39,15 +40,15 @@ public class GameManager {
         return games;
     }
 
-    public GameManager(PartialEscapeRoomServices services) throws SQLException {
-        this.gameService = services.getGameService();
-        this.userService = services.getUserService();
-        this.ticketService = services.getTicketService();
-        this.rewardService = services.getRewardService();
-        this.gameHasUserService = services.getGameHasUserService();
-        this.gameUsesClueService = services.getGameUsesClueService();
+    public GameManager(ServicesForGameManager services) throws SQLException {
+        this.gameService = services.gameService;
+        this.userService = services.userService;
+        this.ticketService = services.ticketService;
+        this.rewardService = services.rewardService;
+        this.gameHasUserService = services.gameHasUserService;
+        this.gameUsesClueService = services.gameUsesClueService;
 
-        GameManagerInitializer.initialize(this,gameService,services.getRoomService(),userService,gameHasUserService,gameUsesClueService,rewardService);
+        GameManagerInitializer.initialize(this,gameService,services.roomService,userService,gameHasUserService,gameUsesClueService,rewardService);
 
     }
 

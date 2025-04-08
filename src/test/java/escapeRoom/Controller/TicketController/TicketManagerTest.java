@@ -14,14 +14,14 @@ class TicketManagerTest {
     @Test
     void showSalesInventory() throws SQLException{
         Connection connection = ConnectionManager.getConnection();
-        TicketManager ticketManager = new TicketManager(new TicketService(ConnectionManager.getConnection()),new GameManager(new EscapeRoomServices(connection).getPartialServices()));
+        TicketManager ticketManager = new TicketManager(new TicketService(ConnectionManager.getConnection()),new GameManager(new EscapeRoomServices(connection).getServicesForGameManager()));
         ticketManager.showSalesInventory();
     }
 
     @Test
     void testShowSalesInventory() throws SQLException {
         Connection connection = ConnectionManager.getConnection();
-        TicketManager ticketManager = new TicketManager(new TicketService(ConnectionManager.getConnection()),new GameManager(new EscapeRoomServices(connection).getPartialServices()));
+        TicketManager ticketManager = new TicketManager(new TicketService(ConnectionManager.getConnection()),new GameManager(new EscapeRoomServices(connection).getServicesForGameManager()));
         ticketManager.showSalesInventory(2024);
     }
 }

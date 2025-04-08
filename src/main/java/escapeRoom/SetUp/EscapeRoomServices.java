@@ -16,17 +16,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class EscapeRoomServices {
-    private final UserService userService;
-    private final RoomService roomService;
-    private final ClueService clueService;
-    private final PropService propService;
-    private final GameService gameService;
-    private final TicketService ticketService;
-    private final RewardService rewardService;
-    private final CertificateService certificateService;
-    private final GameHasUserService gameHasUserService;
-    private final GameUsesClueService gameUsesClueService;
-    private final NotificationService notificationService;
+    public final UserService userService;
+    public final RoomService roomService;
+    public final ClueService clueService;
+    public final PropService propService;
+    public final GameService gameService;
+    public final TicketService ticketService;
+    public final RewardService rewardService;
+    public final CertificateService certificateService;
+    public final GameHasUserService gameHasUserService;
+    public final GameUsesClueService gameUsesClueService;
+    public final NotificationService notificationService;
 
     public EscapeRoomServices(Connection connection) throws SQLException {
         this.userService = new UserService(connection);
@@ -42,51 +42,48 @@ public class EscapeRoomServices {
         this.notificationService = new NotificationService(connection);
     }
 
-    public PartialEscapeRoomServices getPartialServices(){
-        return new PartialEscapeRoomServices(this);
+    static public class ServicesForGameManager {
+        public final UserService userService;
+        public final RoomService roomService;
+        public final GameService gameService;
+        public final TicketService ticketService;
+        public final RewardService rewardService;
+        public final GameHasUserService gameHasUserService;
+        public final GameUsesClueService gameUsesClueService;
+
+        public ServicesForGameManager(EscapeRoomServices escapeRoomServices) {
+            this.userService = escapeRoomServices.userService;
+            this.roomService = escapeRoomServices.roomService;
+            this.gameService = escapeRoomServices.gameService;
+            this.ticketService = escapeRoomServices.ticketService;
+            this.rewardService = escapeRoomServices.rewardService;
+            this.gameHasUserService = escapeRoomServices.gameHasUserService;
+            this.gameUsesClueService = escapeRoomServices.gameUsesClueService;
+        }
+
+    }
+    public ServicesForGameManager getServicesForGameManager(){
+        return new ServicesForGameManager(this);
     }
 
-    public UserService getUserService() {
-        return userService;
+    static public class ServicesForCertificateManager{
+        public final CertificateService certificateService;
+        public final UserService userService;
+        public final GameService gameService;
+        public final RoomService roomService;
+        public final GameHasUserService gameHasUserService;
+
+        public ServicesForCertificateManager(EscapeRoomServices services) {
+            this.certificateService = services.certificateService;
+            this.userService = services.userService;
+            this.gameService = services.gameService;
+            this.roomService = services.roomService;
+            this.gameHasUserService = services.gameHasUserService;
+        }
     }
 
-    public RoomService getRoomService() {
-        return roomService;
+    public ServicesForCertificateManager getServicesForCertificateManager(){
+        return new ServicesForCertificateManager(this);
     }
 
-    public ClueService getClueService() {
-        return clueService;
-    }
-
-    public PropService getPropService() {
-        return propService;
-    }
-
-    public GameService getGameService() {
-        return gameService;
-    }
-
-    public TicketService getTicketService() {
-        return ticketService;
-    }
-
-    public RewardService getRewardService() {
-        return rewardService;
-    }
-
-    public CertificateService getCertificateService() {
-        return certificateService;
-    }
-
-    public GameHasUserService getGameHasUserService() {
-        return gameHasUserService;
-    }
-
-    public GameUsesClueService getGameUsesClueService() {
-        return gameUsesClueService;
-    }
-
-    public NotificationService getNotificationService() {
-        return notificationService;
-    }
 }

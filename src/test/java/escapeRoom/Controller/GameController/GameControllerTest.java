@@ -23,7 +23,7 @@ class GameControllerTest {
     static void setUp() throws SQLException {
          connection = ConnectionManager.getConnection();
          roomService = new RoomService(connection);
-         gameManager = new GameManager(new EscapeRoomServices(connection).getPartialServices());
+         gameManager = new GameManager(new EscapeRoomServices(connection).getServicesForGameManager());
     }
 
     @Test

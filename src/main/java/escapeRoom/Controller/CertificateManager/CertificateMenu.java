@@ -5,12 +5,12 @@ import escapeRoom.Service.InputService.InputService;
 import java.sql.SQLException;
 
 public class CertificateMenu {
-    private CertificateManager certificateManager;
+    private CertificateController certificateController;
     private InputService inputService;
 
-    public CertificateMenu(InputService inputService, CertificateManager certificateManager) {
+    public CertificateMenu(InputService inputService, CertificateController certificateController) {
         this.inputService = inputService;
-        this.certificateManager = certificateManager;
+        this.certificateController = certificateController;
     }
 
     public void principalCertificateMenu(){
@@ -31,7 +31,7 @@ public class CertificateMenu {
             option = inputService.readInt("Select an option:");
 
             switch(option){
-                case 1 -> certificateManager.inputsCertificationCreation();
+                case 1 -> certificateController.inputsCertificationCreation();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
                     return;

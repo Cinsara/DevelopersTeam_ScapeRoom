@@ -1,6 +1,7 @@
 package escapeRoom.Controller.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.InputService;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputServiceManager;
@@ -26,8 +27,10 @@ class CertificateManagerTest {
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
-            CertificateManager certificateManager = new CertificateManager(new InputCollector(InputServiceManager.getInputService(),roomService,userService),new EscapeRoomServices(connection).getPartialServices());
-            certificateManager.inputsCertificationCreation();
+            InputService inputService = InputServiceManager.getInputService();
+            CertificateManager certificateManager = new CertificateManager(new EscapeRoomServices(connection).getServicesForCertificateManager());
+            CertificateController certificateController = new CertificateController(inputService,new InputCollector(inputService,roomService,userService),certificateManager);
+            certificateController.inputsCertificationCreation();
         }finally{
             System.setIn(originalIn);
         }

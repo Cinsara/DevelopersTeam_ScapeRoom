@@ -1,9 +1,7 @@
 package escapeRoom.Controller.CertificateManager;
 
-import escapeRoom.SetUp.PartialEscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
-import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -11,6 +9,7 @@ import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import escapeRoom.Model.PeopleArea.User;
+import escapeRoom.SetUp.EscapeRoomServices.ServicesForCertificateManager;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,40 +20,38 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class CertificateManager {
-    private final CertificateService certificateService;
     private final UserService userService;
     private final GameService gameService;
     private final RoomService roomService;
     private final GameHasUserService gameHasUserService;
-    private final InputCollector inputCollector;
+    private final CertificateService certificateService;
 
-    public CertificateManager(InputCollector inputCollector, PartialEscapeRoomServices services) throws SQLException {
-        this.certificateService = services.getCertificateService();
-        this.userService = services.getUserService();
-        this.gameService = services.getGameService();
-        this.roomService = services.getRoomService();
-        this.gameHasUserService = services.getGameHasUserService();
-        this.inputCollector = inputCollector;
+    public CertificateManager(ServicesForCertificateManager services) throws SQLException {
+        this.userService = services.userService;
+        this.gameService = services.gameService;
+        this.roomService = services.roomService;
+        this.gameHasUserService = services.gameHasUserService;
+        this.certificateService = services.certificateService;
     }
 
+    public UserService getUserService(){
+        return userService;
+    }
 
-    public void inputsCertificationCreation(){
-        try {
-            LocalDate gameDate = inputCollector.getDate();
-            int userId = inputCollector.getTargetCostumer().getId();
-            int roomId = inputCollector.getRoom().getId();
-            int gameId = getGameIdByDate(gameDate,roomId);
-            validateCertificate(gameId,userId);
-            Certificate certificate = new Certificate(userId, gameId);
-            certificateService.create(certificate);
-            String result = createCertificate(certificate);
-            System.out.println(result);
-            System.out.println("\nCertificated saved!");
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        } catch (IllegalArgumentException e){
-            System.out.println("Validation error: " + e.getMessage());
-        }
+    public GameService getGameService(){
+        return gameService;
+    }
+
+    public RoomService getRoomService(){
+        return roomService;
+    }
+
+    public GameHasUserService getGameHasUserService(){
+        return gameHasUserService;
+    }
+
+    public CertificateService getCertificateService() {
+        return certificateService;
     }
 
     public void validateCertificate(int gameId, int userId) throws SQLException {
@@ -70,6 +67,7 @@ public class CertificateManager {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         roomService.read(game.getRoom_id())
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+
         if(!isUserParticipant(gameId,userId)){
             throw new IllegalArgumentException("Error. The user didn't participate in this game.");
         }
@@ -80,9 +78,11 @@ public class CertificateManager {
     }
 
     public int getGameIdByDate(LocalDate gameDate, int roomId) throws SQLException,IllegalArgumentException{
-        return gameService.getAllEntities(gameService.getConnection()).stream()
+
+        return gameService.getAllEntities(gameService.getConnection())
+                .stream()
                 .filter(g -> g.getDate().equals(gameDate))
-                .filter(g->g.getRoom_id() == roomId)
+                .filter(g -> g.getRoom_id() == roomId)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Date not valid."))
                 .getId();
@@ -100,16 +100,13 @@ public class CertificateManager {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         int minutes = game.getEllapsedTimeInSeconds() / 60;
-        String certificateText = "\n------" +
-                "CERTIFICATE" +
-                "------" +
-                "\nCongratulations! This certificates that the user " + user.getName() + " " + user.getLastname() +
-                " successfully completed the escape room " + room.getName() + ".\n- Theme: " +
-                room.getTheme() + "\n- Difficulty: " + room.getDifficulty() + ".\n- Date: " +
-                game.getDate().format(dateFormatter) + "\n- Completion time: " + minutes + " minutes.";
+        return ("\n------CERTIFICATE------\nCongratulations! This certificates that the user %s %s successfully completed the escape room %s.\n- Theme: %s\n- Difficulty: %s.\n" +
+                "- Date: %s\n- Completion time: %d minutes.").formatted(user.getName(), user.getLastname(), room.getName(), room.getTheme(), room.getDifficulty(), game.getDate().format(dateFormatter), minutes);
+    }
 
+    public void certificateTxt(String certificateText, User user){
         String home = System.getProperty("user.home");
-        String fileName = "Certificate_" + user.getName() + "_" + user.getLastname() + ".txt";
+        String fileName = "Certificate_%s_%s.txt".formatted(user.getName(), user.getLastname());
         String filePath;
 
         try {
@@ -121,10 +118,9 @@ public class CertificateManager {
 
         try(FileWriter writer = new FileWriter(filePath)) {
             writer.write(certificateText);
-            System.out.println("\nCertificated saved to: " + filePath);
+            System.out.printf("\nCertificated saved to: %s%n", filePath);
         } catch (IOException e){
-            System.out.println("Error saving the certificate: " + e.getMessage());
+            System.out.printf("Error saving the certificate: %s%n", e.getMessage());
         }
-        return certificateText;
     }
 }

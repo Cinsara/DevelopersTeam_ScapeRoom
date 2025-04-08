@@ -14,55 +14,24 @@ import escapeRoom.Service.InputService.InputService;
 import java.sql.SQLException;
 
 public class EscapeRoomManagers {
-    private final GameManager gameManager;
-    private final UserManager userManager;
-    private final CertificateManager certificateManager;
-    private final NotificationManager notificationManager;
-    private final RoomManager roomManager;
-    private final ClueManager clueManager;
-    private final PropManager propManager;
-    private final TicketManager ticketManager;
+    public final GameManager gameManager;
+    public final UserManager userManager;
+    public final CertificateManager certificateManager;
+    public final NotificationManager notificationManager;
+    public final RoomManager roomManager;
+    public final ClueManager clueManager;
+    public final PropManager propManager;
+    public final TicketManager ticketManager;
 
-    public EscapeRoomManagers(InputService inputService, InputCollector inputCollector, EscapeRoomServices services) throws SQLException {
-        this.gameManager = new GameManager(services.getPartialServices());
-        this.userManager = new UserManager(inputService,services.getUserService());
-        this.certificateManager = new CertificateManager(inputCollector, services.getPartialServices());
-        this.notificationManager = new NotificationManager(inputService,services.getNotificationService(),services.getUserService());
-        this.clueManager = new ClueManager(inputService,services.getClueService(),services.getRoomService());
-        this.propManager = new PropManager(inputService,services.getPropService(),services.getRoomService());
-        this.roomManager = new RoomManager(inputService,services.getRoomService(),clueManager,propManager);
-        this.ticketManager = new TicketManager(services.getTicketService(),gameManager);
+    public EscapeRoomManagers(InputService inputService, EscapeRoomServices services) throws SQLException {
+        this.gameManager = new GameManager(services.getServicesForGameManager());
+        this.userManager = new UserManager(inputService,services.userService);
+        this.certificateManager = new CertificateManager(services.getServicesForCertificateManager());
+        this.notificationManager = new NotificationManager(inputService,services.notificationService,services.userService);
+        this.clueManager = new ClueManager(inputService,services.clueService,services.roomService);
+        this.propManager = new PropManager(inputService,services.propService,services.roomService);
+        this.roomManager = new RoomManager(inputService,services.roomService,clueManager,propManager);
+        this.ticketManager = new TicketManager(services.ticketService,gameManager);
     }
 
-    public GameManager getGameManager() {
-        return gameManager;
-    }
-
-    public UserManager getUserManager() {
-        return userManager;
-    }
-
-    public CertificateManager getCertificateManager() {
-        return certificateManager;
-    }
-
-    public NotificationManager getNotificationManager() {
-        return notificationManager;
-    }
-
-    public RoomManager getRoomManager() {
-        return roomManager;
-    }
-
-    public ClueManager getClueManager() {
-        return clueManager;
-    }
-
-    public PropManager getPropManager() {
-        return propManager;
-    }
-
-    public TicketManager getTicketManager() {
-        return ticketManager;
-    }
 }
