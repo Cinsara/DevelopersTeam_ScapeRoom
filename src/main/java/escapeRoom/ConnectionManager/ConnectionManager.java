@@ -8,7 +8,7 @@ public class ConnectionManager {
 
     final static String URL = "jdbc:mysql://localhost:3306/escape_room";
     final static String USER = "root";
-    final static String PASSWORD = "mySqlRoot1948";
+    final static String PASSWORD = "123456789";
     static Connection connection;
 
     static public Connection getConnection() throws SQLException {

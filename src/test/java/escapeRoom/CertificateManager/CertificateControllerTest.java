@@ -1,8 +1,8 @@
 package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
-import escapeRoom.Controller.CertificateManager.CertificateValidation;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputCollector;
@@ -28,12 +28,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CertificateManagerTest {
-    private static CertificateManager certificateManager;
+class CertificateControllerTest {
+    private static CertificateController certificateController;
     private static ByteArrayOutputStream outputStream;
     private static CertificateService certificateService;
     private static Connection connection;
@@ -42,7 +41,7 @@ class CertificateManagerTest {
     private static UserService userService;
     private static RoomService roomService;
     private static GameHasUserService gameHasUserService;
-    private static CertificateValidation certificateValidation;
+    private static CertificateManager certificateManager;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -56,16 +55,16 @@ class CertificateManagerTest {
         userService = new UserService(connection);
         roomService = new RoomService(connection);
         gameHasUserService = new GameHasUserService(connection);
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,
-                gameHasUserService, new InputCollector(inputService,roomService,userService),certificateValidation);
+        certificateController = new CertificateController(inputService,certificateService,
+                new InputCollector(inputService,roomService,userService), certificateManager);
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
         inputService = InputServiceManager.getInputService();
-        certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,
-                roomService,gameHasUserService,new InputCollector(inputService,roomService,userService),certificateValidation);
+        certificateController = new CertificateController(inputService,certificateService,
+                new InputCollector(inputService,roomService,userService), certificateManager);
     }
 
     @Test
@@ -73,7 +72,7 @@ class CertificateManagerTest {
         String input = "1\n1\n";
         setSimulatedInput(input);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
 
         assertTrue(outputStream.toString().contains("Certificated saved to"));
         assertTrue(outputStream.toString().contains("Certificate_"));
@@ -85,7 +84,7 @@ class CertificateManagerTest {
         int invalidGameId = -1;
         int userId = 1;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            certificateValidation.validateCertificate(invalidGameId, userId);
+            certificateManager.validateCertificate(invalidGameId, userId);
         });
         assertTrue(exception.getMessage().contains("Game not found"));
     }
@@ -95,7 +94,7 @@ class CertificateManagerTest {
         int gameId = 1;
         int invalidUserId = -1;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            certificateValidation.validateCertificate(gameId, invalidUserId);
+            certificateManager.validateCertificate(gameId, invalidUserId);
         });
         assertTrue(exception.getMessage().contains("User not found"));
     }
@@ -150,7 +149,7 @@ class CertificateManagerTest {
         PrintStream printStream = new PrintStream(outputStream);
         System.setOut(printStream);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
         String output = outputStream.toString();
         assertTrue(output.contains("Certificated saved!"), "It should show success message");
 

@@ -1,9 +1,9 @@
 package escapeRoom;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.CertificateManager.CertificateMenu;
-import escapeRoom.Controller.CertificateManager.CertificateValidation;
+import escapeRoom.Controller.CertificateManager.CertificateManager;
 import escapeRoom.Controller.GameController.GameController;
 import escapeRoom.Controller.GameController.GameManager;
 import escapeRoom.Controller.GameController.GameMenu;
@@ -54,7 +54,7 @@ public class EscapeRoomInitializer {
     private final GameController gameController;
     private final UserManager userManager;
     private final UserService userService;
-    private final CertificateManager certificateManager;
+    private final CertificateController certificateController;
     private final NotificationManager notificationManager;
     private final NotificationService notificationService;
     private final Connection connection;
@@ -72,7 +72,7 @@ public class EscapeRoomInitializer {
     private final GameUsesClueService gameUsesClueService;
     private final TicketManager ticketManager;
     private final TicketController ticketController;
-    private final CertificateValidation certificateValidation;
+    private final CertificateManager certificateManager;
 
     public EscapeRoomInitializer() throws SQLException, AbsentEntityException {
         //connection
@@ -95,8 +95,8 @@ public class EscapeRoomInitializer {
 
         //managers
         this.gameManager = new GameManager(gameService,roomService,ticketService,rewardService,userService,gameHasUserService,gameUsesClueService);
-        this.certificateValidation= new CertificateValidation(userService,gameService,roomService,gameHasUserService);
-        this.certificateManager = new CertificateManager(inputService,certificateService,userService,gameService,roomService,gameHasUserService, inputCollector,certificateValidation);
+        this.certificateManager = new CertificateManager(userService,gameService,roomService,gameHasUserService);
+        this.certificateController = new CertificateController(inputService,inputCollector, certificateManager);
         this.userManager = new UserManager(userService,inputService);
         this.clueManager = new ClueManager(inputService, clueService, roomService);
         this.propManager = new PropManager(inputService, propService,roomService);
@@ -115,7 +115,7 @@ public class EscapeRoomInitializer {
         this.ticketMenu = new TicketMenu(inputService,ticketController);
         this.userMenu = new UserMenu(inputService,userManager);
         this.notificationMenu = new NotificationMenu(inputService, notificationManager);
-        this.certificateMenu = new CertificateMenu(inputService,certificateManager);
+        this.certificateMenu = new CertificateMenu(inputService, certificateController);
         this.roomMenu = new RoomMenu(inputService, roomManager);
 
     }

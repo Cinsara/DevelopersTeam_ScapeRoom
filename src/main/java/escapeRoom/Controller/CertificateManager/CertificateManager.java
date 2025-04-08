@@ -1,10 +1,7 @@
 package escapeRoom.Controller.CertificateManager;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
-import escapeRoom.Service.InputService.InputCollector;
-import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -17,77 +14,88 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class CertificateManager {
-    private final CertificateService certificateService;
     private final UserService userService;
     private final GameService gameService;
     private final RoomService roomService;
-    private final InputService inputService;
     private final GameHasUserService gameHasUserService;
-    private final InputCollector inputCollector;
-    private final CertificateValidation certificateValidation;
+    private final CertificateService certificateService;
 
-    public CertificateManager(InputService inputService,CertificateService certificateService, UserService userService,
-                              GameService gameService,RoomService roomService,GameHasUserService gameHasUserService,
-                              InputCollector inputCollector, CertificateValidation certificateValidation) throws SQLException {
-        this.inputService = inputService;
-        this.certificateService = certificateService;
+    public CertificateManager(UserService userService, GameService gameService, RoomService roomService,
+                              GameHasUserService gameHasUserService, CertificateService certificateService) throws SQLException {
         this.userService = userService;
         this.gameService = gameService;
         this.roomService = roomService;
         this.gameHasUserService = gameHasUserService;
-        this.inputCollector = inputCollector;
-        this.certificateValidation = certificateValidation;
+        this.certificateService = certificateService;
     }
 
-    public int selectOptionMenu(){
-        return inputService.readInt("Select an option:");
+    public UserService getUserService(){
+        return userService;
     }
 
-    public void inputsCertificationCreation(){
-        try {
-            LocalDate gameDate = inputCollector.getDate();
-            int userId = inputCollector.getTargetCostumer().getId();
-            int roomId = inputCollector.getRoom().getId();
-            int gameId = getGameIdByDate(gameDate);
-            certificateValidation.validateCertificate(gameId,userId);
-            Certificate certificate = new Certificate(userId, gameId);
-            certificateService.create(certificate);
-            String result = createCertificate(certificate);
-            System.out.println(result);
-            System.out.println("\nCertificated saved!");
-            User user = certificateValidation.getUserService().read(userId).orElseThrow();
-            certificateTxt(result,user);
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        } catch (IllegalArgumentException e){
-            System.out.println("Validation error: " + e.getMessage());
+    public GameService getGameService(){
+        return gameService;
+    }
+
+    public RoomService getRoomService(){
+        return roomService;
+    }
+
+    public GameHasUserService getGameHasUserService(){
+        return gameHasUserService;
+    }
+
+    public CertificateService getCertificateService() {
+        return certificateService;
+    }
+
+    public void validateCertificate(int gameId, int userId) throws SQLException {
+        Game game = gameService.read(gameId)
+                .orElseThrow(() -> new IllegalArgumentException("Game not found"));
+
+        if(!game.isSuccess()){
+            throw new IllegalArgumentException("Error. Cannot generate certificate. The user" +
+                    "didn't beat the game.");
+        }
+
+        userService.read(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        roomService.read(game.getRoom_id())
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+
+        if(!isUserParticipant(gameId,userId)){
+            throw new IllegalArgumentException("Error. The user didn't participate in this game.");
         }
     }
 
-    public int getGameIdByDate(LocalDate gameDate) throws SQLException,IllegalArgumentException{
-        Connection connection = ConnectionManager.getConnection();
+    public boolean isUserParticipant(int gameId, int userId) throws SQLException{
+        return gameHasUserService.getMatches(gameId).contains(userId);
+    }
 
-        return certificateValidation.getGameService().getAllEntities(connection).stream()
+    public int getGameIdByDate(LocalDate gameDate, int roomId) throws SQLException,IllegalArgumentException{
+
+        return gameService.getAllEntities(gameService.getConnection())
+                .stream()
                 .filter(g -> g.getDate().equals(gameDate))
+                .filter(g -> g.getRoom_id() == roomId)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Date not valid."))
                 .getId();
     }
 
     public String createCertificate(Certificate certificate) throws SQLException {
-        Game game = certificateValidation.getGameService().read(certificate.getGame_id())
+        Game game = gameService.read(certificate.getGame_id())
                 .orElseThrow(() -> new SQLException("Game data not found"));
 
-        User user = certificateValidation.getUserService().read(certificate.getUser_id())
+        User user = userService.read(certificate.getUser_id())
                 .orElseThrow(() -> new SQLException("User data not found"));
 
-        Room room = certificateValidation.getRoomService().read(game.getRoom_id())
+        Room room = roomService.read(game.getRoom_id())
                 .orElseThrow(() -> new SQLException("Room data not found"));
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

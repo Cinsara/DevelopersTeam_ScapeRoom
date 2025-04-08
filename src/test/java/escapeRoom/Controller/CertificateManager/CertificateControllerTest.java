@@ -15,9 +15,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class CertificateManagerTest {
+class CertificateControllerTest {
 
     @Test
     void inputsCertificationCreation() throws SQLException {
@@ -26,23 +24,19 @@ class CertificateManagerTest {
         GameService gameService= new GameService(connection);
         UserService userService = new UserService(connection);
         GameHasUserService gameHasUserService = new GameHasUserService(connection);
-        CertificateValidation certificateValidation = new CertificateValidation(userService,gameService,roomService,
+        CertificateManager certificateManager = new CertificateManager(userService,gameService,roomService,
                 gameHasUserService);
         String simulateInput = "2024 03 16\n1\n1";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
             System.setIn(testIn);
-            CertificateManager certificateManager = new CertificateManager(
+            CertificateController certificateController = new CertificateController(
                     InputServiceManager.getInputService(),
                     new CertificateService(connection),
-                    userService,
-                    new GameService(connection),
-                    roomService,
-                    new GameHasUserService(connection),
                     new InputCollector(InputServiceManager.getInputService(),roomService,userService),
-                    new CertificateValidation(userService,gameService,roomService,gameHasUserService));
-            certificateManager.inputsCertificationCreation();
+                    new CertificateManager(userService,gameService,roomService,gameHasUserService));
+            certificateController.inputsCertificationCreation();
         }finally{
             System.setIn(originalIn);
         }
