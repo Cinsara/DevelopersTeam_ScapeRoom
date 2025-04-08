@@ -1,6 +1,7 @@
 package escapeRoom;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.SetUp.EscapeRoomInitializer;
 
 import java.sql.Connection;
@@ -28,7 +29,11 @@ public class EscapeRoom {
                 8. Inventory
                 0. Exit.
                 ------""";
-        return initializer.getInputService().readInt(menu);
+        try{
+            return initializer.getInputService().readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
     public void startEscapeRoom() {
         int option;
@@ -36,7 +41,7 @@ public class EscapeRoom {
             option = principalGeneralMenu();
             switch(option){
                 case 1 -> initializer.getGameMenu().startGameMenu();
-                case 2 -> initializer.getTicketMenu().startticketMenu();
+                case 2 -> initializer.getTicketMenu().startTicketMenu();
                 case 3 -> initializer.getRewardController().showAllRewards();
                 case 4 -> initializer.getUserMenu().startUserMenu();
                 case 5 -> initializer.getNotificationMenu().startNotificationMenu();

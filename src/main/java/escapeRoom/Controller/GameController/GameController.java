@@ -1,5 +1,6 @@
 package escapeRoom.Controller.GameController;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
@@ -22,7 +23,7 @@ public class GameController {
         this.gameManager = gameManager;
     }
 
-    public void bookGame(){
+    public void bookGame() throws BackToSecondaryMenuException {
 
         try{
             LocalDate gameDate = inputCollector.getDate();
@@ -36,7 +37,7 @@ public class GameController {
         }
     }
 
-    public void cancelBooking(){
+    public void cancelBooking() throws BackToSecondaryMenuException {
         try{
             LocalDate gameDate = inputCollector.getDate();
             Room room = inputCollector.getRoom();
@@ -48,7 +49,7 @@ public class GameController {
         }
     }
 
-    public void addPlayerToGame(){
+    public void addPlayerToGame() throws BackToSecondaryMenuException {
         try {
             LocalDate gameDate = inputCollector.getDate();
             Room room = inputCollector.getRoom();
@@ -61,7 +62,7 @@ public class GameController {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    public void removePlayerFromGame(){
+    public void removePlayerFromGame() throws BackToSecondaryMenuException {
 
         try {
             LocalDate gameDate = inputCollector.getDate();
@@ -75,7 +76,7 @@ public class GameController {
         }
     }
 
-    public void playGame(){
+    public void playGame() throws BackToSecondaryMenuException {
 
         try{
             LocalDate gameDate = inputCollector.getDate();
@@ -90,7 +91,7 @@ public class GameController {
         }
     }
 
-    public void showBookedGames(){
+    public void showBookedGames() throws BackToSecondaryMenuException {
         int choice = chooseGamesClassification("booked");
         try {
             List<Game> gamesToDisplay = switch (choice) {
@@ -115,7 +116,7 @@ public class GameController {
         }
 
     }
-    public void showAvailableGames(){
+    public void showAvailableGames() throws BackToSecondaryMenuException {
         int choice = chooseGamesClassification("available");
         try {
             List<Game> gamesToDisplay = switch (choice) {
@@ -139,7 +140,7 @@ public class GameController {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    private int chooseGamesClassification(String bookedOrAvailable){
+    private int chooseGamesClassification(String bookedOrAvailable) throws BackToSecondaryMenuException {
         InputService inputService = InputServiceManager.getInputService();
         String menuBasis = " ----\n Do you want to see \n ---- \n";
         StringBuilder listOptions = new StringBuilder();

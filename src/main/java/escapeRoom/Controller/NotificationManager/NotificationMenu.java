@@ -1,5 +1,6 @@
 package escapeRoom.Controller.NotificationManager;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
 public class NotificationMenu {
@@ -11,7 +12,7 @@ public class NotificationMenu {
         this.notificationManager = notificationManager;
     }
 
-    public void principalNotificationMenu(){
+    public int principalNotificationMenu(){
         String menu = """
                 ------
                 Notification menu:
@@ -22,25 +23,30 @@ public class NotificationMenu {
                 0. Back to the main menu.
                 ------
                 """;
-        System.out.println(menu);
+        try{
+            return inputService.readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
 
     public void startNotificationMenu(){
         int option;
         do {
-            principalNotificationMenu();
-            option = notificationManager.selectOptionMenu();
+            try{
+                option = principalNotificationMenu();
 
-            switch (option) {
-                case 1 -> notificationManager.createNotification();
-                case 2 -> notificationManager.deleteNotification();
-                case 3 -> notificationManager.showAllNotifications();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+                switch (option) {
+                    case 1 -> notificationManager.createNotification();
+                    case 2 -> notificationManager.deleteNotification();
+                    case 3 -> notificationManager.showAllNotifications();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch (BackToSecondaryMenuException e){}
         } while(true);
     }
 }

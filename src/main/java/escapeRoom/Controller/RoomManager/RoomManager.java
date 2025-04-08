@@ -1,6 +1,7 @@
 package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.Model.GameArea.CluePropFactory.*;
@@ -31,7 +32,7 @@ public class RoomManager {
         this.propFactory = new PropFactory();
     }
 
-    public void createRoom() {
+    public void createRoom() throws BackToSecondaryMenuException {
 
         try{
             int id = getNextRoomId();
@@ -139,7 +140,7 @@ public class RoomManager {
         return maxId.orElse(0) + 1;
     }
 
-    public void updateRoom() {
+    public void updateRoom() throws BackToSecondaryMenuException{
 
         try {
             List<Room> rooms = getAllRooms();
@@ -265,7 +266,7 @@ public class RoomManager {
     }
 
 
-    public void deleteRoom() {
+    public void deleteRoom() throws BackToSecondaryMenuException {
 
         getAllRooms();
 

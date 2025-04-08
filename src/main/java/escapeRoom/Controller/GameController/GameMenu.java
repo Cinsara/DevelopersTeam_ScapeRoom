@@ -1,5 +1,6 @@
 package escapeRoom.Controller.GameController;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
 public class GameMenu {
@@ -26,27 +27,33 @@ public class GameMenu {
                 7. Show Available Games
                 0. Back to the main menu.
                 ------""";
-            return inputService.readInt(menu);
+           try{
+               return inputService.readInt(menu);
+           } catch (BackToSecondaryMenuException e) {
+               return 0;
+           }
     }
 
     public void startGameMenu(){
         int option;
         do {
-            option = principalGameMenu();
-            switch(option){
-                case 1 -> gameController.bookGame();
-                case 2 -> gameController.cancelBooking();
-                case 3 -> gameController.addPlayerToGame();
-                case 4 -> gameController.removePlayerFromGame();
-                case 5 -> gameController.playGame();
-                case 6 -> gameController.showBookedGames();
-                case 7 -> gameController.showAvailableGames();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+            try{
+                option = principalGameMenu();
+                switch(option){
+                    case 1 -> gameController.bookGame();
+                    case 2 -> gameController.cancelBooking();
+                    case 3 -> gameController.addPlayerToGame();
+                    case 4 -> gameController.removePlayerFromGame();
+                    case 5 -> gameController.playGame();
+                    case 6 -> gameController.showBookedGames();
+                    case 7 -> gameController.showAvailableGames();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch(BackToSecondaryMenuException e){}
         } while(true);
     }
 }

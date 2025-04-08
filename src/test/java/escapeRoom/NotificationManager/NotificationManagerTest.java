@@ -2,6 +2,7 @@ package escapeRoom.NotificationManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.NotificationManager.NotificationManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.NotificationService.NotificationService;
@@ -52,7 +53,7 @@ class NotificationManagerTest {
     }
 
     @Test
-    void createNotification() throws SQLException {
+    void createNotification() throws SQLException, BackToSecondaryMenuException {
         notificationManager.createNotification();
         String consoleOutput = outputStream.toString();
         assertTrue(consoleOutput.contains("Notification created successfully!"),
@@ -60,7 +61,7 @@ class NotificationManagerTest {
     }
 
     @Test
-    void deleteNotification() throws SQLException{
+    void deleteNotification() throws SQLException, BackToSecondaryMenuException {
         notificationManager.deleteNotification();
         String consoleOutput = outputStream.toString();
         assertTrue(consoleOutput.contains("The notification with ID 3 was deleted successfully."),

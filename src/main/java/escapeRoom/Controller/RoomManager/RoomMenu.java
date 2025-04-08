@@ -1,5 +1,6 @@
 package escapeRoom.Controller.RoomManager;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;
 
@@ -28,24 +29,31 @@ public class RoomMenu {
                 4. Delete Room
                 0. Back to the main menu.
                 ------""";
-        return inputService.readInt(menu);
+        try{
+            return inputService.readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
 
     public void startRoomMenu() {
         int option;
         do {
-            option = principalRoomMenu();
-            switch(option){
-                case 1 -> roomManager.createRoom();
-                case 2 -> System.out.println(TablePrinter.buildTable(roomManager.prepPrintableRooms().get(2),false));
-                case 3 -> roomManager.updateRoom();
-                case 4 -> roomManager.deleteRoom();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+            try{
+                option = principalRoomMenu();
+                switch(option){
+                    case 1 -> roomManager.createRoom();
+                    case 2 -> System.out.println(TablePrinter.buildTable(roomManager.prepPrintableRooms().get(2),false));
+                    case 3 -> roomManager.updateRoom();
+                    case 4 -> roomManager.deleteRoom();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch(BackToSecondaryMenuException e){}
+
         } while(true);
     }
 }

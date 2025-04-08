@@ -1,6 +1,7 @@
 package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -33,7 +34,7 @@ public class ClueManager{
         clueService = new ClueService(connection);
     }
 
-    public Clue create() throws SQLException{
+    public Clue create() throws SQLException,BackToSecondaryMenuException {
 
 
         String opc = "yes";
@@ -92,7 +93,7 @@ public class ClueManager{
         return null;
     }
 
-    public List<Clue> addCluesToRoom(int roomId) throws SQLException{
+    public List<Clue> addCluesToRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
 
         List<Clue> clues = new ArrayList<>();
         String opc;
@@ -150,7 +151,7 @@ public class ClueManager{
         return clues;
     }
 
-    public void update() throws SQLException {
+    public void update() throws SQLException,BackToSecondaryMenuException  {
 
         getAllClues();
 
@@ -202,7 +203,7 @@ public class ClueManager{
 
     }
 
-    public void delete() throws SQLException {
+    public void delete() throws SQLException, BackToSecondaryMenuException {
 
         getAllClues();
 
@@ -221,7 +222,7 @@ public class ClueManager{
         }
     }
 
-    public void removeClueFromRoom(int roomId) throws SQLException {
+    public void removeClueFromRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
 
         String opc = "yes";
         do {

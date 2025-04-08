@@ -3,6 +3,7 @@ package escapeRoom.CertificateManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
@@ -68,7 +69,7 @@ class CertificateManagerTest {
     }
 
     @Test
-    void inputsCertificationCreation() throws SQLException {
+    void inputsCertificationCreation() throws SQLException, BackToSecondaryMenuException {
         String input = "1\n1\n";
         setSimulatedInput(input);
 
@@ -114,7 +115,7 @@ class CertificateManagerTest {
     }
 
     @Test
-    void createCertificate() throws SQLException {
+    void createCertificate() throws SQLException, BackToSecondaryMenuException {
         String input = "1\n1\n";
         setSimulatedInput(input);
 

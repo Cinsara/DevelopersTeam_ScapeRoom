@@ -1,5 +1,6 @@
 package escapeRoom.Controller.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.PeopleService.UserService;
@@ -23,11 +24,11 @@ public class UserManager {
         this.userService = userService;
     }
 
-    public int selectOptionMenu(){
+    public int selectOptionMenu() throws BackToSecondaryMenuException {
         return inputService.readInt("Select an option:");
     }
 
-    public void createUser() {
+    public void createUser() throws BackToSecondaryMenuException{
         try {
             String name = inputService.readString("Write a name:");
             String lastname = inputService.readString("Write a lastname:");
@@ -44,7 +45,7 @@ public class UserManager {
         }
     }
 
-    public void showUserById(){
+    public void showUserById() throws BackToSecondaryMenuException{
         int id = inputService.readInt("Enter user ID:");
         try {
             Optional<User> userOptional = userService.read(id);
@@ -77,7 +78,7 @@ public class UserManager {
         }
     }
 
-    public void updateUser() {
+    public void updateUser() throws BackToSecondaryMenuException{
         try {
             int id = inputService.readInt("Enter user ID:");
 
@@ -131,7 +132,7 @@ public class UserManager {
         }
     }
 
-        public void deleteUserById() {
+        public void deleteUserById() throws BackToSecondaryMenuException{
             int id = inputService.readInt("Enter user ID to delete: ");
             try {
             boolean isDeleted = userService.delete(id);
@@ -145,7 +146,7 @@ public class UserManager {
             }
         }
 
-    public boolean subscribeUser() {
+    public boolean subscribeUser() throws BackToSecondaryMenuException{
         int id = inputService.readInt("Enter user ID to subscribe: ");
         try {
             Optional<User> userOpt = userService.read(id);
@@ -165,7 +166,7 @@ public class UserManager {
         }
     }
 
-    public boolean unsubscribeUser() {
+    public boolean unsubscribeUser() throws BackToSecondaryMenuException {
         int id = inputService.readInt("Enter user ID to unsubscribe:");
 
         try {

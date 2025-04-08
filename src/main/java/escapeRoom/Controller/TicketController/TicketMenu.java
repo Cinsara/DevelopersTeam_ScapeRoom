@@ -1,5 +1,6 @@
 package escapeRoom.Controller.TicketController;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
 public class TicketMenu {
@@ -20,21 +21,27 @@ public class TicketMenu {
                 2. Yearly sale inventory
                 0. Back to the main menu.
                 ------""";
-        return inputService.readInt(menu);
+        try{
+            return inputService.readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
-    public void startticketMenu(){
+    public void startTicketMenu(){
         int option;
         do {
-            option = principalTicketMenu();
-            switch(option){
-                case 1 -> ticketController.showSalesInventory();
-                case 2 -> ticketController.showYearlySalesInventory();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+            try{
+                option = principalTicketMenu();
+                switch(option){
+                    case 1 -> ticketController.showSalesInventory();
+                    case 2 -> ticketController.showYearlySalesInventory();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch(BackToSecondaryMenuException e){}
         } while(true);
     }
 }

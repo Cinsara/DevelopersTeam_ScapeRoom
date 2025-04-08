@@ -2,6 +2,7 @@ package escapeRoom.Controller.NotificationManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.UserManager.UserWrapper;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.OutPutService.TablePrinter;
@@ -26,7 +27,7 @@ public class NotificationManager {
         this.userService = userService;
     }
 
-    public int selectOptionMenu(){
+    public int selectOptionMenu() throws BackToSecondaryMenuException{
         return inputService.readInt("Select an option:");
     }
 
@@ -53,7 +54,7 @@ public class NotificationManager {
         }
     }
 
-    public void createNotification(){
+    public void createNotification() throws BackToSecondaryMenuException {
         try {
             String content = inputService.readString("Write the notification content:");
             LocalDate dateSent = LocalDate.now();
@@ -82,7 +83,7 @@ public class NotificationManager {
         }
     }
 
-    public void deleteNotification(){
+    public void deleteNotification() throws BackToSecondaryMenuException {
         int id = inputService.readInt("Enter the notification ID to delete: ");
         try{
             boolean isDeleted = notificationService.delete(id);

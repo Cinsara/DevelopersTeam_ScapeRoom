@@ -1,5 +1,6 @@
 package escapeRoom.Controller.CertificateManager;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
@@ -28,11 +29,11 @@ public class CertificateController {
         this.certificateManager = certificateManager;
     }
 
-    public int selectOptionMenu(){
+    public int selectOptionMenu() throws BackToSecondaryMenuException {
         return inputService.readInt("Select an option:");
     }
 
-    public void inputsCertificationCreation(){
+    public void inputsCertificationCreation() throws BackToSecondaryMenuException{
         try {
             LocalDate gameDate = inputCollector.getDate();
             int userId = inputCollector.getTargetCostumer().getId();

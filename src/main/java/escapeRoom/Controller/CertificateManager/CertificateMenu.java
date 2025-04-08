@@ -1,5 +1,6 @@
 package escapeRoom.Controller.CertificateManager;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ public class CertificateMenu {
         this.certificateController = certificateController;
     }
 
-    public void principalCertificateMenu(){
+    public int principalCertificateMenu(){
         String menu = """
                 ------
                 Certificate menu:
@@ -21,23 +22,26 @@ public class CertificateMenu {
                 1. Create certification.
                 0. Back to the main menu.
                 ------""";
-        System.out.println(menu);
+        try{
+            return inputService.readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
-
     public void startCertificationMenu(){
         int option;
         do {
-            principalCertificateMenu();
-            option = inputService.readInt("Select an option:");
-
-            switch(option){
-                case 1 -> certificateController.inputsCertificationCreation();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+            try{
+                option = principalCertificateMenu();
+                switch(option){
+                    case 1 -> certificateController.inputsCertificationCreation();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch(BackToSecondaryMenuException e){}
         } while(true);
     }
 }

@@ -1,6 +1,7 @@
 package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
@@ -31,7 +32,7 @@ public class PropManager {
 
     public PropManager() throws SQLException {};
 
-    public Prop create() throws SQLException{
+    public Prop create() throws SQLException, BackToSecondaryMenuException {
 
 
         String opc = "yes";
@@ -92,7 +93,7 @@ public class PropManager {
         return null;
     }
 
-    public List<Prop> addPropsToRoom(int roomId) throws SQLException{
+    public List<Prop> addPropsToRoom(int roomId) throws SQLException,BackToSecondaryMenuException{
 
         List<Prop> props = new ArrayList<>();
         String opc;
@@ -150,7 +151,7 @@ public class PropManager {
         return null;
     }
 
-    public void update() throws SQLException {
+    public void update() throws SQLException,BackToSecondaryMenuException {
 
 
         getAllProps();
@@ -205,7 +206,7 @@ public class PropManager {
 
     }
 
-    public void delete() throws SQLException {
+    public void delete() throws SQLException,BackToSecondaryMenuException {
 
         getAllProps();
 
@@ -224,7 +225,7 @@ public class PropManager {
         }
     }
 
-    public void removePropFromRoom(int roomId) throws SQLException {
+    public void removePropFromRoom(int roomId) throws SQLException,BackToSecondaryMenuException{
 
         String opc = "yes";
         do {

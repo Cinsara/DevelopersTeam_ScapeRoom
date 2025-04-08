@@ -1,6 +1,7 @@
 package escapeRoom.Controller.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
@@ -18,7 +19,7 @@ class CertificateManagerTest {
 
 
     @Test
-    void inputsCertificationCreation() throws SQLException {
+    void inputsCertificationCreation() throws SQLException, BackToSecondaryMenuException {
         Connection connection = ConnectionManager.getConnection();
         RoomService roomService = new RoomService(connection);
         UserService userService = new UserService(connection);

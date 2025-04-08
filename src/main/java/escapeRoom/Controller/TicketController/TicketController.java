@@ -1,5 +1,6 @@
 package escapeRoom.Controller.TicketController;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 
@@ -14,7 +15,7 @@ public class TicketController {
     public void showSalesInventory(){
         ticketManager.showSalesInventory();
     }
-    public void showYearlySalesInventory(){
+    public void showYearlySalesInventory() throws BackToSecondaryMenuException {
         int year = inputService.readInt("Which year are you interested in?");
         ticketManager.showSalesInventory(year);
     }

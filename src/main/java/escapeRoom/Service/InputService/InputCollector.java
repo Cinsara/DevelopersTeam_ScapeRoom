@@ -23,10 +23,10 @@ public class InputCollector {
         this.userService = userService;
     }
 
-    public LocalDate getDate() {
+    public LocalDate getDate() throws BackToSecondaryMenuException{
         return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
     }
-    public Room getRoom() throws SQLException {
+    public Room getRoom() throws SQLException, BackToSecondaryMenuException {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listRooms = new StringBuilder();
         for (Room room: rooms){
@@ -40,7 +40,7 @@ public class InputCollector {
         return potentialRoom.get();
     }
 
-    public User getTargetCostumer() throws SQLException {
+    public User getTargetCostumer() throws SQLException, BackToSecondaryMenuException {
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listUsers = new StringBuilder();
         for (User user: users){

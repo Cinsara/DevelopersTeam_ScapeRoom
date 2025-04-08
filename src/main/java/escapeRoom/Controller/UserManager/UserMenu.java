@@ -1,5 +1,6 @@
 package escapeRoom.Controller.UserManager;
 
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PeopleService.UserService;
 
@@ -14,7 +15,7 @@ public class UserMenu {
         this.userManager = userManager;
     }
 
-    public void principalUserMenu(){
+    public int principalUserMenu(){
         String menu = """
                 ------
                 User menu:
@@ -28,29 +29,34 @@ public class UserMenu {
                 7. Delete a subscription.
                 0. Back to the main menu.
                 ------""";
-        System.out.println(menu);
+        try{
+            return inputService.readInt(menu);
+        } catch (BackToSecondaryMenuException e) {
+            return 0;
+        }
     }
 
     public void startUserMenu(){
         int option;
         do {
-            principalUserMenu();
-            option = userManager.selectOptionMenu();
+            try{
+                option = principalUserMenu();
 
-            switch(option){
-                case 1 -> userManager.createUser();
-                case 2 -> userManager.showAllUsers();
-                case 3 -> userManager.showUserById();
-                case 4 -> userManager.updateUser();
-                case 5 -> userManager.deleteUserById();
-                case 6 -> userManager.subscribeUser();
-                case 7 -> userManager.unsubscribeUser();
-                case 0 -> {
-                    System.out.println("Returning to the main menu.");
-                    return;
+                switch(option){
+                    case 1 -> userManager.createUser();
+                    case 2 -> userManager.showAllUsers();
+                    case 3 -> userManager.showUserById();
+                    case 4 -> userManager.updateUser();
+                    case 5 -> userManager.deleteUserById();
+                    case 6 -> userManager.subscribeUser();
+                    case 7 -> userManager.unsubscribeUser();
+                    case 0 -> {
+                        System.out.println("Returning to the main menu.");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Please try again.");
                 }
-                default -> System.out.println("Invalid option. Please try again.");
-            }
+            }catch (BackToSecondaryMenuException e){}
         } while(true);
     }
 }

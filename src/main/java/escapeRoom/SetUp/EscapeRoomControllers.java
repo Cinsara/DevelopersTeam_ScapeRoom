@@ -1,5 +1,6 @@
 package escapeRoom.SetUp;
 
+
 import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.GameController.GameController;
 import escapeRoom.Controller.InventoryController.InventoryController;
