@@ -1,7 +1,10 @@
 package escapeRoom.Controller.NotificationManager;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.UserManager.UserWrapper;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
+import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Model.Notification.Notification;
 import escapeRoom.Model.PeopleArea.User;
@@ -9,6 +12,7 @@ import escapeRoom.Model.PeopleArea.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationManager {
@@ -60,6 +64,21 @@ public class NotificationManager {
 
         } catch (SQLException e) {
             System.out.println("Error creating a new notification: " + e.getMessage());
+        }
+    }
+
+    public void showAllNotifications(){
+        try {
+            List<Notification> notificationList = notificationService.getAllEntities(notificationService.getConnection());
+            if(notificationList.isEmpty()){
+                System.out.println("The notification list is empty.");
+            } else {
+                for(Notification notification : notificationList ){
+                    System.out.println("ID: " + notification.getId() + " - " + notification);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving notification list: " + e.getMessage());
         }
     }
 

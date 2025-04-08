@@ -3,11 +3,10 @@ package escapeRoom.Controller.GameController;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
-import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import escapeRoom.Model.PeopleArea.User;
-import escapeRoom.Service.OutPutService.TablePrinterUser;
+import escapeRoom.Service.OutPutService.TablePrinter;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -109,7 +108,7 @@ public class GameController {
                 System.out.println("Nothing to display.");
             }else{
                 System.out.println("\nBooked Games\n");
-                System.out.println(TablePrinterUser.buildTable(gamesToDisplay,false));
+                System.out.println(TablePrinter.buildTable(gamesToDisplay,false));
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());
@@ -134,7 +133,7 @@ public class GameController {
                 System.out.println("Nothing to display.");
             }else{
                 System.out.println("\nAvailable Games\n");
-                System.out.println(TablePrinter.buildTable(gamesToDisplay));
+                System.out.println(TablePrinter.buildTable(gamesToDisplay,false));
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());

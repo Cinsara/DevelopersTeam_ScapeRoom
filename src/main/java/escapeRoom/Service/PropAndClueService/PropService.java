@@ -15,13 +15,15 @@ import java.util.Optional;
 
 public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
 
-    private final Connection CONNECTION = ConnectionManager.getConnection();
+    private final Connection connection;
 
-    public Connection getCONNECTION() {
-        return CONNECTION;
+    public PropService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
-    public PropService(Connection CONNECTION) throws SQLException {
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
     public Prop create(Prop entity) throws SQLException {
         String query = "INSERT INTO " + getTableName() + " (prop_type, prop_value, room_room_id) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getType().toString());
             preparedStatement.setInt(2, entity.getValue());
             preparedStatement.setInt(3, entity.getRoomId());
@@ -72,7 +74,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
     @Override
     public Optional<Prop> read(int id) throws SQLException {
         String query = "SELECT * FROM " + getTableName() + " WHERE prop_id = ?";
-        try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
@@ -102,7 +104,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
     @Override
     public Prop update(Prop entity) throws SQLException {
         String query = "UPDATE " + getTableName() + " SET prop_type = ?, room_room_id = ?, prop_value = ? WHERE prop_id = ?";
-        try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getType().toString());
             preparedStatement.setInt(2, entity.getRoomId());
             preparedStatement.setDouble(3, entity.getValue());
@@ -117,7 +119,7 @@ public class PropService implements CrudeService<Prop>, GetAllService<Prop> {
     @Override
     public boolean delete(int id) throws SQLException {
         String query = "DELETE FROM " + getTableName() + " WHERE prop_id = ?";
-        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() == 1;
         }

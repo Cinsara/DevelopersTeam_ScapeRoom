@@ -14,14 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
+    private final Connection connection;
 
-    private final Connection CONNECTION = ConnectionManager.getConnection();
-
-    public Connection getCONNECTION() {
-        return CONNECTION;
-    }
-
-    public ClueService(Connection CONNECTION) throws SQLException {
+    public ClueService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override
@@ -44,7 +40,7 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
     public Clue create(Clue entity) throws SQLException {
         String query = "INSERT INTO " + getTableName() + " (clue_type, room_room_id) VALUES (?, ?)";
 
-        try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getType().toString());
             preparedStatement.setInt(2, entity.getRoomId());
 
@@ -72,7 +68,7 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
     @Override
     public Optional<Clue> read(int id) throws SQLException {
         String query = "SELECT * FROM " + getTableName() + " WHERE clue_id = ?";
-        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1, id);
             try(ResultSet rs = preparedStatement.executeQuery()){
                 if (rs.next()) {
@@ -100,7 +96,7 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
     @Override
     public Clue update(Clue entity) throws SQLException {
         String query = "UPDATE " + getTableName() + " SET clue_type = ?, room_room_id = ? WHERE clue_id = ?";
-        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,entity.getType().toString());
             preparedStatement.setInt(2,entity.getRoomId());
             preparedStatement.setInt(3,entity.getId());
@@ -112,10 +108,15 @@ public class ClueService implements CrudeService<Clue>, GetAllService<Clue> {
     @Override
     public boolean delete(int id) throws SQLException {
         String query = "DELETE FROM " + getTableName() + " WHERE clue_id = ?";
-        try(PreparedStatement preparedStatement = CONNECTION.prepareStatement(query)) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() == 1;
         }
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override
