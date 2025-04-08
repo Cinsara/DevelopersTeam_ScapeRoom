@@ -140,8 +140,18 @@ public class RoomManager {
     }
 
     public void updateRoom() {
-        getAllRooms();
-        int roomId = inputService.readInt("Which room do you want to update?");
+
+        try {
+            List<Room> rooms = getAllRooms();
+            for (Room room : rooms) {
+                roomService.read(room.getId()).ifPresent(System.out::println);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving all the rooms available: " + e.getMessage());
+        }
+
+        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)");
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
@@ -181,14 +191,24 @@ public class RoomManager {
 
             System.out.println();
 
-            boolean moreClues = inputService.readBoolean("Do you want to add more Clues? yes/no");
+            boolean addClues = inputService.readBoolean("Do you want to add more Clues? yes/no");
 
             List<Integer> newCluesId = null;
-            if (moreClues) {
+            if (addClues) {
                 newCluesId = new ArrayList<>(roomOpt.get().getClues_id());
-                newCluesId.add(clueManager.addCluesToRoom(roomId).getId());
+
+                for (Clue clue : clueManager.addCluesToRoom(roomId)) {
+                    newCluesId.add(clue.getId());
+                }
             }
 
+            System.out.println();
+
+            boolean removeClues = inputService.readBoolean("Do you want to remove Clues? yes/no");
+
+            if (removeClues) {
+                clueManager.removeClueFromRoom(roomId);
+            }
 
             //UPDATE LISTA PROPS
             System.out.println("This Room has " + roomOpt.get().getProps_id().size() + " Props: \n");
@@ -199,16 +219,26 @@ public class RoomManager {
 
             System.out.println();
 
-            boolean moreProps = inputService.readBoolean("Do you want to add more Props? yes/no");
+            boolean addProps = inputService.readBoolean("Do you want to add more Props? yes/no");
 
             List<Integer> newPropsId = null;
 
-            if (moreProps) {
+            if (addProps) {
                 newPropsId = new ArrayList<>(roomOpt.get().getProps_id());
-                newPropsId.add(propManager.addPropsToRoom(roomId).getId());
+                for (Prop prop : propManager.addPropsToRoom(roomId)) {
+                    newPropsId.add(prop.getId());
+                }
             }
 
-            if (newName.isEmpty() && newTheme.isEmpty() && newDifficulty.isEmpty() && !moreClues && !moreProps) {
+            System.out.println();
+
+            boolean removeProps = inputService.readBoolean("Do you want to remove Props? yes/no");
+
+            if (removeProps) {
+                propManager.removePropFromRoom(roomId);
+            }
+
+            if (newName.isEmpty() && newTheme.isEmpty() && newDifficulty.isEmpty() && !addClues && !removeClues && !addProps) {
                 System.out.println("Nothing new to update. Room stays the same!");
             } else {
 
@@ -217,8 +247,8 @@ public class RoomManager {
                         newName.isEmpty() ? existingRoom.getName() : newName,
                         newTheme.isEmpty() ? existingRoom.getTheme() : newTheme,
                         newDifficulty.isEmpty() ? existingRoom.getDifficulty() : newDifficultyEnum,
-                        moreClues ? existingRoom.getClues_id() : newCluesId,
-                        moreProps ? existingRoom.getProps_id() : newPropsId);
+                        addClues ? existingRoom.getClues_id() : newCluesId,
+                        addProps ? existingRoom.getProps_id() : newPropsId);
 
                 roomService.update(updatedRoom);
 
@@ -233,6 +263,7 @@ public class RoomManager {
             System.out.println("Error updating room: " + e.getMessage());
         }
     }
+
 
     public void deleteRoom() {
 

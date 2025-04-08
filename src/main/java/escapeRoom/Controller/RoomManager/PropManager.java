@@ -92,14 +92,20 @@ public class PropManager {
         return null;
     }
 
-    public Prop addPropsToRoom(int roomId) throws SQLException{
+    public List<Prop> addPropsToRoom(int roomId) throws SQLException{
 
-        String opc = "yes";
+        List<Prop> props = new ArrayList<>();
+        String opc;
         do {
             try {
                 GameElementFactory propFactory = ElementsFactoryProducer.getFactory("Prop");
 
                 String type = (inputService.readString(("Enter Type (CLOSET, SPADE, MOUNTAIN): "))).toUpperCase();
+
+                while (!type.equals("CLOSET") && !type.equals("SPADE") && !type.equals("MOUNTAIN")) {
+                    type = (inputService.readString(("Please, enter only CLOSET, SPADE or MOUNTAIN: "))).toUpperCase();
+                }
+
                 PropType typeEnum = null;
 
                 switch (type) {
@@ -109,19 +115,17 @@ public class PropManager {
                 }
 
                 Prop newProp = (Prop) propFactory.createGameElement(typeEnum, roomId);
-
                 propService.create(newProp);
-
-                return newProp;
+                props.add(newProp);
 
             } catch (SQLException e) {
                 System.out.println("Error creating Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
-        } while (!opc.equals("no"));
+        } while (!opc.equalsIgnoreCase("no"));
 
-        return null;
+        return props;
     }
 
     public List<Prop> getAllProps() throws SQLException {

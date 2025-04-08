@@ -92,9 +92,10 @@ public class ClueManager{
         return null;
     }
 
-    public Clue addCluesToRoom(int roomId) throws SQLException{
+    public List<Clue> addCluesToRoom(int roomId) throws SQLException{
 
-        String opc = "yes";
+        List<Clue> clues = new ArrayList<>();
+        String opc;
         do {
             try {
 
@@ -109,8 +110,8 @@ public class ClueManager{
                 }
 
                 Clue newClue = (Clue) clueFactory.createGameElement(typeEnum, roomId);
-
                 clueService.create(newClue);
+                clues.add((newClue));
 
                 System.out.println("New Clue created -> ID: " + newClue.getId() +
                         ", Type: " + newClue.getType() +
@@ -120,11 +121,11 @@ public class ClueManager{
                 System.out.println("Error creating Clue: " + e.getMessage());
             }
 
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
         } while (!opc.equals("no"));
 
-        return null;
+        return clues;
     }
 
     public void read(int id) throws SQLException {
