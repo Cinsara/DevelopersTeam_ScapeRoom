@@ -18,6 +18,7 @@ public class NotificationMenu {
                 ------
                 1. Create notification.
                 2. Delete notification.
+                3. Show all notifications.
                 0. Back to the main menu.
                 ------
                 """;
@@ -33,6 +34,7 @@ public class NotificationMenu {
             switch (option) {
                 case 1 -> notificationManager.createNotification();
                 case 2 -> notificationManager.deleteNotification();
+                case 3 -> notificationManager.showAllNotifications();
                 case 0 -> {
                     System.out.println("Returning to the main menu.");
                     return;

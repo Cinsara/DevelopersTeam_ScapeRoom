@@ -16,6 +16,11 @@ public class NotificationService implements GetAllService<Notification> {
     }
 
     @Override
+    public Connection getConnection() {
+        return connection;
+    }
+
+    @Override
     public String getTableName() {
         return "notification";
     }

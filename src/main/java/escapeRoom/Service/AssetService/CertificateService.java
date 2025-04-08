@@ -22,6 +22,11 @@ public class CertificateService extends AssetService<Certificate> {
     }
 
     @Override
+    public Connection getConnection() {
+        return connection;
+    }
+
+    @Override
     public String getTableName() {
         return "certificate";
     }

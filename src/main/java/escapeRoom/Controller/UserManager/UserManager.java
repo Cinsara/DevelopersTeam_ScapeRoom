@@ -1,12 +1,15 @@
 package escapeRoom.Controller.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,14 +62,15 @@ public class UserManager {
     public void showAllUsers(){
         try {
             List<User> userList = userService.getAllEntities(connection);
-
             if(userList.isEmpty()){
                 System.out.println("The user list is empty.");
             } else {
-                System.out.println("User list:");
+                List<UserWrapper> wrapperList = new ArrayList<>();
                 for(User user : userList ){
-                    System.out.println(user);
+                    wrapperList.add(new UserWrapper(user));
                 }
+                StringBuilder table = TablePrinter.buildTable(wrapperList,true);
+                System.out.println(table);
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving user list: " + e.getMessage());
@@ -90,7 +94,11 @@ public class UserManager {
             String lastname = inputService.readString("New lastname:");
             String email = inputService.readString("New email:");
             String phoneNumber = inputService.readString("New Phone number:");
-            LocalDate bod = inputService.readDate("New birth date [yyyy MM dd]:", "yyyy MM dd");
+            String dobInput = inputService.readString("New birth date [yyyy MM dd]:");
+            LocalDate bod = null;
+            if (!dobInput.isEmpty()) {
+                bod = LocalDate.parse(dobInput, DateTimeFormatter.ofPattern("yyyy MM dd"));
+            }
 
             boolean notificationStatus = existingUser.isNotificationStatus();
             System.out.print("Change notification status? (current: " +

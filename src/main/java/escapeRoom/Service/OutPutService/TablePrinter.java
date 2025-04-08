@@ -5,15 +5,17 @@ import escapeRoom.Model.GameArea.CluePropFactory.Clue;
 import escapeRoom.Model.GameArea.CluePropFactory.Prop;
 import escapeRoom.Model.PeopleArea.User;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TablePrinter {
-
     private static final int DEFAULT_COLUMN_WIDTH = 20;
     private static final int INT_PADDING = 2;
 
-    public static <T> StringBuilder buildTable(List<T> list) {
+    public static <T> StringBuilder buildTable(List<T> list, boolean dynamicColumnWidth) {
         StringBuilder sb = new StringBuilder();
 
         if (list == null || list.isEmpty()) {
@@ -29,7 +31,7 @@ public class TablePrinter {
         }
 
         // Determine dynamic column widths
-        Map<Field, Integer> columnWidths = calculateColumnWidths(fields, list);
+        Map<Field, Integer> columnWidths = calculateColumnWidths(fields, list,dynamicColumnWidth);
 
         // Header
         for (Field field : fields) {
@@ -98,26 +100,30 @@ public class TablePrinter {
         }
     }
 
-    private static <T> Map<Field, Integer> calculateColumnWidths(Field[] fields, List<T> list) {
+    private static <T> Map<Field, Integer> calculateColumnWidths(Field[] fields, List<T> list, boolean dynamicColumnWidth) {
         Map<Field, Integer> widths = new HashMap<>();
 
         for (Field field : fields) {
             int maxContentLength = field.getName().length();
 
-            boolean isIntField = field.getType().equals(int.class) || field.getType().equals(Integer.class);
+            for (T item : list) {
+                try {
+                    Object val = field.get(item);
+                    if (val != null) {
+                        maxContentLength = Math.max(maxContentLength, val.toString().length());
+                    }
+                } catch (IllegalAccessException ignored) {}
+            }
 
-            if (isIntField) {
-                for (T item : list) {
-                    try {
-                        Object val = field.get(item);
-                        if (val != null) {
-                            maxContentLength = Math.max(maxContentLength, val.toString().length());
-                        }
-                    } catch (IllegalAccessException ignored) {}
-                }
-                widths.put(field, maxContentLength + INT_PADDING);
+            if (dynamicColumnWidth) {
+                widths.put(field, maxContentLength + 4); // Ajuste dinámico
             } else {
-                widths.put(field, DEFAULT_COLUMN_WIDTH);
+                boolean isIntField = field.getType().equals(int.class) || field.getType().equals(Integer.class);
+                if (isIntField) {
+                    widths.put(field, maxContentLength + INT_PADDING);
+                } else {
+                    widths.put(field, DEFAULT_COLUMN_WIDTH);
+                }
             }
         }
 

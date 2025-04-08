@@ -21,6 +21,11 @@ public class RewardService extends AssetService<Reward> {
     }
 
     @Override
+    public Connection getConnection() {
+        return connection;
+    }
+
+    @Override
     public String getTableName() {
         return "reward";
     }

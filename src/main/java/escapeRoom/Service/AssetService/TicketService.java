@@ -13,6 +13,11 @@ public class TicketService extends AssetService<Ticket> {
     }
 
     @Override
+    public Connection getConnection() {
+        return connection;
+    }
+
+    @Override
     public String getTableName() {
         return "ticket";
     }
