@@ -145,10 +145,7 @@ public class ClueManager{
     }
 
     public List<Clue> getAllClues() throws SQLException {
-
         List<Clue> clues = clueService.getAllEntities(connection);
-        clues.forEach(System.out::println);
-
         return clues;
     }
 

@@ -22,7 +22,7 @@ public class RoomManager {
     private ClueManager clueManager;
     private PropManager propManager;
 
-    public RoomManager(InputService inputService, RoomService roomService,ClueManager clueManager, PropManager propManager) throws SQLException {
+    public RoomManager(InputService inputService, RoomService roomService, ClueManager clueManager, PropManager propManager) throws SQLException {
         this.inputService = inputService;
         this.roomService = roomService;
         this.clueManager = clueManager;
@@ -252,4 +252,18 @@ public class RoomManager {
             System.out.println("Error deleting Room: " + e.getMessage());
         }
     }
+
+    public List<List<?>>prepPrintableRooms() {
+        try{
+            List<Room> rooms = roomService.getAllEntities(roomService.getConnection());
+            List<Prop> props = propManager.getAllProps();
+            List<Clue> clues = clueManager.getAllClues();
+            List<InventoryUtils.RoomWrapper> roomWrappers = InventoryUtils.wrapRooms(rooms,props,clues);
+            return List.of(rooms,props,roomWrappers);
+        } catch(SQLException e){
+            System.out.println("Error :" + e.getMessage());
+            return null;
+        }
+    }
+
 }

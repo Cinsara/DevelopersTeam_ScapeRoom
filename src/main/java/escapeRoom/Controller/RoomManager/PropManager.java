@@ -125,10 +125,7 @@ public class PropManager {
     }
 
     public List<Prop> getAllProps() throws SQLException {
-
         List<Prop> props = propService.getAllEntities(connection);
-        props.forEach(System.out::println);
-
         return props;
     }
 

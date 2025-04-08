@@ -3,6 +3,8 @@ package escapeRoom.Controller.RoomManager;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;
 
+import java.sql.SQLException;
+
 public class RoomMenu {
 
     private RoomManager roomManager;
@@ -37,7 +39,7 @@ public class RoomMenu {
             option = principalRoomMenu();
             switch(option){
                 case 1 -> roomManager.createRoom();
-                case 2 -> System.out.println(TablePrinter.buildTable(roomManager.getAllRooms()));
+                case 2 -> System.out.println(TablePrinter.buildTable(roomManager.prepPrintableRooms().get(2)));
                 case 3 -> roomManager.updateRoom();
                 case 4 -> roomManager.deleteRoom();
                 case 0 -> {

@@ -18,7 +18,7 @@ public class EscapeRoomControllers {
     public final InventoryController inventoryController;
 
     public EscapeRoomControllers(InputService inputService, InputCollector inputCollector, EscapeRoomServices escapeRoomServices, EscapeRoomManagers escapeRoomManagers) throws SQLException {
-        this.inventoryController = new InventoryController(escapeRoomServices.roomService,escapeRoomServices.propService,escapeRoomServices.clueService);
+        this.inventoryController = new InventoryController(escapeRoomManagers.roomManager);
         this.gameController = new GameController(escapeRoomManagers.gameManager,inputCollector);
         this.rewardController = new RewardController(escapeRoomServices.rewardService,escapeRoomServices.gameService,escapeRoomServices.userService);
         this.ticketController = new TicketController(inputService,escapeRoomManagers.ticketManager);
