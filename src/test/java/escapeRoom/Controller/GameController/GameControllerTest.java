@@ -1,6 +1,7 @@
 package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputServiceManager;
@@ -27,7 +28,7 @@ class GameControllerTest {
     }
 
     @Test
-    void bookGame() throws SQLException {
+    void bookGame() throws SQLException, BackToSecondaryMenuException {
         String simulateInput = "2025 04 06\n3\n3";
         InputStream originalIn = System.in;
         try{
@@ -42,7 +43,7 @@ class GameControllerTest {
         }
     }
     @Test
-    void cancelBooking() {
+    void cancelBooking() throws BackToSecondaryMenuException{
         String simulateInput = "2025 04 06\n3";
         InputStream originalIn = System.in;
         try{
@@ -60,7 +61,7 @@ class GameControllerTest {
     }
 
     @Test
-    void showBookedGames() {
+    void showBookedGames() throws BackToSecondaryMenuException {
         String simulateInput = "2\n2025 04 06";
         InputStream originalIn = System.in;
         try{
@@ -78,7 +79,7 @@ class GameControllerTest {
     }
 
     @Test
-    void showAvailabeGames() {
+    void showAvailabeGames() throws BackToSecondaryMenuException {
         String simulateInput = "2\n2025 04 06";
         InputStream originalIn = System.in;
         try{
@@ -96,7 +97,7 @@ class GameControllerTest {
     }
 
     @Test
-    void testAddPlayer(){
+    void testAddPlayer() throws BackToSecondaryMenuException{
         String simulateInput = "2025 04 06\n3\n1";
         InputStream originalIn = System.in;
         try{
@@ -114,7 +115,7 @@ class GameControllerTest {
     }
 
     @Test
-    void testRemovePlayer(){
+    void testRemovePlayer() throws BackToSecondaryMenuException{
 
         InputStream originalIn = System.in;
         try{
