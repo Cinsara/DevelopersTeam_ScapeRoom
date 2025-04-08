@@ -60,7 +60,7 @@ public class CertificateManager {
 
         if(!game.isSuccess()){
             throw new IllegalArgumentException("Error. Cannot generate certificate. The user" +
-                    "didn't beat the game.");
+                    " didn't beat the game.");
         }
 
         userService.read(userId)

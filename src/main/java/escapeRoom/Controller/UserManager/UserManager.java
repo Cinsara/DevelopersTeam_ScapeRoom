@@ -1,12 +1,14 @@
 package escapeRoom.Controller.UserManager;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.OutPutService.TablePrinterUser;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,14 +61,15 @@ public class UserManager {
     public void showAllUsers(){
         try {
             List<User> userList = userService.getAllEntities(connection);
-
             if(userList.isEmpty()){
                 System.out.println("The user list is empty.");
             } else {
-                System.out.println("User list:");
+                List<UserWrapper> wrapperList = new ArrayList<>();
                 for(User user : userList ){
-                    System.out.println(user);
+                    wrapperList.add(new UserWrapper(user));
                 }
+                StringBuilder table = TablePrinterUser.buildTable(wrapperList,true);
+                System.out.println(table);
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving user list: " + e.getMessage());
