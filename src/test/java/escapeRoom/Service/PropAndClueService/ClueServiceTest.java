@@ -131,7 +131,7 @@ class ClueServiceTest {
 
     @Test
     void getAll() throws SQLException {
-        ResultSet clues = clueService.getAll(clueService.getCONNECTION());
+        ResultSet clues = clueService.getAll(clueService.getConnection());
         while(clues.next()){
             System.out.println("ID: " + clues.getInt("clue_id") + ", TYPE: " + clues.getString("clue_type") +
                     ", ROOM_ID: " + clues.getInt("room_room_id"));
@@ -140,7 +140,7 @@ class ClueServiceTest {
 
     @Test
     void getAllEntities() throws SQLException {
-        List<Clue> clues = clueService.getAllEntities(clueService.getCONNECTION());
+        List<Clue> clues = clueService.getAllEntities(clueService.getConnection());
         clues.forEach(prop -> System.out.println(prop.toString()));
     }
 }

@@ -5,83 +5,63 @@ import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
-import escapeRoom.Model.GameArea.RoomBuilder.Room;
-import escapeRoom.Model.PeopleArea.User;
 import escapeRoom.Service.OutPutService.TablePrinter;
+import escapeRoom.ThrowingFunction;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class GameController {
     private final GameManager gameManager;
     private final InputCollector inputCollector;
+    private final ManagerWrapper managerWrapper;
+
     public GameController(GameManager gameManager, InputCollector inputCollector){
         this.inputCollector = inputCollector;
         this.gameManager = gameManager;
+        this.managerWrapper = new ManagerWrapper(inputCollector);
     }
 
     public void bookGame() throws BackToSecondaryMenuException {
-
-        try{
-            LocalDate gameDate = inputCollector.getDate();
-            Room room = inputCollector.getRoom();
-            User captain = inputCollector.getTargetCostumer();
-            if (gameManager.bookGame(gameDate, room.getId(), captain)){
-                System.out.println("New game booked on the " + gameDate + " in room " + room.getName().toUpperCase() + " for customer " + captain.getName().toUpperCase() + " " + captain.getLastname().toUpperCase());
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        Optional<GameCoordinates> coordinates = managerWrapper.runManagerMethod(GameCoordinates::getFullCoordinates,gameManager::bookGame);
+        coordinates.ifPresent(gameCoordinates -> System.out.println("New game booked on the "
+                + gameCoordinates.gameDate + " in room "
+                + gameCoordinates.gameRoom.getName().toUpperCase()
+                + " for customer " + gameCoordinates.captain.getName().toUpperCase()
+                + " " + gameCoordinates.captain.getLastname().toUpperCase()));
     }
-
     public void cancelBooking() throws BackToSecondaryMenuException {
-        try{
-            LocalDate gameDate = inputCollector.getDate();
-            Room room = inputCollector.getRoom();
-            if(gameManager.cancelBooking(gameDate,room.getId())){
-                System.out.println("Booking on the " + gameDate + " in room " + room.getName().toUpperCase() + " cancelled.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        Optional<GameCoordinates> coordinates = managerWrapper.runManagerMethod(GameCoordinates::getPartialCoordinates,gameManager::cancelBooking);
+        coordinates.ifPresent(gameCoordinates -> System.out.println("New game booked on the "
+                + gameCoordinates.gameDate + " in room "
+                + gameCoordinates.gameRoom.getName().toUpperCase()
+                + " for customer " + gameCoordinates.captain.getName().toUpperCase()
+                + " " + gameCoordinates.captain.getLastname().toUpperCase()));
     }
-
     public void addPlayerToGame() throws BackToSecondaryMenuException {
-        try {
-            LocalDate gameDate = inputCollector.getDate();
-            Room room = inputCollector.getRoom();
-            User player = inputCollector.getTargetCostumer();
-
-            if (gameManager.addPlayerToGame(gameDate,room.getId(), player)){
-                System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" added to the game to be held on " + gameDate+ "in room " + room.getName().toUpperCase());
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        Optional<GameCoordinates> coordinates = managerWrapper.runManagerMethod(GameCoordinates::getFullCoordinates,gameManager::addPlayerToGame);
+        coordinates.ifPresent(gameCoordinates-> System.out.println("Customer "
+                + gameCoordinates.captain.getName().toUpperCase()+ " "+ gameCoordinates.captain.getLastname().toUpperCase()+
+                " added to the game to be held on " + gameCoordinates.gameDate+ "in room "
+                + gameCoordinates.gameRoom.getName().toUpperCase()));
     }
     public void removePlayerFromGame() throws BackToSecondaryMenuException {
-
-        try {
-            LocalDate gameDate = inputCollector.getDate();
-            Room room = inputCollector.getRoom();
-            User player = inputCollector.getTargetCostumer();
-            if (gameManager.removePlayerFromGame(gameDate,room.getId(),player)){
-                System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" removed from the game to be held on " + gameDate + "in room " + room.getName().toUpperCase());
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        Optional<GameCoordinates> coordinates = managerWrapper.runManagerMethod(GameCoordinates::getFullCoordinates,gameManager::removePlayerFromGame);
+        coordinates.ifPresent(gameCoordinates-> System.out.println("Customer "
+                + gameCoordinates.captain.getName().toUpperCase()+ " "+ gameCoordinates.captain.getLastname().toUpperCase()+
+                " removed from the game to be held on " + gameCoordinates.gameDate+ "in room "
+                + gameCoordinates.gameRoom.getName().toUpperCase()));
     }
-
     public void playGame() throws BackToSecondaryMenuException {
-
         try{
-            LocalDate gameDate = inputCollector.getDate();
-            Room room = inputCollector.getRoom();
-            Game playedGame = gameManager.playGame(gameDate,room.getId());
+            GameCoordinates newCoordinates = GameCoordinates.getPartialCoordinates(inputCollector);
+            Game playedGame = gameManager.playGame(newCoordinates);
             if (playedGame != null){
                 System.out.println("                  ------------------- GAME SUMMARY  --------------------\n");
                 System.out.println(TablePrinter.buildTable(List.of(playedGame),false));
@@ -90,53 +70,23 @@ public class GameController {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
     public void showBookedGames() throws BackToSecondaryMenuException {
-        int choice = chooseGamesClassification("booked");
-        try {
-            List<Game> gamesToDisplay = switch (choice) {
-                case 1:
-                    yield gameManager.showBookedGames();
-                case 2:
-                    yield gameManager.showBookedGames(inputCollector.getDate());
-                case 3:
-                    yield gameManager.showBookedGames(inputCollector.getRoom().getId());
-                default:
-                    yield new ArrayList<>();
-            };
-
-            if (gamesToDisplay.isEmpty()) {
-                System.out.println("Nothing to display.");
-            }else{
-                System.out.println("\nBooked Games\n");
-                System.out.println(TablePrinter.buildTable(gamesToDisplay,false));
-            }
-        }catch (SQLException e){
-            System.out.println("Error: " + e.getMessage());
-        }
-
+        showGames("Booked",gameManager::showBookedGames,gameManager::showBookedGames,gameManager::showBookedGames);
     }
     public void showAvailableGames() throws BackToSecondaryMenuException {
-        int choice = chooseGamesClassification("available");
-        try {
-            List<Game> gamesToDisplay = switch (choice) {
-                case 1:
-                    yield gameManager.showAvailableGames();
-                case 2:
-                    yield gameManager.showAvailableGames(inputCollector.getDate());
-                case 3:
-                    yield gameManager.showAvailableGames(inputCollector.getRoom().getId());
-                default:
-                    yield new ArrayList<>();
-            };
-
+        showGames("Availabe",gameManager::showAvailableGames,gameManager::showAvailableGames,gameManager::showAvailableGames);
+    }
+    private void showGames(String bookedOrAvailable,Supplier<List<Game>> empty,Function<LocalDate,List<Game>> withDate ,Function<Integer,List<Game>> withRoom) throws BackToSecondaryMenuException {
+        int choice = chooseGamesClassification(bookedOrAvailable.toLowerCase());
+        try{
+            List<Game> gamesToDisplay = getGamesToDisplay(choice,empty,withDate,withRoom);
             if (gamesToDisplay.isEmpty()) {
                 System.out.println("Nothing to display.");
             }else{
-                System.out.println("\nAvailable Games\n");
+                System.out.println("\n" + bookedOrAvailable + " Games\n");
                 System.out.println(TablePrinter.buildTable(gamesToDisplay,false));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -149,5 +99,16 @@ public class GameController {
         do {input = inputService.readInt(menuBasis + listOptions);} while(!new HashSet<>(List.of(1, 2, 3, 4)).contains(input));
         return input;
     }
-
+    private List<Game> getGamesToDisplay(int choice, Supplier<List<Game>> allGamesSupplier,Function<LocalDate,List<Game>> withDate ,Function<Integer,List<Game>> withRoom) throws BackToSecondaryMenuException, SQLException {
+        return switch (choice){
+            case 1:
+                yield allGamesSupplier.get();
+            case 2:
+                yield withDate.apply(inputCollector.getDate());
+            case 3:
+                yield withRoom.apply(inputCollector.getRoom().getId());
+            default:
+                yield new ArrayList<>();
+        };
+    }
 }

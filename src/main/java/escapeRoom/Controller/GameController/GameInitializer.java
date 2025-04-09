@@ -38,8 +38,7 @@ public class GameInitializer {
             if (isCaptainMissingFromPlayerList(game)){
                 Optional<User> potentialCaptain = userService.read(game.getCaptainId());
                 if (potentialCaptain.isPresent()){
-                    gameManager.addPlayerToGame(game.getDate(), game.getRoom_id(), potentialCaptain.get());
-                    return;
+                    gameManager.addPlayerToGame(game.getDate(),game.getRoom_id(),potentialCaptain.get());
                 }else{
                     throw new AbsentEntityException(game.getCaptainId(),User.class);
                 }
@@ -52,19 +51,18 @@ public class GameInitializer {
     static protected boolean isCaptainMissingFromPlayerList(Game game){
         return game.getCaptainId()!=null && !game.getPlayers().stream().map(User::getId).toList().contains(game.getCaptainId()) ;
     }
-    static protected List<Clue> retrieveUsedClues(Game game,GameUsesClueService gameUsesClueService) throws SQLException {
+    static protected List<Clue> retrieveUsedClues(Game game,GameUsesClueService gameUsesClueService, ClueService clueService) throws SQLException {
 
-        return gameUsesClueService.getMatches(game.getId()).stream().map(GameInitializer::getClueFromId).collect(Collectors.toList());
+        return gameUsesClueService.getMatches(game.getId()).stream().map(id ->GameInitializer.getClueFromId(id,clueService)).collect(Collectors.toList());
     }
 
     static protected List<Reward> retrieveRewardsGiven(Game game, RewardService rewardService) throws SQLException {
-        return rewardService.getAllEntities(ConnectionManager.getConnection()).stream()
+        return rewardService.getAllEntities(rewardService.getConnection()).stream()
                 .filter(reward -> reward.getGame_id()== game.getId())
                 .toList();
     }
-    static protected Clue getClueFromId(int clueId){
+    static protected Clue getClueFromId(int clueId, ClueService clueService){
         try{
-            ClueService clueService = new ClueService(ConnectionManager.getConnection());
             Optional<Clue> potentialClue = clueService.read(clueId);
             if (potentialClue.isPresent()) return potentialClue.get();
             else {

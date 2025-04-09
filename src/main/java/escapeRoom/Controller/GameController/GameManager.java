@@ -5,7 +5,6 @@ import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
 import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
-import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.SetUp.EscapeRoomServices.ServicesForGameManager;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
@@ -48,8 +47,7 @@ public class GameManager {
         this.gameHasUserService = services.gameHasUserService;
         this.gameUsesClueService = services.gameUsesClueService;
 
-        GameManagerInitializer.initialize(this,gameService,services.roomService,userService,gameHasUserService,gameUsesClueService,rewardService);
-
+        GameManagerInitializer.initialize(this,gameService,services.roomService,userService,gameHasUserService,gameUsesClueService,rewardService,services.clueService);
     }
 
     public Game createGame(LocalDate dateGame, int roomId){
@@ -97,13 +95,14 @@ public class GameManager {
                 .toList();
     }
 
-    public boolean bookGame(LocalDate dateGame,int roomId,User captain){
-
+    public boolean bookGame(GameCoordinates coordinates){
+        LocalDate dateGame = coordinates.gameDate;
+        int roomId = coordinates.gameRoom.getId();
+        User captain = coordinates.captain;
         try {
             Game targetGame = selectGame(dateGame,roomId);
             Game bookableGame = checkGameAvailable(targetGame,dateGame,roomId);
-            AssetFactory ticketFactory = new AssetFactory();
-            Ticket newTicket = (Ticket) ticketFactory.createAsset(AssetType.TICKET,captain.getId(),bookableGame.getId(),20.0F);
+            Ticket newTicket = (Ticket) new AssetFactory().createAsset(AssetType.TICKET,captain.getId(),bookableGame.getId(),20.0F);
             ticketService.create(newTicket);
             bookableGame.setCaptain(captain);
             gameService.update(bookableGame);
@@ -114,7 +113,9 @@ public class GameManager {
         }
     }
 
-    public boolean cancelBooking(LocalDate dateGame,int roomId){
+    public boolean cancelBooking(GameCoordinates coordinates){
+        LocalDate dateGame = coordinates.gameDate;
+        int roomId = coordinates.gameRoom.getId();
         try{
             Game targetGame = selectGame(dateGame,roomId);
             validateGameCancellable(targetGame);
@@ -123,6 +124,7 @@ public class GameManager {
             gameService.update(targetGame);
             Ticket targetTicket = getGameTicket(targetGame,ticketService);
             ticketService.delete(targetTicket.getId());
+            System.out.println("Booking on the " + coordinates.gameDate + " in room " + coordinates.gameRoom.getName().toUpperCase() + " cancelled.");
             return true;
         } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());
@@ -145,8 +147,13 @@ public class GameManager {
         }
         return targetTicket;
     }
-
-    public boolean addPlayerToGame(LocalDate dateGame,int roomId, User player){
+    public boolean addPlayerToGame(GameCoordinates coordinates){
+        LocalDate dateGame = coordinates.gameDate;
+        int roomId = coordinates.gameRoom.getId();
+        User player = coordinates.captain;
+        return addPlayerToGame(dateGame,roomId,player);
+    }
+    public boolean addPlayerToGame(LocalDate dateGame,int roomId,User player){
        try {
            Game targetGame = selectGame(dateGame,roomId);
            gameHasUserService.createMatch(targetGame.getId(),player.getId());
@@ -158,7 +165,10 @@ public class GameManager {
        }
     }
 
-    public boolean removePlayerFromGame(LocalDate dateGame,int roomId, User player){
+    public boolean removePlayerFromGame(GameCoordinates coordinates){
+        LocalDate dateGame = coordinates.gameDate;
+        int roomId = coordinates.gameRoom.getId();
+        User player = coordinates.captain;
         try {
             Game targetGame = selectGame(dateGame,roomId);
             if(gameHasUserService.deleteMatch(targetGame.getId(),player.getId())){
@@ -173,6 +183,12 @@ public class GameManager {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
+    }
+
+    public Game playGame(GameCoordinates coordinates){
+        LocalDate dateGame = coordinates.gameDate;
+        int roomId = coordinates.gameRoom.getId();
+        return playGame(dateGame,roomId);
     }
 
     public Game playGame(LocalDate dateGame,int roomId){

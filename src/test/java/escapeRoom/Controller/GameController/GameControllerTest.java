@@ -62,7 +62,7 @@ class GameControllerTest {
 
     @Test
     void showBookedGames() throws BackToSecondaryMenuException {
-        String simulateInput = "2\n2025 04 06";
+        String simulateInput = "1\n2025 04 06";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());

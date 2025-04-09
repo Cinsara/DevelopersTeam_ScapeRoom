@@ -4,6 +4,7 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.RoomManager.ClueManager;
 import escapeRoom.Controller.RoomManager.PropManager;
 import escapeRoom.Controller.RoomManager.RoomManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PropAndClueService.ClueService;
@@ -65,7 +66,7 @@ class RoomManagerTest {
     }
 
     @Test
-    void createRoom() throws SQLException {
+    void createRoom() throws SQLException, BackToSecondaryMenuException {
 
         roomManager.createRoom();
 

@@ -6,6 +6,7 @@ import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
+import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class GameManagerInitializer {
 
-    static void initialize(GameManager gameManager, GameService gameService, RoomService roomService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService, RewardService rewardService) throws SQLException {
+    static void initialize(GameManager gameManager, GameService gameService, RoomService roomService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService, RewardService rewardService, ClueService clueService) throws SQLException {
         gameManager.setGameService(gameService);
         gameManager.setGames(new HashSet<>(gameService.getAllEntities(gameService.getConnection())));
         List<Room> rooms = roomService.getAllEntities(roomService.getConnection());
@@ -26,7 +27,7 @@ public class GameManagerInitializer {
         for (Game game : gameManager.getGames()) {
             GameInitializer.setGamePlayers(game,userService,gameHasUserService);
             GameInitializer.addCaptainToPlayersIfNeeded(gameManager,game,userService);
-            game.setUsedClues(GameInitializer.retrieveUsedClues(game, gameUsesClueService));
+            game.setUsedClues(GameInitializer.retrieveUsedClues(game, gameUsesClueService,clueService));
             game.setRewardsGiven(GameInitializer.retrieveRewardsGiven(game,rewardService));
         }
     }
