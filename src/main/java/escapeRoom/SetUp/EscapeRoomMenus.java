@@ -1,11 +1,11 @@
 package escapeRoom.SetUp;
 
-import escapeRoom.Controller.CertificateManager.CertificateMenu;
-import escapeRoom.Controller.GameController.GameMenu;
-import escapeRoom.Controller.NotificationManager.NotificationMenu;
-import escapeRoom.Controller.RoomManager.RoomMenu;
-import escapeRoom.Controller.TicketController.TicketMenu;
-import escapeRoom.Controller.UserManager.UserMenu;
+import escapeRoom.Menus.CertificateMenu;
+import escapeRoom.Menus.GameMenu;
+import escapeRoom.Menus.NotificationMenu;
+import escapeRoom.Menus.RoomMenu;
+import escapeRoom.Menus.TicketMenu;
+import escapeRoom.Menus.UserMenu;
 import escapeRoom.Service.InputService.InputService;
 
 public class EscapeRoomMenus {

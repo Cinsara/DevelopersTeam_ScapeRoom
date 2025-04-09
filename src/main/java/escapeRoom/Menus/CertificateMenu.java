@@ -1,24 +1,24 @@
-package escapeRoom.Controller.TicketController;
+package escapeRoom.Menus;
 
+import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
-public class TicketMenu {
-    private TicketController ticketController;
+public class CertificateMenu {
+    private CertificateController certificateController;
     private InputService inputService;
 
-    public TicketMenu(InputService inputService, TicketController ticketController){
-        this.ticketController = ticketController;
+    public CertificateMenu(InputService inputService, CertificateController certificateController) {
         this.inputService = inputService;
+        this.certificateController = certificateController;
     }
 
-    public int principalTicketMenu(){
+    public int principalCertificateMenu(){
         String menu = """
                 ------
-                Inventory menu:
+                Certificate menu:
                 ------
-                1. General sale inventory
-                2. Yearly sale inventory
+                1. Create certification.
                 0. Back to the main menu.
                 ------""";
         try{
@@ -27,14 +27,13 @@ public class TicketMenu {
             return 0;
         }
     }
-    public void startTicketMenu(){
+    public void startCertificationMenu(){
         int option;
         do {
             try{
-                option = principalTicketMenu();
+                option = principalCertificateMenu();
                 switch(option){
-                    case 1 -> ticketController.showSalesInventory();
-                    case 2 -> ticketController.showYearlySalesInventory();
+                    case 1 -> certificateController.inputsCertificationCreation();
                     case 0 -> {
                         System.out.println("Returning to the main menu.");
                         return;

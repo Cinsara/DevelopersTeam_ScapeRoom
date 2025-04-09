@@ -1,5 +1,6 @@
-package escapeRoom.Controller.RoomManager;
+package escapeRoom.Menus;
 
+import escapeRoom.Controller.RoomManager.RoomManager;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.OutPutService.TablePrinter;

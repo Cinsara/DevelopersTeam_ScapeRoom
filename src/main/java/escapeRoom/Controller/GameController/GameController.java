@@ -56,7 +56,9 @@ public class GameController {
             User player = inputCollector.getTargetCostumer();
 
             if (gameManager.addPlayerToGame(gameDate,room.getId(), player)){
-                System.out.println("Customer " + player.getName().toUpperCase()+ " "+ player.getLastname().toUpperCase()+" added to the game to be held on " + gameDate+ "in room " + room.getName().toUpperCase());
+                System.out.println("Customer " + player.getName().toUpperCase()+ " "
+                        + player.getLastname().toUpperCase()+" added to the game to be held on "
+                        + gameDate+ "in room " + room.getName().toUpperCase());
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());

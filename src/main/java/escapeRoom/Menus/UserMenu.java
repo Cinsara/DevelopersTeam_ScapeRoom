@@ -1,10 +1,8 @@
-package escapeRoom.Controller.UserManager;
+package escapeRoom.Menus;
 
+import escapeRoom.Controller.UserManager.UserManager;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.PeopleService.UserService;
-
-import java.sql.SQLException;
 
 public class UserMenu {
     private UserManager userManager;

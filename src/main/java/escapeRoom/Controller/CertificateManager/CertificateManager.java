@@ -100,8 +100,11 @@ public class CertificateManager {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         int minutes = game.getEllapsedTimeInSeconds() / 60;
-        return ("\n------CERTIFICATE------\nCongratulations! This certificates that the user %s %s successfully completed the escape room %s.\n- Theme: %s\n- Difficulty: %s.\n" +
-                "- Date: %s\n- Completion time: %d minutes.").formatted(user.getName(), user.getLastname(), room.getName(), room.getTheme(), room.getDifficulty(), game.getDate().format(dateFormatter), minutes);
+        return ("\n------CERTIFICATE------\nCongratulations! This certificates that the user %s %s successfully " +
+                "completed the escape room %s.\n- Theme: %s\n- Difficulty: %s.\n" +
+                "- Date: %s\n- Completion time: %d minutes.").formatted(user.getName(),
+                user.getLastname(), room.getName(), room.getTheme(), room.getDifficulty(),
+                game.getDate().format(dateFormatter), minutes);
     }
 
     public void certificateTxt(String certificateText, User user){
