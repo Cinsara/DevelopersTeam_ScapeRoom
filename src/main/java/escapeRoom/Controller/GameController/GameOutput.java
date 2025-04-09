@@ -23,13 +23,13 @@ public class GameOutput {
     static void printNewPlayer(GameCoordinates gameCoordinates){
         System.out.println("Customer "
                 + gameCoordinates.captain.getName().toUpperCase()+ " "+ gameCoordinates.captain.getLastname().toUpperCase()+
-                " added to the game to be held on " + gameCoordinates.gameDate+ "in room "
+                " added to the game to be held on " + gameCoordinates.gameDate+ " in room "
                 + gameCoordinates.gameRoom.getName().toUpperCase());
     }
     static void printRemovedPlayer(GameCoordinates gameCoordinates){
         System.out.println("Customer "
                 + gameCoordinates.captain.getName().toUpperCase()+ " "+ gameCoordinates.captain.getLastname().toUpperCase()+
-                " removed from the game to be held on " + gameCoordinates.gameDate+ "in room "
+                " removed from the game to be held on " + gameCoordinates.gameDate+ " in room "
                 + gameCoordinates.gameRoom.getName().toUpperCase());
     }
     static void printListGames(String header, List<Game> gamesToDisplay) {
