@@ -156,7 +156,7 @@ class PropServiceTest {
 
     @Test
     void getAll() throws SQLException {
-        ResultSet props = propService.getAll(propService.getCONNECTION());
+        ResultSet props = propService.getAll(propService.getConnection());
         while(props.next()){
             System.out.println("ID: " + props.getInt("prop_id") + ", TYPE: " + props.getString("prop_type") +
                     ", VALUE: " + props.getInt("prop_value") + ", ROOM_ID: " + props.getInt("room_room_id"));
@@ -165,7 +165,7 @@ class PropServiceTest {
 
     @Test
     void getAllEntities() throws SQLException {
-        List<Prop> props = propService.getAllEntities(propService.getCONNECTION());
+        List<Prop> props = propService.getAllEntities(propService.getConnection());
         props.forEach(prop -> System.out.println(prop.toString()));
     }
 }
