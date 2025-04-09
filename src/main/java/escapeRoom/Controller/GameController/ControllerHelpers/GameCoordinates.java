@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.ControllerHelpers;
 
 import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import escapeRoom.Model.PeopleArea.User;
@@ -37,10 +37,10 @@ public class GameCoordinates {
         return this;
     }
 
-    static GameCoordinates getFullCoordinates(InputCollector inputCollector) throws SQLException, BackToSecondaryMenuException {
+    public static GameCoordinates getFullCoordinates(InputCollector inputCollector) throws SQLException, BackToSecondaryMenuException {
         return new GameCoordinates(inputCollector).getGameFullCoordinates();
     }
-    static GameCoordinates getPartialCoordinates(InputCollector inputCollector) throws SQLException, BackToSecondaryMenuException {
+    public static GameCoordinates getPartialCoordinates(InputCollector inputCollector) throws SQLException, BackToSecondaryMenuException {
         return new GameCoordinates(inputCollector).getGameCoordinates();
     }
 

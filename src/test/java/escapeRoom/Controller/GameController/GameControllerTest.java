@@ -30,7 +30,7 @@ class GameControllerTest {
 
     @Test
     void bookGame() throws SQLException, BackToSecondaryMenuException {
-        String simulateInput = "2025 04 11\n3\n3";
+        String simulateInput = "2025 07 11\n3\n3";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());

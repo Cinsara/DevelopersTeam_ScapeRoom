@@ -5,7 +5,7 @@ import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
 import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
-import escapeRoom.Controller.GameController.GameCoordinates;
+import escapeRoom.Controller.GameController.ControllerHelpers.GameCoordinates;
 import escapeRoom.SetUp.EscapeRoomServices.ServicesForGameManager;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
@@ -26,6 +26,9 @@ import escapeRoom.Model.PeopleArea.User;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.getGameTicket;
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.validateGameCancellable;
 
 public class GameManager {
     private GameService gameService;
@@ -71,7 +74,6 @@ public class GameManager {
                 .filter(game->game.getCaptainId()!=null)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
-
     }
     public List<Game> showBookedGames(int roomId){
         return this.games.stream()
@@ -87,7 +89,6 @@ public class GameManager {
                 .filter(game->game.getCaptainId()==null)
                 .filter(game -> game.getDate().equals(dateGame))
                 .toList();
-
     }
     public List<Game> showAvailableGames(int roomId){
         return this.games.stream()
@@ -131,22 +132,7 @@ public class GameManager {
             return false;
         }
     }
-    private void validateGameCancellable(Game game) throws GameNotBookedException, GameAlreadyPlayed {
-        if (game.getCaptainId()==null) {
-            throw new GameNotBookedException(game);
-        }
-        if (game.getEllapsedTimeInSeconds()>0){
-            throw new GameAlreadyPlayed(game.getDate(),game.getRoom_id());
-        }
-    }
-    private Ticket getGameTicket(Game game, TicketService ticketService) throws SQLException, NoTicketException {
-        List<Ticket> allTickets = ticketService.getAllEntities(ConnectionManager.getConnection());
-        Ticket targetTicket = allTickets.stream().filter(ticket -> ticket.getGame_id() == game.getId()).findFirst().orElse(null);
-        if (targetTicket == null){
-            throw new NoTicketException(game);
-        }
-        return targetTicket;
-    }
+
     public boolean addPlayerToGame(GameCoordinates coordinates){
         LocalDate dateGame = coordinates.gameDate;
         int roomId = coordinates.gameRoom.getId();
@@ -214,7 +200,6 @@ public class GameManager {
     }
 
     public Game selectGame(LocalDate dateGame, int roomId) throws GameNotAvailableException {
-        Game selectedGame;
         try {
             return this.games.stream()
                     .filter(game -> game.getDate().equals(dateGame))

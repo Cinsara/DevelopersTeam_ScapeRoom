@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.ControllerHelpers;
 
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;

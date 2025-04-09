@@ -1,5 +1,6 @@
 package escapeRoom.Controller.GameController;
 
+import escapeRoom.Controller.GameController.ControllerHelpers.GameCoordinates;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Service.OutPutService.TablePrinter;
 

@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.ControllerHelpers;
 
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static escapeRoom.Controller.GameController.GameControllerHelpers.*;
+import static escapeRoom.Controller.GameController.ControllerHelpers.GameControllerHelpers.*;
 
 public class GameManagerWrapper {
     private final InputCollector inputCollector;
@@ -23,7 +23,7 @@ public class GameManagerWrapper {
         this.inputCollector = inputCollector;
     }
 
-     public GameManagerWrapper pickAndRunManagerMethod
+     public GameManagerWrapper pickGameAndRunManagerMethod
             (ThrowingFunction<InputCollector, GameCoordinates> coordinatesGetter,
              ThrowingFunction<GameCoordinates,Object> managerMethod)
             throws BackToSecondaryMenuException {
@@ -43,7 +43,7 @@ public class GameManagerWrapper {
         }
         return this;
     }
-    public GameManagerWrapper pickAndRunManagerMethod
+    public GameManagerWrapper showSelectedGames
             (String bookedOrAvailable,
              Supplier<List<Game>> supplyAllGames,
              Function<LocalDate,List<Game>> filterByDate,
