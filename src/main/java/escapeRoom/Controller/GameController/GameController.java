@@ -83,8 +83,8 @@ public class GameController {
             Room room = inputCollector.getRoom();
             Game playedGame = gameManager.playGame(gameDate,room.getId());
             if (playedGame != null){
-                String result = playedGame.isSuccess() ? "success":"failure";
-                System.out.println("On the " + playedGame.getDate() + " a game was played in room " + playedGame.getRoom_id()+ ". Its result was a " + result + ", after " + playedGame.getEllapsedTimeInSeconds() + " seconds.");
+                System.out.println("                  ------------------- GAME SUMMARY  --------------------\n");
+                System.out.println(TablePrinter.buildTable(List.of(playedGame),false));
             }
         }catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
