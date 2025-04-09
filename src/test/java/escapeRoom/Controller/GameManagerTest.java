@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.selectGameFromSet;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameManagerTest {
@@ -63,8 +64,8 @@ class GameManagerTest {
             if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user);
         }
         GameHasUserService gameHasUserService = new GameHasUserService(connection);
-        List<Integer> usersFirstGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),2).getId());
-        List<Integer> usersSecondGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),3).getId());
+        List<Integer> usersFirstGame = gameHasUserService.getMatches(selectGameFromSet(gameManager.getGames(),LocalDate.now(),2).getId());
+        List<Integer> usersSecondGame = gameHasUserService.getMatches(selectGameFromSet(gameManager.getGames(),LocalDate.now(),3).getId());
         System.out.println(usersFirstGame.toString());
         System.out.println(usersSecondGame.toString());
     }

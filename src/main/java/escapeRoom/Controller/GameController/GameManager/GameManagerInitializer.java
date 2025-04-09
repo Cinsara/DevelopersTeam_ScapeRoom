@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.selectGameFromSet;
+
 public class GameManagerInitializer {
 
     static void initialize(GameManager gameManager, GameService gameService, RoomService roomService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService, RewardService rewardService, ClueService clueService) throws SQLException {
@@ -44,7 +46,7 @@ public class GameManagerInitializer {
 
     static private void checkIfGamesExistWithinNextTwoWeeks(GameManager gameManager, Room room, LocalDate date) throws SQLException {
         try {
-            gameManager.selectGame(date, room.getId());
+            selectGameFromSet(gameManager.getGames(),date, room.getId());
         } catch (GameNotAvailableException e) {
             createAndRegisterNewGame(gameManager, room, date);
         }
