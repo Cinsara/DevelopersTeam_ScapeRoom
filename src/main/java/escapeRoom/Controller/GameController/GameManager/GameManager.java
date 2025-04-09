@@ -1,10 +1,11 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.GameManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.GameController.Exceptions.GameAlreadyPlayed;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Controller.GameController.Exceptions.GameNotBookedException;
 import escapeRoom.Controller.GameController.Exceptions.NoTicketException;
+import escapeRoom.Controller.GameController.GameCoordinates;
 import escapeRoom.SetUp.EscapeRoomServices.ServicesForGameManager;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.AssetService.TicketService;
@@ -124,7 +125,6 @@ public class GameManager {
             gameService.update(targetGame);
             Ticket targetTicket = getGameTicket(targetGame,ticketService);
             ticketService.delete(targetTicket.getId());
-            System.out.println("Booking on the " + coordinates.gameDate + " in room " + coordinates.gameRoom.getName().toUpperCase() + " cancelled.");
             return true;
         } catch (SQLException | GameNotAvailableException | GameNotBookedException | NoTicketException | GameAlreadyPlayed e) {
             System.out.println("Error: " + e.getMessage());

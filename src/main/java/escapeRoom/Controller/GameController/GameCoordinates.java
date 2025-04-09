@@ -10,9 +10,9 @@ import java.time.LocalDate;
 
 public class GameCoordinates {
     private InputCollector inputCollector;
-    protected LocalDate gameDate;
-    protected Room gameRoom;
-    protected User captain;
+    public LocalDate gameDate;
+    public Room gameRoom;
+    public User captain;
 
     private GameCoordinates(InputCollector inputCollector){
         this.inputCollector = inputCollector;

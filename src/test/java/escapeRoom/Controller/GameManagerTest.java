@@ -1,7 +1,7 @@
 package escapeRoom.Controller;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Controller.GameController.GameManager.GameManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AbsentEntityException;

@@ -1,6 +1,5 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.GameManager;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.AssetService.RewardService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;

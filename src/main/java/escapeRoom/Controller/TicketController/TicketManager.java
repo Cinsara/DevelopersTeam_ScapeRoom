@@ -1,7 +1,7 @@
 package escapeRoom.Controller.TicketController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Controller.GameController.GameManager.GameManager;
 import escapeRoom.Service.AssetService.TicketService;
 import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
 import escapeRoom.Model.GameArea.GameBuilder.Game;

@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.GameManager;
 
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Service.AssetService.RewardService;
