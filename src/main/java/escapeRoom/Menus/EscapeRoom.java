@@ -1,4 +1,4 @@
-package escapeRoom;
+package escapeRoom.Menus;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;

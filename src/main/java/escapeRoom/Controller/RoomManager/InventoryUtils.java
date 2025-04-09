@@ -22,7 +22,6 @@ public class InventoryUtils {
         return roomWrappers;
     }
 
-
     static public class RoomWrapper{
         private int id;
         private String name;
@@ -50,7 +49,8 @@ public class InventoryUtils {
             props.forEach(prop -> {
                 description.append("- ").append(prop.getType()).append(" value ").append(prop.getValue()).append("\n");
             });
-            description.append("---Total Room Value: ").append(props.stream().map(Prop::getValue).reduce(0, Integer::sum)).append("\n");
+            description.append("---Total Room Value: ").append(props.stream().map(Prop::getValue)
+                    .reduce(0, Integer::sum)).append("\n");
             System.out.print(description);
         }
     }

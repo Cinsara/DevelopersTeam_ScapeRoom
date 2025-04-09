@@ -24,10 +24,6 @@ public class UserManager {
         this.userService = userService;
     }
 
-    public int selectOptionMenu() throws BackToSecondaryMenuException {
-        return inputService.readInt("Select an option:");
-    }
-
     public void createUser() throws BackToSecondaryMenuException{
         try {
             String name = inputService.readString("Write a name:");
