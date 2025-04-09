@@ -28,6 +28,7 @@ public class GameController {
     }
     public void addPlayerToGame() throws BackToSecondaryMenuException {
         printNewPlayer(gameManagerWrapper.pickGameAndRunManagerMethod(GameCoordinates::getFullCoordinates,gameManager::addPlayerToGame).returnCoordinates());
+
     }
 
     public void removePlayerFromGame() throws BackToSecondaryMenuException {

@@ -2,8 +2,6 @@ package escapeRoom.Controller.TicketController;
 
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
-import escapeRoom.Service.InputService.InputServiceManager;
-
 
 public class TicketController {
     private TicketManager ticketManager;

@@ -4,17 +4,10 @@ import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.Model.GameArea.GameBuilder.Game;
-import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import escapeRoom.Model.PeopleArea.User;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class CertificateController {
 
@@ -27,10 +20,6 @@ public class CertificateController {
         this.inputService = inputService;
         this.inputCollector = inputCollector;
         this.certificateManager = certificateManager;
-    }
-
-    public int selectOptionMenu() throws BackToSecondaryMenuException {
-        return inputService.readInt("Select an option:");
     }
 
     public void inputsCertificationCreation() throws BackToSecondaryMenuException{

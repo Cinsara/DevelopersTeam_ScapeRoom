@@ -1,14 +1,14 @@
 package escapeRoom.SetUp;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.CertificateManager.CertificateMenu;
-import escapeRoom.Controller.GameController.GameMenu;
+import escapeRoom.Menus.CertificateMenu;
+import escapeRoom.Menus.GameMenu;
 import escapeRoom.Controller.InventoryController.InventoryController;
-import escapeRoom.Controller.NotificationManager.NotificationMenu;
+import escapeRoom.Menus.NotificationMenu;
 import escapeRoom.Controller.RewardController.RewardController;
-import escapeRoom.Controller.RoomManager.RoomMenu;
-import escapeRoom.Controller.TicketController.TicketMenu;
-import escapeRoom.Controller.UserManager.UserMenu;
+import escapeRoom.Menus.RoomMenu;
+import escapeRoom.Menus.TicketMenu;
+import escapeRoom.Menus.UserMenu;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
