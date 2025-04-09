@@ -1,5 +1,6 @@
 package escapeRoom;
 
+import escapeRoom.Menus.EscapeRoom;
 import escapeRoom.Service.AbsentEntityException;
 import escapeRoom.SetUp.EscapeRoomInitializer;
 

@@ -1,25 +1,25 @@
-package escapeRoom.Controller.CertificateManager;
+package escapeRoom.Menus;
 
+import escapeRoom.Controller.TicketController.TicketController;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
-import java.sql.SQLException;
-
-public class CertificateMenu {
-    private CertificateController certificateController;
+public class TicketMenu {
+    private TicketController ticketController;
     private InputService inputService;
 
-    public CertificateMenu(InputService inputService, CertificateController certificateController) {
+    public TicketMenu(InputService inputService, TicketController ticketController){
+        this.ticketController = ticketController;
         this.inputService = inputService;
-        this.certificateController = certificateController;
     }
 
-    public int principalCertificateMenu(){
+    public int principalTicketMenu(){
         String menu = """
                 ------
-                Certificate menu:
+                Inventory menu:
                 ------
-                1. Create certification.
+                1. General sale inventory
+                2. Yearly sale inventory
                 0. Back to the main menu.
                 ------""";
         try{
@@ -28,13 +28,14 @@ public class CertificateMenu {
             return 0;
         }
     }
-    public void startCertificationMenu(){
+    public void startTicketMenu(){
         int option;
         do {
             try{
-                option = principalCertificateMenu();
+                option = principalTicketMenu();
                 switch(option){
-                    case 1 -> certificateController.inputsCertificationCreation();
+                    case 1 -> ticketController.showSalesInventory();
+                    case 2 -> ticketController.showYearlySalesInventory();
                     case 0 -> {
                         System.out.println("Returning to the main menu.");
                         return;

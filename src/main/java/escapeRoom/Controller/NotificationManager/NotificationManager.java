@@ -1,19 +1,14 @@
 package escapeRoom.Controller.NotificationManager;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.UserManager.UserWrapper;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.NotificationService.NotificationService;
-import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Model.Notification.Notification;
 import escapeRoom.Model.PeopleArea.User;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationManager {
@@ -21,14 +16,11 @@ public class NotificationManager {
     private final InputService inputService;
     private final UserService userService;
 
-    public NotificationManager(InputService inputService, NotificationService notificationService, UserService userService) {
+    public NotificationManager(InputService inputService, NotificationService notificationService,
+                               UserService userService) {
         this.notificationService = notificationService;
         this.inputService = inputService;
         this.userService = userService;
-    }
-
-    public int selectOptionMenu() throws BackToSecondaryMenuException{
-        return inputService.readInt("Select an option:");
     }
 
     public void sendNotifications() throws SQLException {

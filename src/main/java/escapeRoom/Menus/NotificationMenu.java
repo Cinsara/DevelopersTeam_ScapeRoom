@@ -1,5 +1,6 @@
-package escapeRoom.Controller.NotificationManager;
+package escapeRoom.Menus;
 
+import escapeRoom.Controller.NotificationManager.NotificationManager;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 
