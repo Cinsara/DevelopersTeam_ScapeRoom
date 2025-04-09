@@ -24,7 +24,7 @@ public class InputCollector {
     }
 
     public LocalDate getDate() throws BackToSecondaryMenuException{
-        return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
+        return inputService.readDate("Introduce the date of the game you are interested in. Use the following format [yyyy MM dd]","yyyy MM dd");
     }
     public Room getRoom() throws SQLException, BackToSecondaryMenuException {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
