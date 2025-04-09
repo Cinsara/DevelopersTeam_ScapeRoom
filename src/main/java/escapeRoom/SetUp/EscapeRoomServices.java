@@ -50,6 +50,7 @@ public class EscapeRoomServices {
         public final RewardService rewardService;
         public final GameHasUserService gameHasUserService;
         public final GameUsesClueService gameUsesClueService;
+        public final ClueService clueService;
 
         public ServicesForGameManager(EscapeRoomServices escapeRoomServices) {
             this.userService = escapeRoomServices.userService;
@@ -59,6 +60,7 @@ public class EscapeRoomServices {
             this.rewardService = escapeRoomServices.rewardService;
             this.gameHasUserService = escapeRoomServices.gameHasUserService;
             this.gameUsesClueService = escapeRoomServices.gameUsesClueService;
+            this.clueService = escapeRoomServices.clueService;
         }
 
     }

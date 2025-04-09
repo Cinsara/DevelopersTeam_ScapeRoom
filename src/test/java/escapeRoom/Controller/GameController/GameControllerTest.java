@@ -1,6 +1,7 @@
 package escapeRoom.Controller.GameController;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.GameController.GameManager.GameManager;
 import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.InputService.InputCollector;
@@ -29,7 +30,7 @@ class GameControllerTest {
 
     @Test
     void bookGame() throws SQLException, BackToSecondaryMenuException {
-        String simulateInput = "2025 04 06\n3\n3";
+        String simulateInput = "2025 07 11\n3\n3";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
@@ -44,7 +45,7 @@ class GameControllerTest {
     }
     @Test
     void cancelBooking() throws BackToSecondaryMenuException{
-        String simulateInput = "2025 04 06\n3";
+        String simulateInput = "2025 04 11\n3";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
@@ -59,10 +60,27 @@ class GameControllerTest {
             System.setIn(originalIn);
         }
     }
+    @Test
+    void playGame() throws BackToSecondaryMenuException{
+        String simulateInput = "2025 04 10\n3\n3";
+        InputStream originalIn = System.in;
+        try{
+            ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());
+            System.setIn(testIn);
+            InputCollector inputCollector = new InputCollector(InputServiceManager.getInputService(),roomService,new UserService(connection));
+            GameController gameController = new GameController(gameManager,inputCollector);
+            gameController.playGame();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            System.setIn(originalIn);
+        }
+    }
 
     @Test
     void showBookedGames() throws BackToSecondaryMenuException {
-        String simulateInput = "2\n2025 04 06";
+        String simulateInput = "3\n2";
         InputStream originalIn = System.in;
         try{
             ByteArrayInputStream testIn = new ByteArrayInputStream(simulateInput.getBytes());

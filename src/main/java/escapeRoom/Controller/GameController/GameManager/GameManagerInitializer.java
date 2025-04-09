@@ -1,4 +1,4 @@
-package escapeRoom.Controller.GameController;
+package escapeRoom.Controller.GameController.GameManager;
 
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.Service.AssetService.RewardService;
@@ -6,6 +6,7 @@ import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.ManyToManyService.GameUsesClueService;
 import escapeRoom.Service.PeopleService.UserService;
+import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.RoomService.RoomService;
 import escapeRoom.Model.GameArea.GameBuilder.Game;
 import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
@@ -16,9 +17,11 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.selectGameFromSet;
+
 public class GameManagerInitializer {
 
-    static void initialize(GameManager gameManager, GameService gameService, RoomService roomService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService, RewardService rewardService) throws SQLException {
+    static void initialize(GameManager gameManager, GameService gameService, RoomService roomService, UserService userService, GameHasUserService gameHasUserService, GameUsesClueService gameUsesClueService, RewardService rewardService, ClueService clueService) throws SQLException {
         gameManager.setGameService(gameService);
         gameManager.setGames(new HashSet<>(gameService.getAllEntities(gameService.getConnection())));
         List<Room> rooms = roomService.getAllEntities(roomService.getConnection());
@@ -26,7 +29,7 @@ public class GameManagerInitializer {
         for (Game game : gameManager.getGames()) {
             GameInitializer.setGamePlayers(game,userService,gameHasUserService);
             GameInitializer.addCaptainToPlayersIfNeeded(gameManager,game,userService);
-            game.setUsedClues(GameInitializer.retrieveUsedClues(game, gameUsesClueService));
+            game.setUsedClues(GameInitializer.retrieveUsedClues(game, gameUsesClueService,clueService));
             game.setRewardsGiven(GameInitializer.retrieveRewardsGiven(game,rewardService));
         }
     }
@@ -43,7 +46,7 @@ public class GameManagerInitializer {
 
     static private void checkIfGamesExistWithinNextTwoWeeks(GameManager gameManager, Room room, LocalDate date) throws SQLException {
         try {
-            gameManager.selectGame(date, room.getId());
+            selectGameFromSet(gameManager.getGames(),date, room.getId());
         } catch (GameNotAvailableException e) {
             createAndRegisterNewGame(gameManager, room, date);
         }

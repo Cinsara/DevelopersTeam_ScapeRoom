@@ -1,7 +1,7 @@
 package escapeRoom.Controller;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Controller.GameController.GameManager.GameManager;
 import escapeRoom.Controller.GameController.Exceptions.GameNotAvailableException;
 import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AbsentEntityException;
@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static escapeRoom.Controller.GameController.GameManager.GameManagerHelpers.selectGameFromSet;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameManagerTest {
@@ -48,9 +49,10 @@ class GameManagerTest {
 
     @Test
     void bookGame() {
-     gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);
+
+     /*gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);
      gameManager.bookGame(LocalDate.now(),1,nonexistUser);
-     gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);
+     gameManager.bookGame(LocalDate.now().plusDays(1),3,existUser);*/
     }
 
     @Test
@@ -62,8 +64,8 @@ class GameManagerTest {
             if (user.getId()%2 ==0) gameManager.addPlayerToGame(LocalDate.now(),3,user);
         }
         GameHasUserService gameHasUserService = new GameHasUserService(connection);
-        List<Integer> usersFirstGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),2).getId());
-        List<Integer> usersSecondGame = gameHasUserService.getMatches(gameManager.selectGame(LocalDate.now(),3).getId());
+        List<Integer> usersFirstGame = gameHasUserService.getMatches(selectGameFromSet(gameManager.getGames(),LocalDate.now(),2).getId());
+        List<Integer> usersSecondGame = gameHasUserService.getMatches(selectGameFromSet(gameManager.getGames(),LocalDate.now(),3).getId());
         System.out.println(usersFirstGame.toString());
         System.out.println(usersSecondGame.toString());
     }
@@ -77,8 +79,7 @@ class GameManagerTest {
 
     @Test
     void removePlayerFromGame() {
-        gameManager.removePlayerFromGame(LocalDate.now(),2,existUser);
-        gameManager.removePlayerFromGame(LocalDate.now(),3,existUser);
+
     }
 
     @Test

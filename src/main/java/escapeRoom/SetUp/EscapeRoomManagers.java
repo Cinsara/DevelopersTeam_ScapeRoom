@@ -1,14 +1,13 @@
 package escapeRoom.SetUp;
 
 import escapeRoom.Controller.CertificateManager.CertificateManager;
-import escapeRoom.Controller.GameController.GameManager;
+import escapeRoom.Controller.GameController.GameManager.GameManager;
 import escapeRoom.Controller.NotificationManager.NotificationManager;
 import escapeRoom.Controller.RoomManager.ClueManager;
 import escapeRoom.Controller.RoomManager.PropManager;
 import escapeRoom.Controller.RoomManager.RoomManager;
 import escapeRoom.Controller.TicketController.TicketManager;
 import escapeRoom.Controller.UserManager.UserManager;
-import escapeRoom.Service.InputService.InputCollector;
 import escapeRoom.Service.InputService.InputService;
 
 import java.sql.SQLException;

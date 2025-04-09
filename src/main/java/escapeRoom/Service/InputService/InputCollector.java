@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static escapeRoom.Service.InputService.CustomerPicker.pickUsersByName;
+
 public class InputCollector {
     private final InputService inputService;
     private final RoomService roomService;
@@ -42,8 +44,10 @@ public class InputCollector {
 
     public User getTargetCostumer() throws SQLException, BackToSecondaryMenuException {
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
+        String nameForSearch = inputService.readString("Introduce the name and lastname of the customer of your interest. Leave this empty to see all customers in DB.");
+        List<User> selectedUsers = nameForSearch.isEmpty() ? users : pickUsersByName(users,nameForSearch);
         StringBuilder listUsers = new StringBuilder();
-        for (User user: users){
+        for (User user: selectedUsers){
             listUsers.append("User ID: ").append(user.getId()).append(" // ").append(user.getName()).append(" ").append(user.getLastname()).append("\n");
         }
         AtomicInteger returnedValue = new AtomicInteger(inputService.readInt("Introduce the ID of the customer your are interested in :\n"+listUsers));
