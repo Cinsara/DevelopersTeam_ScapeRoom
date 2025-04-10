@@ -1,13 +1,15 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
 
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CertificateService extends AssetService<Certificate> {
-    public CertificateService() throws SQLException {
+    public CertificateService(Connection connection) throws SQLException {
+        super(connection);
     }
     @Override
     public Certificate mapResultSetToEntity(ResultSet resultSet) throws SQLException {
@@ -17,6 +19,11 @@ public class CertificateService extends AssetService<Certificate> {
         Certificate newCertificate = new Certificate(userId,gameId);
         newCertificate.setId(id);;
         return newCertificate;
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override

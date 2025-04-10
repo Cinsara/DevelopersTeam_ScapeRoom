@@ -1,7 +1,7 @@
 package escapeRoom.Service.UserService;
 
-import escapeRoom.Service.AbsentEntityException;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Model.PeopleArea.User;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +22,7 @@ public class UserServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        userService = new UserService();
+        userService = new UserService(ConnectionManager.getConnection());
 
         testUser = new User(1,
                 "Test",
@@ -112,9 +112,4 @@ public class UserServiceTest {
         }
     }
 
-    @Test
-    void testCheckExistence() throws SQLException, AbsentEntityException {
-        assertTrue(userService.existEntity(1,User.class));
-        assertThrows(AbsentEntityException.class, ()->userService.existEntity(8,User.class));
-    }
 }

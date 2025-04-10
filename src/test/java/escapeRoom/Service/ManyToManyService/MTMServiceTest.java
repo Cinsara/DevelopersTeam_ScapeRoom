@@ -1,5 +1,6 @@
 package escapeRoom.Service.ManyToManyService;
 
+import escapeRoom.ConnectionManager.ConnectionManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +16,8 @@ class MTMServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        gameHasUserService = new GameHasUserService();
-        gameUsesClueService = new GameUsesClueService();
+        gameHasUserService = new GameHasUserService(ConnectionManager.getConnection());
+        gameUsesClueService = new GameUsesClueService(ConnectionManager.getConnection());
     }
 
     @Test

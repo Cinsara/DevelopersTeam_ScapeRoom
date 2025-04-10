@@ -1,8 +1,6 @@
 package escapeRoom.Service.NotificationService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.model.Notification.Notification;
-import escapeRoom.Service.CrudeService;
+import escapeRoom.Model.Notification.Notification;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;
@@ -11,9 +9,15 @@ import java.util.Optional;
 
 public class NotificationService implements GetAllService<Notification> {
 
-    private final Connection connection = ConnectionManager.getConnection();
+    private final Connection connection;
 
-    public NotificationService() throws SQLException {
+    public NotificationService(Connection connection) throws SQLException {
+        this.connection = connection;
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override

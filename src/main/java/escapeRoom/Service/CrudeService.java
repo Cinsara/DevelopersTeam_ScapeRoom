@@ -1,6 +1,7 @@
 package escapeRoom.Service;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,5 +23,6 @@ public interface CrudeService<T> {
     Optional<T> read (int id) throws SQLException;
     T update(T entity) throws SQLException;
     boolean delete(int id) throws SQLException;
+    public Connection getConnection();
 
 }
