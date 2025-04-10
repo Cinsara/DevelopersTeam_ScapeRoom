@@ -95,6 +95,7 @@ public class ClueManager{
 
     public List<Clue> addCluesToRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
 
+
         List<Clue> clues = new ArrayList<>();
         String opc;
         do {
@@ -155,7 +156,7 @@ public class ClueManager{
 
         getAllClues();
 
-        int clueId = inputService.readInt("Which Clue do you want to update?");
+        int clueId = inputService.readInt("Which Clue do you want to update? (Enter the ID)");
 
         try {
             Optional<Clue> clueOpt = clueService.read(clueId);
@@ -207,7 +208,7 @@ public class ClueManager{
 
         getAllClues();
 
-        int clueId = inputService.readInt("Which Clue do you want to update?");
+        int clueId = inputService.readInt("Which Clue do you want to update? (Enter the ID)");
 
         try {
             Optional<Clue> clueOpt = clueService.read(clueId);
@@ -224,7 +225,7 @@ public class ClueManager{
 
     public void removeClueFromRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
 
-        String opc = "yes";
+        String opc;
         do {
             try {
                 Optional<Room> optRoom = null;
@@ -242,7 +243,7 @@ public class ClueManager{
                     read(clue);
                 }
 
-                int clueIdToRemove = inputService.readInt("Which one do you want to remove?");
+                int clueIdToRemove = inputService.readInt("Which one do you want to remove? (Enter the ID)");
 
                 clueService.delete(clueIdToRemove);
 
@@ -252,7 +253,7 @@ public class ClueManager{
             } catch (SQLException e) {
                 System.out.println("Error removing Clue: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to remove another one? y/n");
+            opc = inputService.readString("Do you want to remove another one? yes/no");
 
         } while (!opc.equals("no"));
 

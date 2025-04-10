@@ -124,12 +124,15 @@ public class RoomManager {
     }
 
     public List<Room> getAllRooms() {
-        try{
+
+        try {
             return roomService.getAllEntities(connection);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
-            return null;
         }
+
+        return null;
+
     }
 
     public int getNextRoomId()  {
@@ -142,6 +145,7 @@ public class RoomManager {
 
     public void updateRoom() throws BackToSecondaryMenuException{
 
+
         try {
             List<Room> rooms = getAllRooms();
             for (Room room : rooms) {
@@ -152,7 +156,7 @@ public class RoomManager {
             System.out.println("Error retrieving all the rooms available: " + e.getMessage());
         }
 
-        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)");
+        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)")
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
@@ -208,9 +212,8 @@ public class RoomManager {
             boolean removeClues = inputService.readBoolean("Do you want to remove Clues? yes/no");
 
             if (removeClues) {
-                clueManager.removeClueFromRoom(roomId);
+              clueManager.removeClueFromRoom(roomId);
             }
-
             //UPDATE LISTA PROPS
             System.out.println("This Room has " + roomOpt.get().getProps_id().size() + " Props: \n");
 
@@ -270,7 +273,7 @@ public class RoomManager {
 
         getAllRooms();
 
-        int roomId = inputService.readInt("Which room do you want to delete?");
+        int roomId = inputService.readInt("Which room do you want to delete? (Enter the ID)");
 
         try {
             Optional<Room> roomOpt = roomService.read(roomId);

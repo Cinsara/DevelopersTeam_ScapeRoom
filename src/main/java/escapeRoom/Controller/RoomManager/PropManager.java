@@ -71,7 +71,7 @@ public class PropManager {
             } catch (SQLException e) {
                 System.out.println("Error creating Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to create another one? y/n");
+            opc = inputService.readString("Do you want to create another one? yes/no");
 
         } while (!opc.equals("no"));
 
@@ -94,6 +94,7 @@ public class PropManager {
     }
 
     public List<Prop> addPropsToRoom(int roomId) throws SQLException,BackToSecondaryMenuException{
+
 
         List<Prop> props = new ArrayList<>();
         String opc;
@@ -156,7 +157,7 @@ public class PropManager {
 
         getAllProps();
 
-        int propId = inputService.readInt("Which Prop do you want to update?");
+        int propId = inputService.readInt("Which Prop do you want to update? (Enter the ID)");
 
         try {
             Optional<Prop> propOpt = propService.read(propId);
@@ -210,7 +211,7 @@ public class PropManager {
 
         getAllProps();
 
-        int propId = inputService.readInt("Which Prop do you want to update?");
+        int propId = inputService.readInt("Which Prop do you want to update? (Enter the ID)");
 
         try {
             Optional<Prop> propOpt = propService.read(propId);
@@ -227,7 +228,7 @@ public class PropManager {
 
     public void removePropFromRoom(int roomId) throws SQLException,BackToSecondaryMenuException{
 
-        String opc = "yes";
+        String opc;
         do {
             try {
                 Optional<Room> optRoom = null;
@@ -245,7 +246,7 @@ public class PropManager {
                     read(prop);
                 }
 
-                int propIdToRemove = inputService.readInt("Which one do you want to remove?");
+                int propIdToRemove = inputService.readInt("Which one do you want to remove? (Enter the ID)");
 
                 propService.delete(propIdToRemove);
 
@@ -255,7 +256,7 @@ public class PropManager {
             } catch (SQLException e) {
                 System.out.println("Error removing Prop: " + e.getMessage());
             }
-            opc = inputService.readString("Do you want to remove another one? y/n");
+            opc = inputService.readString("Do you want to remove another one? yes/no");
 
         } while (!opc.equals("no"));
 
