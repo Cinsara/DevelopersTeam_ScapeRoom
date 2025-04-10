@@ -11,5 +11,4 @@ public class CustomerPicker {
                 .filter(user -> DISTANCE.apply((user.getName() + user.getLastname()).toLowerCase(),contrastValue.replace(" ","").toLowerCase())<5)
                 .toList();
     }
-
 }
