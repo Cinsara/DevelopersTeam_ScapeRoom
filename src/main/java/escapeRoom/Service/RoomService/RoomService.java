@@ -1,10 +1,8 @@
 package escapeRoom.Service.RoomService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.CheckExistenceService;
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.RoomBuilder.Theme;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;
@@ -13,14 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class RoomService implements GetAllService<Room>, CheckExistenceService<Room> {
-    private final Connection connection = ConnectionManager.getConnection();
+public class RoomService implements GetAllService<Room> {
+    private final Connection connection;
 
     public Connection getConnection() {
         return connection;
     }
 
-    public RoomService() throws SQLException {
+    public RoomService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

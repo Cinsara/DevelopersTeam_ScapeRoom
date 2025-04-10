@@ -1,17 +1,16 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.AssetBuilder.Asset;
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.CrudeService;
+import escapeRoom.Model.AssetsArea.AssetBuilder.Asset;
 import escapeRoom.Service.GetAllService;
 
 import java.sql.*;
 import java.util.Optional;
 
 abstract class AssetService <T extends Asset> implements GetAllService<T> {
-    protected final Connection connection = ConnectionManager.getConnection();
+    protected final Connection connection;
 
-    protected AssetService() throws SQLException {
+    protected AssetService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
 

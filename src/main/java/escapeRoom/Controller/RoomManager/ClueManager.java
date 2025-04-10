@@ -1,11 +1,12 @@
 package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.PropAndClueService.ClueService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,20 +20,22 @@ public class ClueManager{
     private ClueService clueService;
     private InputService inputService;
     private GameElementFactory elementFactory;
+    private RoomService roomService;
 
-    public ClueManager(InputService inputService) throws SQLException {
-        this.clueService = new ClueService(ConnectionManager.getConnection());
+    public ClueManager(InputService inputService, ClueService clueService, RoomService roomService) throws SQLException {
+        this.clueService = clueService;
         this.inputService = inputService;
+        this.roomService = roomService;
         this.elementFactory = new ClueFactory();
+
     }
 
     public ClueManager() throws SQLException {
         clueService = new ClueService(connection);
     }
 
-    public Clue create() throws SQLException{
+    public Clue create() throws SQLException,BackToSecondaryMenuException {
 
-        RoomService roomService = new RoomService();
 
         String opc = "yes";
         do {
@@ -90,7 +93,8 @@ public class ClueManager{
         return null;
     }
 
-    public List<Clue> addCluesToRoom(int roomId) throws SQLException{
+    public List<Clue> addCluesToRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
+
 
         List<Clue> clues = new ArrayList<>();
         String opc;
@@ -144,16 +148,11 @@ public class ClueManager{
     }
 
     public List<Clue> getAllClues() throws SQLException {
-
         List<Clue> clues = clueService.getAllEntities(connection);
-        clues.forEach(System.out::println);
-
         return clues;
     }
 
-    public void update() throws SQLException {
-
-        RoomService roomService = new RoomService();
+    public void update() throws SQLException,BackToSecondaryMenuException  {
 
         getAllClues();
 
@@ -205,7 +204,7 @@ public class ClueManager{
 
     }
 
-    public void delete() throws SQLException {
+    public void delete() throws SQLException, BackToSecondaryMenuException {
 
         getAllClues();
 
@@ -224,9 +223,7 @@ public class ClueManager{
         }
     }
 
-    public void removeClueFromRoom(int roomId) throws SQLException {
-
-        RoomService roomService = new RoomService();
+    public void removeClueFromRoom(int roomId) throws SQLException,BackToSecondaryMenuException {
 
         String opc;
         do {

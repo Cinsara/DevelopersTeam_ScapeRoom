@@ -1,30 +1,27 @@
 package escapeRoom.Controller.UserManager;
-import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.OutPutService.TablePrinter;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserManager {
     private final UserService userService;
     private final InputService inputService;
-    private final Connection connection = ConnectionManager.getConnection();
 
-    public UserManager(UserService userService, InputService inputService) throws SQLException {
+    public UserManager(InputService inputService, UserService userService) throws SQLException {
         this.inputService = inputService;
         this.userService = userService;
     }
 
-    public int selectOptionMenu(){
-        return inputService.readInt("Select an option:");
-    }
-
-    public void createUser() {
+    public void createUser() throws BackToSecondaryMenuException{
         try {
             String name = inputService.readString("Write a name:");
             String lastname = inputService.readString("Write a lastname:");
@@ -41,7 +38,7 @@ public class UserManager {
         }
     }
 
-    public void showUserById(){
+    public void showUserById() throws BackToSecondaryMenuException{
         int id = inputService.readInt("Enter user ID:");
         try {
             Optional<User> userOptional = userService.read(id);
@@ -58,22 +55,23 @@ public class UserManager {
 
     public void showAllUsers(){
         try {
-            List<User> userList = userService.getAllEntities(connection);
-
+            List<User> userList = userService.getAllEntities(userService.getConnection());
             if(userList.isEmpty()){
                 System.out.println("The user list is empty.");
             } else {
-                System.out.println("User list:");
+                List<UserWrapper> wrapperList = new ArrayList<>();
                 for(User user : userList ){
-                    System.out.println(user);
+                    wrapperList.add(new UserWrapper(user));
                 }
+                StringBuilder table = TablePrinter.buildTable(wrapperList,true);
+                System.out.println(table);
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving user list: " + e.getMessage());
         }
     }
 
-    public void updateUser() {
+    public void updateUser() throws BackToSecondaryMenuException{
         try {
             int id = inputService.readInt("Enter user ID:");
 
@@ -90,7 +88,11 @@ public class UserManager {
             String lastname = inputService.readString("New lastname:");
             String email = inputService.readString("New email:");
             String phoneNumber = inputService.readString("New Phone number:");
-            LocalDate bod = inputService.readDate("New birth date [yyyy MM dd]:", "yyyy MM dd");
+            String dobInput = inputService.readString("New birth date [yyyy MM dd]:");
+            LocalDate bod = null;
+            if (!dobInput.isEmpty()) {
+                bod = LocalDate.parse(dobInput, DateTimeFormatter.ofPattern("yyyy MM dd"));
+            }
 
             boolean notificationStatus = existingUser.isNotificationStatus();
             System.out.print("Change notification status? (current: " +
@@ -123,7 +125,7 @@ public class UserManager {
         }
     }
 
-        public void deleteUserById() {
+        public void deleteUserById() throws BackToSecondaryMenuException{
             int id = inputService.readInt("Enter user ID to delete: ");
             try {
             boolean isDeleted = userService.delete(id);
@@ -137,7 +139,7 @@ public class UserManager {
             }
         }
 
-    public boolean subscribeUser() {
+    public boolean subscribeUser() throws BackToSecondaryMenuException{
         int id = inputService.readInt("Enter user ID to subscribe: ");
         try {
             Optional<User> userOpt = userService.read(id);
@@ -157,7 +159,7 @@ public class UserManager {
         }
     }
 
-    public boolean unsubscribeUser() {
+    public boolean unsubscribeUser() throws BackToSecondaryMenuException {
         int id = inputService.readInt("Enter user ID to unsubscribe:");
 
         try {

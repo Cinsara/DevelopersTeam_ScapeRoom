@@ -1,8 +1,8 @@
 package escapeRoom.GameArea.RoomBuilder;
 
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.RoomBuilder.Theme;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

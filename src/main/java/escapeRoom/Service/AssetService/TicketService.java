@@ -2,16 +2,19 @@ package escapeRoom.Service.AssetService;
 
 
 
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 
 public class TicketService extends AssetService<Ticket> {
-    public TicketService() throws SQLException {
+    public TicketService(Connection connection) throws SQLException {
+        super(connection);
+    }
+
+    @Override
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override

@@ -2,7 +2,9 @@ package escapeRoom.NotificationManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.NotificationManager.NotificationManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.NotificationService.NotificationService;
 import escapeRoom.Service.PeopleService.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,14 +26,14 @@ class NotificationManagerTest {
         outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        InputStream simulatedIn = new ByteArrayInputStream("10\n".getBytes());
+        InputStream simulatedIn = new ByteArrayInputStream("3\n".getBytes());
         System.setIn(simulatedIn);
 
-        InputService inputService = new InputService(new Scanner(System.in));
+        InputService inputService = InputServiceManager.getInputService();;
         Connection connection = ConnectionManager.getConnection();
-        NotificationService notificationService = new NotificationService();
-        UserService userService = new UserService();
-        notificationManager = new NotificationManager(notificationService,connection,inputService,userService);
+        NotificationService notificationService = new NotificationService(connection);
+        UserService userService = new UserService(connection);
+        notificationManager = new NotificationManager(inputService,notificationService,userService);
 
 
     }
@@ -52,7 +53,7 @@ class NotificationManagerTest {
     }
 
     @Test
-    void createNotification() throws SQLException {
+    void createNotification() throws SQLException, BackToSecondaryMenuException {
         notificationManager.createNotification();
         String consoleOutput = outputStream.toString();
         assertTrue(consoleOutput.contains("Notification created successfully!"),
@@ -60,10 +61,10 @@ class NotificationManagerTest {
     }
 
     @Test
-    void deleteNotification() throws SQLException{
+    void deleteNotification() throws SQLException, BackToSecondaryMenuException {
         notificationManager.deleteNotification();
         String consoleOutput = outputStream.toString();
-        assertTrue(consoleOutput.contains("The notification with ID 10 was deleted successfully."),
+        assertTrue(consoleOutput.contains("The notification with ID 3 was deleted successfully."),
                 "The deletion message is not as expected.");
     }
 }

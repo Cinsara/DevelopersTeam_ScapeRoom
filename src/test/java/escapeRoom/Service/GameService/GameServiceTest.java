@@ -1,7 +1,8 @@
 package escapeRoom.Service.GameService;
 
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ class GameServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        service = new GameService();
+        service = new GameService(ConnectionManager.getConnection());
 //        gameMaker = new GameMaker();
     }
     @Test
@@ -52,7 +53,7 @@ class GameServiceTest {
     @Test
     void update() throws SQLException {
         GameBuilder newBuilder = new GameBuilder(4,LocalDate.now());
-        Game newGame = newBuilder.set_id(4).setSuccess(true).setCaptain_id(2).setEllapsedTimeInSeconds(4800).build();
+        Game newGame = newBuilder.setId(4).setSuccess(true).setCaptainId(2).setEllapsedTimeInSeconds(4800).build();
         service.update(newGame);
     }
 

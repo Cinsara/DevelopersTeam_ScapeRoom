@@ -3,24 +3,32 @@ package escapeRoom.Service.InputService;
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InputCollector {
-    static InputService inputService = new InputService(new Scanner(System.in));
+import static escapeRoom.Service.InputService.CustomerPicker.pickUsersByName;
 
-    static public LocalDate getDate() {
-        return inputService.readDate("Introduce the date of the game you are interested in","yyyy MM dd");
+public class InputCollector {
+    private final InputService inputService;
+    private final RoomService roomService;
+    private final UserService userService;
+
+    public InputCollector(InputService inputService,RoomService roomService, UserService userService){
+        this.inputService = inputService;
+        this.roomService = roomService;
+        this.userService = userService;
     }
-    static public Room getRoom() throws SQLException {
-        RoomService roomService = new RoomService();
+
+    public LocalDate getDate() throws BackToSecondaryMenuException{
+        return inputService.readDate("Introduce the date of the game you are interested in. Use the following format [yyyy MM dd]","yyyy MM dd");
+    }
+    public Room getRoom() throws SQLException, BackToSecondaryMenuException {
         List<Room> rooms = roomService.getAllEntities(ConnectionManager.getConnection());
         StringBuilder listRooms = new StringBuilder();
         for (Room room: rooms){
@@ -34,11 +42,12 @@ public class InputCollector {
         return potentialRoom.get();
     }
 
-    static public User getTargetCostumer() throws SQLException {
-        UserService userService = new UserService();
+    public User getTargetCostumer() throws SQLException, BackToSecondaryMenuException {
         List<User> users = userService.getAllEntities(ConnectionManager.getConnection());
+        String nameForSearch = inputService.readString("Introduce the name and lastname of the customer of your interest. Leave this empty to see all customers in DB.");
+        List<User> selectedUsers = nameForSearch.isEmpty() ? users : pickUsersByName(users,nameForSearch);
         StringBuilder listUsers = new StringBuilder();
-        for (User user: users){
+        for (User user: selectedUsers){
             listUsers.append("User ID: ").append(user.getId()).append(" // ").append(user.getName()).append(" ").append(user.getLastname()).append("\n");
         }
         AtomicInteger returnedValue = new AtomicInteger(inputService.readInt("Introduce the ID of the customer your are interested in :\n"+listUsers));

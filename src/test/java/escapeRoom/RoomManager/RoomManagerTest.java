@@ -4,14 +4,19 @@ import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.RoomManager.ClueManager;
 import escapeRoom.Controller.RoomManager.PropManager;
 import escapeRoom.Controller.RoomManager.RoomManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
+import escapeRoom.Service.PropAndClueService.ClueService;
+import escapeRoom.Service.PropAndClueService.PropService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -38,28 +43,30 @@ class RoomManagerTest {
         1
         """;
     Scanner mockScanner = new Scanner(simulatedInput);
-    InputService testInputService = new InputService(mockScanner);
+    InputService testInputService = InputServiceManager.getInputService();
 
     @BeforeEach
     void setup() throws SQLException {
 
        GameElementFactory clueFactory = new ClueFactory();
         GameElementFactory propFactory = new PropFactory();
-
-        roomManager = new RoomManager(testInputService);
+        Connection connection = ConnectionManager.getConnection();
+        InputService inputService = InputServiceManager.getInputService();
+         roomService = new RoomService(connection);
+        roomManager = new RoomManager(inputService,roomService,new ClueManager(inputService,new ClueService(connection),roomService),new PropManager(inputService,new PropService(connection),roomService));
 
     }
 
     static {
         try {
-            roomService = new RoomService();
+            roomService = new RoomService(ConnectionManager.getConnection());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
-    void createRoom() throws SQLException {
+    void createRoom() throws SQLException, BackToSecondaryMenuException {
 
         roomManager.createRoom();
 

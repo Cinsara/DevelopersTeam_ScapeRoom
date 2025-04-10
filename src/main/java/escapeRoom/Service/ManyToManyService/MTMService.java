@@ -1,16 +1,15 @@
 package escapeRoom.Service.ManyToManyService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MTMService {
 
-    protected Connection connection = ConnectionManager.getConnection();
+    protected final Connection connection;
 
-    protected MTMService() throws SQLException{
+    protected MTMService(Connection connection) throws SQLException{
+        this.connection = connection;
     }
 
     public List<Integer> getMatches(int origin_id) throws SQLException {

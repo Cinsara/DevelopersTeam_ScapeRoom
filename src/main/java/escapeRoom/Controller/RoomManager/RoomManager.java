@@ -1,10 +1,11 @@
 package escapeRoom.Controller.RoomManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.GameArea.CluePropFactory.*;
-import escapeRoom.model.GameArea.RoomBuilder.*;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.RoomBuilder.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,18 +23,16 @@ public class RoomManager {
     private ClueManager clueManager;
     private PropManager propManager;
 
-    public RoomManager( InputService inputService) throws SQLException {
+    public RoomManager(InputService inputService, RoomService roomService, ClueManager clueManager, PropManager propManager) throws SQLException {
         this.inputService = inputService;
-        this.roomService = new RoomService();
-        this.clueManager = new ClueManager(inputService);
-        this.propManager = new PropManager(inputService);
+        this.roomService = roomService;
+        this.clueManager = clueManager;
+        this.propManager = propManager;
         this.clueFactory = new ClueFactory();
         this.propFactory = new PropFactory();
     }
 
-    public RoomManager() throws SQLException {}
-
-    public void createRoom() {
+    public void createRoom() throws BackToSecondaryMenuException {
 
         try{
             int id = getNextRoomId();
@@ -144,7 +143,8 @@ public class RoomManager {
         return maxId.orElse(0) + 1;
     }
 
-    public void updateRoom() {
+    public void updateRoom() throws BackToSecondaryMenuException{
+
 
         try {
             List<Room> rooms = getAllRooms();
@@ -156,8 +156,7 @@ public class RoomManager {
             System.out.println("Error retrieving all the rooms available: " + e.getMessage());
         }
 
-        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)");
-
+        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)")
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
@@ -213,9 +212,8 @@ public class RoomManager {
             boolean removeClues = inputService.readBoolean("Do you want to remove Clues? yes/no");
 
             if (removeClues) {
-                  clueManager.removeClueFromRoom(roomId);
+              clueManager.removeClueFromRoom(roomId);
             }
-
             //UPDATE LISTA PROPS
             System.out.println("This Room has " + roomOpt.get().getProps_id().size() + " Props: \n");
 
@@ -270,7 +268,8 @@ public class RoomManager {
         }
     }
 
-    public void deleteRoom() {
+
+    public void deleteRoom() throws BackToSecondaryMenuException {
 
         getAllRooms();
 
@@ -288,4 +287,18 @@ public class RoomManager {
             System.out.println("Error deleting Room: " + e.getMessage());
         }
     }
+
+    public List<List<?>>prepPrintableRooms() {
+        try{
+            List<Room> rooms = roomService.getAllEntities(roomService.getConnection());
+            List<Prop> props = propManager.getAllProps();
+            List<Clue> clues = clueManager.getAllClues();
+            List<InventoryUtils.RoomWrapper> roomWrappers = InventoryUtils.wrapRooms(rooms,props,clues);
+            return List.of(rooms,props,roomWrappers);
+        } catch(SQLException e){
+            System.out.println("Error :" + e.getMessage());
+            return null;
+        }
+    }
+
 }

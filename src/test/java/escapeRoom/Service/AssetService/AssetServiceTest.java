@@ -1,8 +1,9 @@
 package escapeRoom.Service.AssetService;
 
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.model.AssetsArea.RewardBuilder.Reward;
-import escapeRoom.model.AssetsArea.TicketBuilder.Ticket;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.AssetsArea.RewardBuilder.Reward;
+import escapeRoom.Model.AssetsArea.TicketBuilder.Ticket;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +20,9 @@ class AssetServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        certifService = new CertificateService();
-        rewardService = new RewardService();
-        ticketService = new TicketService();
+        certifService = new CertificateService(ConnectionManager.getConnection());
+        rewardService = new RewardService(ConnectionManager.getConnection());
+        ticketService = new TicketService(ConnectionManager.getConnection());
     }
 
     @Test

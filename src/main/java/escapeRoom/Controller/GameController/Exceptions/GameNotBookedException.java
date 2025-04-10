@@ -1,6 +1,6 @@
 package escapeRoom.Controller.GameController.Exceptions;
 
-import escapeRoom.model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
 
 public class GameNotBookedException extends Exception {
     public GameNotBookedException(Game game) {

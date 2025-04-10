@@ -1,10 +1,7 @@
 package escapeRoom.Service.GameService;
 
-import escapeRoom.ConnectionManager.ConnectionManager;
-import escapeRoom.Service.CheckExistenceService;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.GameBuilder.GameBuilder;
-import escapeRoom.Service.CrudeService;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.GameBuilder.GameBuilder;
 import escapeRoom.Service.GetAllService;
 
 
@@ -12,11 +9,12 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class GameService implements GetAllService<Game>, CheckExistenceService<Game> {
+public class GameService implements GetAllService<Game> {
 
-    private final Connection connection = ConnectionManager.getConnection();
+    private final Connection connection;
 
-    public GameService() throws SQLException {
+    public GameService(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override
@@ -30,13 +28,17 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             LocalDate date =  resultSet.getObject("game_date", LocalDate.class);
             int lengthInSec = resultSet.getInt("game_lengthInSec");
             int room_id = resultSet.getInt("room_room_id");
-            int captain_id = resultSet.getInt("captain_customer_id");
+            Integer captainId = null;
+            int raw = resultSet.getInt("captain_customer_id");
+            if (!resultSet.wasNull()) {
+                captainId = raw;
+            }
             boolean success = resultSet.getBoolean("game_success");
             return new GameBuilder(room_id,date)
-                    .setCaptain_id(captain_id)
+                    .setCaptainId(captainId)
                     .setEllapsedTimeInSeconds(lengthInSec)
                     .setSuccess(success)
-                    .set_id(id)
+                    .setId(id)
                     .build();
     }
 
@@ -48,10 +50,10 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             preparedStatement.setBoolean(2,entity.isSuccess());
             preparedStatement.setInt(3,entity.getEllapsedTimeInSeconds());
             preparedStatement.setInt(4,entity.getRoom_id());
-            if (entity.getCaptain_id() == null){
+            if (entity.getCaptainId() == null){
                 preparedStatement.setNull(5,java.sql.Types.INTEGER);
             }else{
-                preparedStatement.setInt(5,entity.getCaptain_id());
+                preparedStatement.setInt(5,entity.getCaptainId());
             }
             preparedStatement.executeUpdate();
             try {
@@ -85,10 +87,10 @@ public class GameService implements GetAllService<Game>, CheckExistenceService<G
             preparedStatement.setBoolean(2, entity.isSuccess());
             preparedStatement.setInt(3, entity.getEllapsedTimeInSeconds());
             preparedStatement.setInt(4, entity.getRoom_id());
-            if (entity.getCaptain_id() == null) {
+            if (entity.getCaptainId() == null) {
                 preparedStatement.setNull(5, java.sql.Types.INTEGER);
             } else {
-                preparedStatement.setInt(5, entity.getCaptain_id());
+                preparedStatement.setInt(5, entity.getCaptainId());
             }
             preparedStatement.setInt(6,entity.getId());
             preparedStatement.executeUpdate();

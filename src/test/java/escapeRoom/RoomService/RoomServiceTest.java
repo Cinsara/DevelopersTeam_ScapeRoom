@@ -1,8 +1,9 @@
 package escapeRoom.RoomService;
 
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.GameArea.RoomBuilder.Theme;
+import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.GameArea.RoomBuilder.Theme;
 import escapeRoom.Service.RoomService.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +20,7 @@ public class RoomServiceTest {
 
     @BeforeAll
     static void setUp() throws SQLException {
-        roomService = new RoomService();
+        roomService = new RoomService(ConnectionManager.getConnection());
     }
 
     @Test

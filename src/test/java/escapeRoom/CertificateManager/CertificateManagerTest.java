@@ -1,18 +1,23 @@
 package escapeRoom.CertificateManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
+import escapeRoom.Controller.CertificateManager.CertificateController;
 import escapeRoom.Controller.CertificateManager.CertificateManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
+import escapeRoom.Service.InputService.InputCollector;
+import escapeRoom.SetUp.EscapeRoomServices;
 import escapeRoom.Service.AssetService.CertificateService;
 import escapeRoom.Service.GameService.GameService;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.ManyToManyService.GameHasUserService;
 import escapeRoom.Service.PeopleService.UserService;
 import escapeRoom.Service.RoomService.RoomService;
-import escapeRoom.model.AssetsArea.CertificateBuilder.Certificate;
-import escapeRoom.model.GameArea.GameBuilder.Game;
-import escapeRoom.model.GameArea.RoomBuilder.Difficulty;
-import escapeRoom.model.GameArea.RoomBuilder.Room;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.AssetsArea.CertificateBuilder.Certificate;
+import escapeRoom.Model.GameArea.GameBuilder.Game;
+import escapeRoom.Model.GameArea.RoomBuilder.Difficulty;
+import escapeRoom.Model.GameArea.RoomBuilder.Room;
+import escapeRoom.Model.PeopleArea.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +30,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,6 +43,7 @@ class CertificateManagerTest {
     private static UserService userService;
     private static RoomService roomService;
     private static GameHasUserService gameHasUserService;
+    private static CertificateController certificateController;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -46,28 +51,29 @@ class CertificateManagerTest {
         System.setOut(new PrintStream(outputStream));
 
         connection = ConnectionManager.getConnection();
-        certificateService = new CertificateService();
-        inputService = new InputService(new Scanner(System.in));
-        certificateManager = new CertificateManager(inputService);
-        gameService = new GameService();
-        userService = new UserService();
-        roomService = new RoomService();
-        gameHasUserService = new GameHasUserService();
+        certificateService = new CertificateService(connection);
+        inputService = InputServiceManager.getInputService();
+        gameService = new GameService(connection);
+        userService = new UserService(connection);
+        roomService = new RoomService(connection);
+        gameHasUserService = new GameHasUserService(connection);
+        certificateManager = new CertificateManager(new EscapeRoomServices(connection).getServicesForCertificateManager());
+        certificateController = new CertificateController(inputService,new InputCollector(inputService,roomService,userService),certificateManager);
     }
 
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
-        inputService = new InputService(new Scanner(System.in));
-        certificateManager = new CertificateManager(inputService);
+        inputService = InputServiceManager.getInputService();
+        certificateManager = new CertificateManager(new EscapeRoomServices(connection).getServicesForCertificateManager());
     }
 
     @Test
-    void inputsCertificationCreation() throws SQLException {
+    void inputsCertificationCreation() throws SQLException, BackToSecondaryMenuException {
         String input = "1\n1\n";
         setSimulatedInput(input);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
 
         assertTrue(outputStream.toString().contains("Certificated saved to"));
         assertTrue(outputStream.toString().contains("Certificate_"));
@@ -109,7 +115,7 @@ class CertificateManagerTest {
     }
 
     @Test
-    void createCertificate() throws SQLException {
+    void createCertificate() throws SQLException, BackToSecondaryMenuException {
         String input = "1\n1\n";
         setSimulatedInput(input);
 
@@ -144,7 +150,7 @@ class CertificateManagerTest {
         PrintStream printStream = new PrintStream(outputStream);
         System.setOut(printStream);
 
-        certificateManager.inputsCertificationCreation();
+        certificateController.inputsCertificationCreation();
         String output = outputStream.toString();
         assertTrue(output.contains("Certificated saved!"), "It should show success message");
 

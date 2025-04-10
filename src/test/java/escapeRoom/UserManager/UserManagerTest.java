@@ -2,9 +2,11 @@ package escapeRoom.UserManager;
 
 import escapeRoom.ConnectionManager.ConnectionManager;
 import escapeRoom.Controller.UserManager.UserManager;
+import escapeRoom.Service.InputService.BackToSecondaryMenuException;
 import escapeRoom.Service.InputService.InputService;
+import escapeRoom.Service.InputService.InputServiceManager;
 import escapeRoom.Service.PeopleService.UserService;
-import escapeRoom.model.PeopleArea.User;
+import escapeRoom.Model.PeopleArea.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,10 +36,10 @@ class UserManagerTest {
         System.setOut(new PrintStream(outputStream));
 
         connection = ConnectionManager.getConnection();
-        userService = new UserService();
+        userService = new UserService(connection);
 
-        inputService = new InputService(new Scanner(System.in));
-        userManager = new UserManager(userService, inputService);
+        inputService = InputServiceManager.getInputService();
+        userManager = new UserManager(inputService,userService);
     }
 
     @AfterEach
@@ -50,12 +51,12 @@ class UserManagerTest {
     private void setSimulatedInput(String input) throws SQLException {
         InputStream simulatedIn = new ByteArrayInputStream(input.getBytes());
         System.setIn(simulatedIn);
-        inputService = new InputService(new Scanner(System.in));
-        userManager = new UserManager(userService, inputService);
+        inputService = InputServiceManager.getInputService();;
+        userManager = new UserManager(inputService,userService);
     }
 
     @Test
-    void createUser() throws SQLException {
+    void createUser() throws SQLException, BackToSecondaryMenuException {
         String input = "TestUser\nTestLastName\ntest@example.com\n123456789\n1990 01 01\nyes\n";
         setSimulatedInput(input);
 
@@ -83,7 +84,7 @@ class UserManagerTest {
     }
 
     @Test
-    void showUserById() throws SQLException {
+    void showUserById() throws SQLException, BackToSecondaryMenuException {
         User testUser = new User("Show", "User", "show@test.com", "123456", LocalDate.now(), true);
         try {
             userService.create(testUser);
@@ -123,7 +124,7 @@ class UserManagerTest {
     }
 
     @Test
-    void updateUser() throws SQLException {
+    void updateUser() throws SQLException, BackToSecondaryMenuException {
         User originalUser = new User("Original", "User", "original@test.com",
                 "111", LocalDate.of(1990, 1, 1), false);
         try {
@@ -161,7 +162,7 @@ class UserManagerTest {
     }
 
     @Test
-    void deleteUserById() throws SQLException {
+    void deleteUserById() throws SQLException, BackToSecondaryMenuException {
         User user = new User("ToDelete", "User", "delete@test.com",
                 "111", LocalDate.now(), true);
         try {
@@ -185,7 +186,7 @@ class UserManagerTest {
     }
 
     @Test
-    void subscribeUser() throws SQLException {
+    void subscribeUser() throws SQLException, BackToSecondaryMenuException {
         User user = new User("Test", "User", "subscribe@test.com",
                 "111", LocalDate.now(), false);
         try {
@@ -211,7 +212,7 @@ class UserManagerTest {
     }
 
     @Test
-    void unsubscribeUser() throws SQLException {
+    void unsubscribeUser() throws SQLException, BackToSecondaryMenuException {
         User user = new User("Test", "User", "unsubscribe@test.com",
                 "111", LocalDate.now(), true);
         try {

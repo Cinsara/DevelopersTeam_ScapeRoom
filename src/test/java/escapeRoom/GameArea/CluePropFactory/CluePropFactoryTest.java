@@ -1,6 +1,6 @@
 package escapeRoom.GameArea.CluePropFactory;
 
-import escapeRoom.model.GameArea.CluePropFactory.*;
+import escapeRoom.Model.GameArea.CluePropFactory.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
