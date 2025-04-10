@@ -1,4 +1,4 @@
-package escapeRoom;
+package escapeRoom.Controller.GameController.ControllerHelpers;
 
 @FunctionalInterface
 public interface ThrowingFunction<T, R> {

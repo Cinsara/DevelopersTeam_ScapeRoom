@@ -1,13 +1,14 @@
-package escapeRoom.connectionManager;
+package escapeRoom.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-    static private final String URL = "jdbc:mysql://localhost:3306/escape_room";
-    static private final String USER = "root";
-    static private final String PASSWORD = "mySqlRoot1948";
+
+    final static String URL = "jdbc:mysql://localhost:3306/escape_room";
+    final static String USER = "root";
+    final static String PASSWORD = "mySqlRoot1948";
     static Connection connection;
 
     static public Connection getConnection() throws SQLException {
