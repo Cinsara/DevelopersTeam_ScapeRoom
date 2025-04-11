@@ -268,6 +268,16 @@ public class RoomManager {
 
     public void deleteRoom() throws BackToSecondaryMenuException {
 
+        try {
+            List<Room> rooms = getAllRooms();
+            for (Room room : rooms) {
+                roomService.read(room.getId()).ifPresent(System.out::println);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving all the rooms available: " + e.getMessage());
+        }
+
         getAllRooms();
 
         int roomId = inputService.readInt("Which room do you want to delete?");
