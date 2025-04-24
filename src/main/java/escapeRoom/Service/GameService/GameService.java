@@ -57,7 +57,6 @@ public class GameService implements GetAllService<Game> {
             }
             preparedStatement.executeUpdate();
             try {
-                System.out.println(getGeneratedId(preparedStatement));
                 entity.setId(getGeneratedId(preparedStatement));
             }catch(SQLException e){}
             return entity;

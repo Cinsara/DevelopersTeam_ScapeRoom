@@ -156,7 +156,7 @@ public class RoomManager {
             System.out.println("Error retrieving all the rooms available: " + e.getMessage());
         }
 
-        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)")
+        int roomId = inputService.readInt("Which room do you want to update? (Enter the ID)");
         try {
             Optional<Room> roomOpt = roomService.read(roomId);
             if (roomOpt.isEmpty()) {
